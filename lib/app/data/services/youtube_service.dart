@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class YouTubeService {
-  final String apiKey = 'AIzaSyAqjfpAJDNs_24a0PbLxBTqseRJ1SU1Hbs';
+  final String apiKey = dotenv.env['YOUTUBE_API_KEY'] ?? '';
   final String channelId = 'UC-y0wEvCxhzxm7pqWYQTXKQ';
 
   Future<List<Map<String, String>>> obtenerUltimosVideos() async {

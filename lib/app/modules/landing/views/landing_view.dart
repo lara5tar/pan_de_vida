@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pan_de_vida/app/widgets/custom_scaffold.dart';
 
 import '../../../routes/app_pages.dart';
 import '../controllers/landing_controller.dart';
@@ -9,20 +10,63 @@ class LandingView extends GetView<LandingController> {
   const LandingView({super.key});
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40),
-        child: Column(
-          children: [
-            const YouTubeCarouselWidget(),
-            ElevatedButton(
-              onPressed: () {
-                Get.toNamed(Routes.LOGIN);
-              },
-              child: const Text('Login'),
-            )
-          ],
-        ),
+    return CustomScaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          YouTubeCarouselWidget(),
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.GRUPOS_DE_VIDA);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          spreadRadius: 3,
+                          blurRadius: 10,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.asset('assets/grupos_button.jpeg'),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.LOGIN);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          spreadRadius: 3,
+                          blurRadius: 10,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.asset('assets/login_button.jpeg'),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
