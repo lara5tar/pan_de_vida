@@ -1,24 +1,12 @@
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/data/services/congregante_service.dart';
+import 'package:get_storage/get_storage.dart';
 
 class DashboardController extends GetxController {
-  var menu = [].obs;
+  // CongreganteService congreganteService = CongreganteService();
 
-  CongreganteService congreganteService = CongreganteService();
+  List getMenu() {
+    GetStorage box = GetStorage('login');
 
-  @override
-  void onInit() {
-    super.onInit();
-    getMenu();
-  }
-
-  void getMenu() {
-    congreganteService.getMenu().then((response) {
-      if (response['error'] == true) {
-        Get.snackbar('Error', response['message']);
-      } else {
-        menu.value = response['menu'];
-      }
-    });
+    return box.read('menu') ?? [];
   }
 }

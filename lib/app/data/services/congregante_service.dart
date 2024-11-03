@@ -10,8 +10,6 @@ class CongreganteService {
     final url = Uri.parse('$baseUrl/app/menu');
     final data = {'codCongregante': GetStorage('login').read('codCongregante')};
 
-    print(data);
-
     try {
       final response = await http.post(
         url,
@@ -21,10 +19,11 @@ class CongreganteService {
 
       if (response.statusCode == 200) {
         final result = json.decode(response.body);
+
+        GetStorage('login').write('menu', result['menu']);
+
         return {
           'error': false,
-          'message': result['message'],
-          'menu': result['menu'],
         };
       } else {
         return {'error': true, 'message': 'Error en la respuesta del servidor'};

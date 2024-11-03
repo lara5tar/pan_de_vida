@@ -15,9 +15,13 @@ class AuthService extends GetxService {
     };
 
     try {
-      final response = await http.post(url, body: json.encode(data), headers: {
-        'Content-Type': 'application/json',
-      });
+      final response = await http.post(
+        url,
+        body: json.encode(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
 
       if (response.statusCode == 200) {
         final respData = json.decode(response.body);
