@@ -1,23 +1,33 @@
 import 'package:get/get.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
+import '../../../routes/app_pages.dart';
 
 class GruposDeVidaController extends GetxController {
-  //TODO: Implement GruposDeVidaController
+  late final WebViewController webViewController;
 
-  final count = 0.obs;
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+
+    initWebViewController();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void initWebViewController() {
+    const String videoUrl = 'https://www.youtube.com/embed/nOblARtr7AA';
+
+    webViewController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..loadRequest(
+        Uri.parse(videoUrl),
+      );
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
+  void callButton() {}
+  void webButton() {}
+  void joinButton() {}
 
-  void increment() => count.value++;
+  void mapsButton() {
+    Get.toNamed(Routes.MAP_GROUPS);
+  }
 }

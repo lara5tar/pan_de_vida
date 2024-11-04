@@ -29,14 +29,10 @@ class LoginController extends GetxController {
       ),
     );
 
-    await Future.delayed(const Duration(milliseconds: 200));
-
     var response = await authService.login(
       userController.text,
       passwordController.text,
     );
-
-    Get.back();
 
     if (response['error'] == true) {
       Get.dialog(
@@ -54,25 +50,6 @@ class LoginController extends GetxController {
         ),
       );
     } else {
-      Get.dialog(
-        const AlertDialog(
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                height: 150,
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-              Text('Cargando menú...'),
-            ],
-          ),
-        ),
-      );
-
-      await Future.delayed(const Duration(milliseconds: 200));
-
       CongreganteService congreganteService = CongreganteService();
       response = await congreganteService.getMenu();
 

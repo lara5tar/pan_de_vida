@@ -8,6 +8,7 @@ abstract class Routes {
   static const LOGIN = _Paths.LOGIN;
   static const GRUPOS_DE_VIDA = _Paths.GRUPOS_DE_VIDA;
   static const DASHBOARD = _Paths.DASHBOARD;
+  static const MAP_GROUPS = _Paths.MAP_GROUPS;
 }
 
 abstract class _Paths {
@@ -17,4 +18,5 @@ abstract class _Paths {
   static const LOGIN = '/login';
   static const GRUPOS_DE_VIDA = '/grupos-de-vida';
   static const DASHBOARD = '/dashboard';
+  static const MAP_GROUPS = '/map-groups';
 }

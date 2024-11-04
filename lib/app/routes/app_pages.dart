@@ -8,6 +8,8 @@ import '../modules/landing/bindings/landing_binding.dart';
 import '../modules/landing/views/landing_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/map_groups/bindings/map_groups_binding.dart';
+import '../modules/map_groups/views/map_groups_view.dart';
 
 part 'app_routes.dart';
 
@@ -36,6 +38,11 @@ class AppPages {
       name: _Paths.DASHBOARD,
       page: () => const DashboardView(),
       binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: _Paths.MAP_GROUPS,
+      page: () => const MapGroupsView(),
+      binding: MapGroupsBinding(),
     ),
   ];
 }
