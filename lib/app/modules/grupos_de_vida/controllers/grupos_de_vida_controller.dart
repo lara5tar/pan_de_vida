@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../../data/services/youtube_service.dart';
 import '../../../routes/app_pages.dart';
 
 class GruposDeVidaController extends GetxController {
@@ -14,13 +15,9 @@ class GruposDeVidaController extends GetxController {
   }
 
   void initWebViewController() {
-    const String videoUrl = 'https://www.youtube.com/embed/nOblARtr7AA';
-
-    webViewController = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(
-        Uri.parse(videoUrl),
-      );
+    webViewController = YouTubeService.getWebViewController(
+      'https://www.youtube.com/embed/nOblARtr7AA',
+    );
   }
 
   void callButton() {}

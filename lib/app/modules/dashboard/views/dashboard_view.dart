@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/widgets/custom_scaffold.dart';
 
+import '../../../widgets/custom_scaffold.dart';
 import '../controllers/dashboard_controller.dart';
 
 class DashboardView extends GetView<DashboardController> {

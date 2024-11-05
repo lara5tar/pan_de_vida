@@ -1,12 +1,11 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class MapsService {
-  final String baseUrl = dotenv.env['URL_SERVICE'] ?? '';
+import '../../../core/values/keys.dart';
 
+class MapsService {
   Future<List<Group>> getPoints() async {
-    final url = Uri.parse('$baseUrl/app/groups');
+    final url = Uri.parse('${Keys.URL_SERVICE}/app/groups');
 
     try {
       final response = await http.get(url);

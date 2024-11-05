@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/data/services/congregante_service.dart';
-import 'package:pan_de_vida/app/routes/app_pages.dart';
 
 import '../../../data/services/auth_service.dart';
+import '../../../data/services/congregante_service.dart';
+import '../../../routes/app_pages.dart';
 
 class LoginController extends GetxController {
   TextEditingController userController = TextEditingController();

@@ -4,7 +4,6 @@ import '../../../data/services/youtube_service.dart';
 
 class YoutubeCarruselController extends GetxController {
   final videos = <Map<String, String>>[].obs;
-  final YouTubeService youTubeService = YouTubeService();
 
   var currentIndex = 0.obs;
 
@@ -16,11 +15,10 @@ class YoutubeCarruselController extends GetxController {
 
   Future<void> loadVideos() async {
     try {
-      final fetchedVideos = await youTubeService.obtenerUltimosVideos();
+      final fetchedVideos = await YouTubeService.getLastVideos();
       videos.assignAll(fetchedVideos);
     } catch (e) {
       Get.snackbar('Error', e.toString());
-      print(e);
     }
   }
 

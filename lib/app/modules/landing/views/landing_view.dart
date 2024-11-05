@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/widgets/custom_scaffold.dart';
 
 import '../../../routes/app_pages.dart';
+import '../../../widgets/custom_scaffold.dart';
 import '../controllers/landing_controller.dart';
 import '../widgets/youtube_carrusel_view.dart';
 

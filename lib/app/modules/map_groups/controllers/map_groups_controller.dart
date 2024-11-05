@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:pan_de_vida/app/data/services/maps_service.dart';
+
+import '../../../data/services/maps_service.dart';
 
 class MapGroupsController extends GetxController {
   RxSet<Marker> markers = <Marker>{}.obs;

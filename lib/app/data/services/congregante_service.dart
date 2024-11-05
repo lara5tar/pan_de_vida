@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import '../../../core/values/keys.dart';
 
 class CongreganteService {
-  final String baseUrl = dotenv.env['URL_SERVICE'] ?? '';
-
   Future<dynamic> getMenu() async {
-    final url = Uri.parse('$baseUrl/app/menu');
+    final url = Uri.parse('${Keys.URL_SERVICE}/app/menu');
     final data = {'codCongregante': GetStorage('login').read('codCongregante')};
 
     try {
