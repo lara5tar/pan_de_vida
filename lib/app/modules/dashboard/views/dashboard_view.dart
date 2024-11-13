@@ -12,13 +12,7 @@ class DashboardView extends GetView<DashboardController> {
     return CustomScaffold(
       body: ListView(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.asset('assets/banner.jpg'),
-            ),
-          ),
+          const BannerWidget(),
           for (var item in controller.getMenu())
             Padding(
               padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
@@ -43,23 +37,44 @@ class DashboardView extends GetView<DashboardController> {
                     ),
                   ),
                   for (var subItem in item['OPCIONES'])
-                    Container(
-                      color: Colors.blueGrey.withOpacity(0.7),
-                      child: ListTile(
-                        title: Text(
-                          subItem['OPCION'],
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                    InkWell(
+                      onTap: () async {
+                        Get.toNamed(subItem['URL']);
+                      },
+                      child: Container(
+                        color: Colors.blueGrey.withOpacity(0.7),
+                        child: ListTile(
+                          title: Text(
+                            subItem['OPCION'],
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                        // subtitle: Text(subItem['URL']),
                       ),
                     ),
                 ],
               ),
             ),
         ],
+      ),
+    );
+  }
+}
+
+class BannerWidget extends StatelessWidget {
+  const BannerWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Image.asset('assets/banner.jpg'),
       ),
     );
   }

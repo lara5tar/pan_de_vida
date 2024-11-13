@@ -42,19 +42,19 @@ class AuthService extends GetxService {
   }
 
   Future<void> saveLoginData(Map<String, dynamic> data) async {
-    final box = GetStorage('login');
-    await box.write('codCongregante', data['token']);
+    final box = GetStorage(Keys.LOGIN_KEY);
+    await box.write(Keys.COD_CONGREGANTE_KEY, data['token']);
 
-    if (data['codCasaVida'] != null) {
-      await box.write('codCasaVida', data['codCasaVida']);
+    if (data[Keys.COD_CASA_VIDA_KEY] != null) {
+      await box.write(Keys.COD_CASA_VIDA_KEY, data[Keys.COD_CASA_VIDA_KEY]);
     }
 
-    if (data['codHogar'] != null) {
-      await box.write('codHogar', data['codHogar']);
+    if (data[Keys.COD_HOGAR_KEY] != null) {
+      await box.write(Keys.COD_HOGAR_KEY, data[Keys.COD_HOGAR_KEY]);
     }
 
-    if (data['roles'] != null) {
-      await box.write('roles', data['roles']);
+    if (data[Keys.ROLES_KEY] != null) {
+      await box.write(Keys.ROLES_KEY, data[Keys.ROLES_KEY]);
     }
   }
 }

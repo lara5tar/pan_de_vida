@@ -45,7 +45,7 @@ class CustomScaffold extends StatelessWidget {
           Positioned.fill(
             child: Column(
               children: [
-                if (!setAppBar) const SizedBox(height: 80),
+                // if (!setAppBar) const SizedBox(height: 80),
                 Expanded(
                   child: body ?? const SizedBox.shrink(),
                 ),

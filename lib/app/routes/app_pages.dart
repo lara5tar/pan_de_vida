@@ -1,7 +1,7 @@
-// ignore_for_file: constant_identifier_names
-
 import 'package:get/get.dart';
 
+import '../modules/congregants/bindings/congregants_binding.dart';
+import '../modules/congregants/views/congregants_view.dart';
 import '../modules/dashboard/bindings/dashboard_binding.dart';
 import '../modules/dashboard/views/dashboard_view.dart';
 import '../modules/grupos_de_vida/bindings/grupos_de_vida_binding.dart';
@@ -12,6 +12,8 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/map_groups/bindings/map_groups_binding.dart';
 import '../modules/map_groups/views/map_groups_view.dart';
+
+// ignore_for_file: constant_identifier_names
 
 part 'app_routes.dart';
 
@@ -45,6 +47,11 @@ class AppPages {
       name: _Paths.MAP_GROUPS,
       page: () => const MapGroupsView(),
       binding: MapGroupsBinding(),
+    ),
+    GetPage(
+      name: _Paths.CONGREGANTS_INDEX,
+      page: () => const CongregantsView(),
+      binding: CongregantsBinding(),
     ),
   ];
 }

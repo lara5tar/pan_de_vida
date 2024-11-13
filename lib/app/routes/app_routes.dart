@@ -10,6 +10,7 @@ abstract class Routes {
   static const GRUPOS_DE_VIDA = _Paths.GRUPOS_DE_VIDA;
   static const DASHBOARD = _Paths.DASHBOARD;
   static const MAP_GROUPS = _Paths.MAP_GROUPS;
+  static const CONGREGANTS_INDEX = _Paths.CONGREGANTS_INDEX;
 }
 
 abstract class _Paths {
@@ -20,4 +21,21 @@ abstract class _Paths {
   static const GRUPOS_DE_VIDA = '/grupos-de-vida';
   static const DASHBOARD = '/dashboard';
   static const MAP_GROUPS = '/map-groups';
+  static const CONGREGANTS_INDEX = '/search-congregant';
 }
+
+// List<String> opciones = [
+//   'search-congregant',
+//   'cumbre',
+//   'hist-cumbre',
+//   'list-cumbre-equipo',
+//   'listProspecto',
+//   'list-afirmacion',
+//   'list-restauracion',
+//   'escuela-asistencia',
+//   'escuela-pago',
+//   'grupoVida-asistencia-datos',
+//   'grupoVida-hist-grupo',
+//   'alertas',
+//   'list-desarrollo',
+// ];
