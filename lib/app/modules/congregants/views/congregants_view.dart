@@ -11,14 +11,14 @@ class CongregantsView extends GetView<CongregantsController> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      body: Container(
-        color: Colors.red,
-        child: ListView(
-          padding: const EdgeInsets.all(0),
-          children: const [
-            BannerWidget(),
-          ],
-        ),
+      body: ListView(
+        padding: const EdgeInsets.all(0),
+        children: const [
+          SizedBox(
+            height: 40,
+          ),
+          BannerWidget(),
+        ],
       ),
     );
   }

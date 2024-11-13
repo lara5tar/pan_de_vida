@@ -35,6 +35,7 @@ class LoginController extends GetxController {
     );
 
     if (response['error'] == true) {
+      Get.back();
       Get.dialog(
         AlertDialog(
           title: const Text('Error'),
@@ -56,6 +57,7 @@ class LoginController extends GetxController {
       Get.back();
 
       if (response['error'] == true) {
+        Get.back();
         Get.dialog(
           AlertDialog(
             title: const Text('Error'),
