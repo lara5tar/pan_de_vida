@@ -14,6 +14,7 @@ class CongregantsView extends GetView<CongregantsController> {
       body: Container(
         color: Colors.red,
         child: ListView(
+          padding: const EdgeInsets.all(0),
           children: const [
             BannerWidget(),
           ],

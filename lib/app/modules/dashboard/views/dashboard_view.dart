@@ -11,6 +11,7 @@ class DashboardView extends GetView<DashboardController> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       body: ListView(
+        padding: const EdgeInsets.all(0),
         children: [
           const BannerWidget(),
           for (var item in controller.getMenu())
