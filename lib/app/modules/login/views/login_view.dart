@@ -11,6 +11,7 @@ class LoginView extends GetView<LoginController> {
     return CustomScaffold(
       backgroundImage: 'assets/background_login.jpg',
       setAppBar: false,
+      setBrightnessDark: false,
       body: SingleChildScrollView(
         child: Column(
           children: [
