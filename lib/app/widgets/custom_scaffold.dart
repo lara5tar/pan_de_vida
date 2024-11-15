@@ -3,13 +3,19 @@ import 'package:flutter/services.dart';
 
 class CustomScaffold extends StatelessWidget {
   final bool setAppBar;
+  final bool setIconThemeWhite;
+  final bool setBrightnessDark;
+
   final Widget? body;
   final String backgroundImage;
+
   const CustomScaffold({
     super.key,
     this.backgroundImage = 'assets/background_general.jpg',
     this.body,
     this.setAppBar = true,
+    this.setIconThemeWhite = true,
+    this.setBrightnessDark = true,
   });
 
   @override
@@ -20,15 +26,15 @@ class CustomScaffold extends StatelessWidget {
         backgroundColor: Colors.transparent, // Fondo transparente
         elevation: 0, // Sin sombra
         iconTheme: IconThemeData(
-          color: !setAppBar ? Colors.white : Colors.grey[900],
+          color: setIconThemeWhite ? Colors.white : Colors.grey[900],
           size: 30,
         ),
         leadingWidth: 80,
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
           statusBarIconBrightness:
-              !setAppBar ? Brightness.light : Brightness.dark,
-          systemStatusBarContrastEnforced: true,
+              setBrightnessDark ? Brightness.dark : Brightness.light,
+          systemStatusBarContrastEnforced: false,
         ),
         forceMaterialTransparency: true,
       ),
@@ -45,7 +51,7 @@ class CustomScaffold extends StatelessWidget {
           Positioned.fill(
             child: Column(
               children: [
-                // if (!setAppBar) const SizedBox(height: 80),
+                if (!setAppBar) const SizedBox(height: 100),
                 Expanded(
                   child: body ?? const SizedBox.shrink(),
                 ),
