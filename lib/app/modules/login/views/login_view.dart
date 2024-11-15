@@ -10,12 +10,12 @@ class LoginView extends GetView<LoginController> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       backgroundImage: 'assets/background_login.jpg',
-      setAppBar: false,
       setBrightnessDark: false,
       setBanner: false,
       body: SingleChildScrollView(
         child: Column(
           children: [
+            const SizedBox(height: 40),
             Image.asset(
               'assets/pandevida_logo.png',
               height: 200,

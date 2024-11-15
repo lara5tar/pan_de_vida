@@ -2,35 +2,50 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CustomScaffold extends StatelessWidget {
-  final bool setAppBar;
-  final bool setIconThemeWhite;
   final bool setBrightnessDark;
   final Widget? body;
   final String backgroundImage;
   final bool setBanner;
+  final Widget? leading;
+  final bool setLeading;
 
   const CustomScaffold({
     super.key,
     this.backgroundImage = 'assets/background_general.jpg',
     this.body,
-    this.setAppBar = true,
-    this.setIconThemeWhite = true,
     this.setBrightnessDark = true,
     this.setBanner = true,
+    this.leading,
+    this.setLeading = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 80,
+        toolbarHeight: 170,
         backgroundColor: Colors.transparent, // Fondo transparente
         elevation: 0, // Sin sombra
-        iconTheme: IconThemeData(
-          color: setIconThemeWhite ? Colors.white : Colors.grey[900],
-          size: 30,
+
+        leading: Column(
+          children: [
+            const SizedBox(height: 80),
+            leading != null || setLeading
+                ? leading ??
+                    IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: Colors.white,
+                        size: 35,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                : const SizedBox.shrink(),
+          ],
         ),
-        leadingWidth: 80,
+        leadingWidth: 90,
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
           statusBarIconBrightness:
@@ -57,7 +72,6 @@ class CustomScaffold extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                if (!setAppBar) const SizedBox(height: 100),
                 if (setBanner) const SizedBox(height: 160),
                 Expanded(
                   child: body ?? const SizedBox.shrink(),

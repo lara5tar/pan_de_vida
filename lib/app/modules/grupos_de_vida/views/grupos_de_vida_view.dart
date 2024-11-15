@@ -11,13 +11,15 @@ class GruposDeVidaView extends GetView<GruposDeVidaController> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       backgroundImage: 'assets/background_login.jpg',
-      setAppBar: false,
       setBanner: false,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
-        child: SingleChildScrollView(
+      setBrightnessDark: false,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const SizedBox(height: 40),
               Image.asset(
                 'assets/pandevida_logo.png',
                 height: 200,
