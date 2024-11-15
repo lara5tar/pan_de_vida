@@ -1,23 +1,30 @@
 import 'package:get/get.dart';
+import 'package:pan_de_vida/app/data/models/congregant_model.dart';
+import 'package:pan_de_vida/app/data/services/congregante_service.dart';
 
 class CongregantsController extends GetxController {
-  //TODO: Implement CongregantsController
+  var ovejas = <Congregant>[].obs;
+  var nietos = <Congregant>[].obs;
 
-  final count = 0.obs;
+  var isErrored = false.obs;
+
   @override
   void onInit() {
     super.onInit();
+    getCongregants();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
+  getCongregants() async {
+    CongreganteService congreganteService = CongreganteService();
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
+    var result = await congreganteService.getCongregants();
 
-  void increment() => count.value++;
+    if (!result['error']) {
+      ovejas.value = result['ovejas'];
+      nietos.value = result['nietos'];
+    } else {
+      Get.snackbar('Error', result['message']);
+      isErrored.value = true;
+    }
+  }
 }
