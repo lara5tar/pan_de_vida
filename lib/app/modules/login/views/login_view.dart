@@ -12,6 +12,7 @@ class LoginView extends GetView<LoginController> {
       backgroundImage: 'assets/background_login.jpg',
       setAppBar: false,
       setBrightnessDark: false,
+      setBanner: false,
       body: SingleChildScrollView(
         child: Column(
           children: [

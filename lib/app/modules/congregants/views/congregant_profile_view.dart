@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:pan_de_vida/app/data/models/congregant_model.dart';
 import '../../../routes/app_pages.dart';
 import '../../../widgets/custom_scaffold.dart';
-import '../../dashboard/views/dashboard_view.dart';
 import '../controllers/congregants_controller.dart';
 
 class CongregantProfileView extends GetView<CongregantsController> {
@@ -17,8 +16,6 @@ class CongregantProfileView extends GetView<CongregantsController> {
     return CustomScaffold(
       body: Column(
         children: [
-          const SizedBox(height: 40),
-          const BannerWidget(),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Text(

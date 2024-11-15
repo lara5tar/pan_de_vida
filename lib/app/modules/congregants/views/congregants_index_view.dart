@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/modules/dashboard/views/dashboard_view.dart';
 import 'package:pan_de_vida/app/routes/app_pages.dart';
 
 import '../../../widgets/custom_scaffold.dart';
@@ -15,8 +14,6 @@ class CongregantsIndexView extends GetView<CongregantsController> {
     return CustomScaffold(
       body: Column(
         children: [
-          const SizedBox(height: 40),
-          const BannerWidget(),
           Obx(
             () => Expanded(
               child: ListView(

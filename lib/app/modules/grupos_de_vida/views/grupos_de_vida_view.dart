@@ -12,6 +12,7 @@ class GruposDeVidaView extends GetView<GruposDeVidaController> {
     return CustomScaffold(
       backgroundImage: 'assets/background_login.jpg',
       setAppBar: false,
+      setBanner: false,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: SingleChildScrollView(

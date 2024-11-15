@@ -5,9 +5,9 @@ class CustomScaffold extends StatelessWidget {
   final bool setAppBar;
   final bool setIconThemeWhite;
   final bool setBrightnessDark;
-
   final Widget? body;
   final String backgroundImage;
+  final bool setBanner;
 
   const CustomScaffold({
     super.key,
@@ -16,6 +16,7 @@ class CustomScaffold extends StatelessWidget {
     this.setAppBar = true,
     this.setIconThemeWhite = true,
     this.setBrightnessDark = true,
+    this.setBanner = true,
   });
 
   @override
@@ -48,18 +49,45 @@ class CustomScaffold extends StatelessWidget {
             ),
           ),
           // Contenido de la pantalla
-          Positioned.fill(
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
             child: Column(
+              mainAxisSize: MainAxisSize.max,
               children: [
                 if (!setAppBar) const SizedBox(height: 100),
+                if (setBanner) const SizedBox(height: 160),
                 Expanded(
                   child: body ?? const SizedBox.shrink(),
                 ),
               ],
             ),
           ),
+          if (setBanner)
+            const Positioned(
+              top: 40,
+              left: 20,
+              right: 20,
+              child: BannerWidget(),
+            ),
         ],
       ),
+    );
+  }
+}
+
+class BannerWidget extends StatelessWidget {
+  const BannerWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: Image.asset('assets/banner.jpg'),
     );
   }
 }

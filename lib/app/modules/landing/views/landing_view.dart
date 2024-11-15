@@ -11,6 +11,7 @@ class LandingView extends GetView<LandingController> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
+      setBanner: false,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

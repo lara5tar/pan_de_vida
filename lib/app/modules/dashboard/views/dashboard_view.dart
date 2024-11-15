@@ -11,12 +11,8 @@ class DashboardView extends GetView<DashboardController> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       body: ListView(
-        padding: const EdgeInsets.all(0),
+        padding: const EdgeInsets.only(top: 20),
         children: [
-          const SizedBox(
-            height: 40,
-          ),
-          const BannerWidget(),
           for (var item in controller.getMenu())
             Padding(
               padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
@@ -64,23 +60,6 @@ class DashboardView extends GetView<DashboardController> {
               ),
             ),
         ],
-      ),
-    );
-  }
-}
-
-class BannerWidget extends StatelessWidget {
-  const BannerWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Image.asset('assets/banner.jpg'),
       ),
     );
   }
