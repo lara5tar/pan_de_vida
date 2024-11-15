@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
+import 'package:pan_de_vida/app/modules/congregants/views/congregant_info_view.dart';
+import 'package:pan_de_vida/app/modules/congregants/views/congregant_profile_view.dart';
 
 import '../modules/congregants/bindings/congregants_binding.dart';
-import '../modules/congregants/views/congregants_view.dart';
+import '../modules/congregants/views/congregants_index_view.dart';
 import '../modules/dashboard/bindings/dashboard_binding.dart';
 import '../modules/dashboard/views/dashboard_view.dart';
 import '../modules/grupos_de_vida/bindings/grupos_de_vida_binding.dart';
@@ -50,7 +52,32 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CONGREGANTS_INDEX,
-      page: () => const CongregantsView(),
+      page: () => const CongregantsIndexView(),
+      binding: CongregantsBinding(),
+    ),
+    GetPage(
+      name: _Paths.CONGREGANT_PROFILE,
+      page: () => const CongregantProfileView(),
+      binding: CongregantsBinding(),
+    ),
+    GetPage(
+      name: _Paths.CONGREGANT_INFO,
+      page: () => const CongregantInfoView(),
+      binding: CongregantsBinding(),
+    ),
+    GetPage(
+      name: _Paths.CONGREGANT_ADRESS,
+      page: () => const CongregantInfoView(),
+      binding: CongregantsBinding(),
+    ),
+    GetPage(
+      name: _Paths.CONGREGANT_AFFIRMATION,
+      page: () => const CongregantInfoView(),
+      binding: CongregantsBinding(),
+    ),
+    GetPage(
+      name: _Paths.CONGREGANT_ATTENDANCE,
+      page: () => const CongregantInfoView(),
       binding: CongregantsBinding(),
     ),
   ];

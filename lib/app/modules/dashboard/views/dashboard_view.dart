@@ -39,7 +39,9 @@ class DashboardView extends GetView<DashboardController> {
                   for (var subItem in item['OPCIONES'])
                     InkWell(
                       onTap: () async {
-                        Get.toNamed(subItem['URL']);
+                        Get.toNamed(
+                          '/${subItem['URL'].toString().replaceAll('/', '')}',
+                        );
                       },
                       child: Container(
                         color: Colors.blueGrey.withOpacity(0.7),
