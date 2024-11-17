@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 import 'package:pan_de_vida/app/routes/app_pages.dart';
 
 import '../../../widgets/custom_scaffold.dart';
-import '../controllers/congregants_controller.dart';
+import '../controllers/congregants_index_controller.dart';
 
-class CongregantsIndexView extends GetView<CongregantsController> {
+class CongregantsIndexView extends GetView<CongregantsIndexController> {
   const CongregantsIndexView({super.key});
   @override
   Widget build(BuildContext context) {

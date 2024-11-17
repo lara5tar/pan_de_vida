@@ -79,4 +79,31 @@ class CongreganteService {
       return {'error': true, 'message': 'Error de conexión: $e'};
     }
   }
+
+  Future<Map<String, dynamic>> getCongregante(
+      String codCongregante, String idCongregante) async {
+    final String url = '${Keys.URL_SERVICE}/congregante/obtener';
+    final Map<String, String> body = {
+      'codCongregante': codCongregante,
+      'idCongregante': idCongregante,
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(body),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        print(data['congregante']);
+        return {'error': false, 'congregante': data['congregante']};
+      } else {
+        return {'error': true, 'message': 'Error en la respuesta del servidor'};
+      }
+    } catch (e) {
+      return {'error': true, 'message': 'Error de conexión: $e'};
+    }
+  }
 }

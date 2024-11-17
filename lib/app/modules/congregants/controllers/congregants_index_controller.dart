@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:pan_de_vida/app/data/models/congregant_model.dart';
 import 'package:pan_de_vida/app/data/services/congregante_service.dart';
 
-class CongregantsController extends GetxController {
+class CongregantsIndexController extends GetxController {
   var ovejas = <Congregant>[].obs;
   var nietos = <Congregant>[].obs;
 
