@@ -1,3 +1,15 @@
 import 'package:get/get.dart';
 
-class CongregantAdressController extends GetxController {}
+import '../../../data/models/congregant_model.dart';
+import 'congregant_profile_controller.dart';
+
+class CongregantAdressController extends GetxController {
+  late Congregant congregant;
+
+  @override
+  void onInit() {
+    congregant = Get.find<CongregantProfileController>().congregant.value;
+
+    super.onInit();
+  }
+}

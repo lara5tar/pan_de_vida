@@ -15,14 +15,23 @@ class CongregantProfileView extends GetView<CongregantProfileController> {
         () {
           return controller.congregant.value.codCongregant.isEmpty
               ? Center(
-                  child: Text(
-                    'Cargando...',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.blue.shade900,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Cargando...',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.blue.shade900,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 20),
+                      CircularProgressIndicator(
+                        color: Colors.blue.shade900,
+                      ),
+                    ],
                   ),
                 )
               : Column(

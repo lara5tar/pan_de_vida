@@ -1,4 +1,7 @@
 import 'package:get/get.dart';
+import 'package:pan_de_vida/app/modules/congregants/views/congregant_adress_view.dart';
+import 'package:pan_de_vida/app/modules/congregants/views/congregant_affirmation_view.dart';
+import 'package:pan_de_vida/app/modules/congregants/views/congregant_attandance_view.dart';
 import 'package:pan_de_vida/app/modules/congregants/views/congregant_info_view.dart';
 import 'package:pan_de_vida/app/modules/congregants/views/congregant_profile_view.dart';
 
@@ -67,17 +70,17 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CONGREGANT_ADRESS,
-      page: () => const CongregantInfoView(),
+      page: () => const CongregantAdressView(),
       binding: CongregantsBinding(),
     ),
     GetPage(
       name: _Paths.CONGREGANT_AFFIRMATION,
-      page: () => const CongregantInfoView(),
+      page: () => const CongregantAffirmationView(),
       binding: CongregantsBinding(),
     ),
     GetPage(
       name: _Paths.CONGREGANT_ATTENDANCE,
-      page: () => const CongregantInfoView(),
+      page: () => const CongregantAttandanceView(),
       binding: CongregantsBinding(),
     ),
   ];
