@@ -29,14 +29,12 @@ class CongregantsIndexView extends GetView<CongregantsIndexController> {
                       margin: const EdgeInsets.symmetric(horizontal: 20),
                       child: ListTile(
                         leading: const Icon(Icons.person),
-                        title: Text(congregant.name),
-                        subtitle: Text(congregant.registrationDate),
+                        title: Text(congregant.nombre),
+                        subtitle: Text(congregant.fecAlta),
                         onTap: () {
                           Get.toNamed(
                             Routes.CONGREGANT_PROFILE,
-                            parameters: {
-                              'congregant': congregant.toJsonString()
-                            },
+                            parameters: {'id': congregant.codCongregant},
                           );
                         },
                       ),
@@ -51,13 +49,13 @@ class CongregantsIndexView extends GetView<CongregantsIndexController> {
                       margin: const EdgeInsets.symmetric(horizontal: 20),
                       child: ListTile(
                         leading: const Icon(Icons.person),
-                        title:
-                            Text("${congregant.name}\n(${congregant.mentor})"),
-                        subtitle: Text(congregant.registrationDate),
+                        title: Text(
+                            "${congregant.nombre}\n(${congregant.mentor})"),
+                        subtitle: Text(congregant.fecAlta),
                         tileColor: Colors.red,
                         onTap: () {
-                          Get.toNamed(Routes.CONGREGANT_INFO, parameters: {
-                            'congregant': congregant.id,
+                          Get.toNamed(Routes.CONGREGANT_PROFILE, parameters: {
+                            'id': congregant.codCongregant,
                           });
                         },
                       ),

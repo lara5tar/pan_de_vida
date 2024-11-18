@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
-import 'package:pan_de_vida/app/data/models/congregant_model.dart';
 
 import '../../../core/values/keys.dart';
+import '../models/congregant_model.dart';
 
-class CongreganteService {
+class CongregantService {
   Future<dynamic> getMenu() async {
     final url = Uri.parse('${Keys.URL_SERVICE}/app/menu');
 
@@ -80,12 +80,11 @@ class CongreganteService {
     }
   }
 
-  Future<Map<String, dynamic>> getCongregante(
-      String codCongregante, String idCongregante) async {
+  Future<Map<String, dynamic>> getCongregant(String codCongregant) async {
     final String url = '${Keys.URL_SERVICE}/congregante/obtener';
     final Map<String, String> body = {
-      'codCongregante': codCongregante,
-      'idCongregante': idCongregante,
+      'codCongregante': codCongregant,
+      'idCongregante': codCongregant,
     };
 
     try {
@@ -97,8 +96,11 @@ class CongreganteService {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = jsonDecode(response.body);
-        print(data['congregante']);
-        return {'error': false, 'congregante': data['congregante']};
+
+        return {
+          'error': false,
+          'congregant': Congregant.fromJson(data['congregante'])
+        };
       } else {
         return {'error': true, 'message': 'Error en la respuesta del servidor'};
       }

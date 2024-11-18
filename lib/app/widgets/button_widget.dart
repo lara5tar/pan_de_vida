@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
 class ButtonWidget extends StatelessWidget {
-  final String title;
+  final String? title;
+  final String text;
   final IconData icon;
   final Function? onTap;
   final bool isLast;
 
   const ButtonWidget({
     super.key,
-    required this.title,
+    this.title,
+    required this.text,
     required this.icon,
     this.onTap,
     this.isLast = false,
@@ -40,7 +42,29 @@ class ButtonWidget extends StatelessWidget {
                       color: Colors.grey[700],
                     ),
                   ),
-                  Text(title),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (title != null)
+                          Text(
+                            title!,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[800],
+                            ),
+                          ),
+                        Text(
+                          text.isEmpty ? 'Sin datos' : text,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.visible,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 20),
                 ],
               ),
               Row(

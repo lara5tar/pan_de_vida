@@ -1,30 +1,27 @@
 import 'package:get/get.dart';
+import 'package:pan_de_vida/app/data/services/congregante_service.dart';
 
 import '../../../data/models/congregant_model.dart';
 
 class CongregantProfileController extends GetxController {
-  late Congregant congregant;
+  var congregant = Congregant.empty().obs;
 
   @override
-  void onInit() {
-    getCongregant();
+  Future<void> onInit() async {
     super.onInit();
+    await getCongregant();
   }
 
-  getCongregant() {
+  getCongregant() async {
     var parameters = Get.parameters;
 
-    if (parameters['congregant'] != null) {
-      congregant =
-          Congregant.fromJsonString(parameters['congregant'].toString());
-    } else {
-      congregant = Congregant(
-        id: 'N/A',
-        name: 'N/A',
-        email: 'N/A',
-        mentor: 'N/A',
-        registrationDate: 'N/A',
-      );
+    if (parameters['id'] != null) {
+      var response =
+          await CongregantService().getCongregant(parameters['id'].toString());
+
+      if (!response['error']) {
+        congregant.value = response['congregant'];
+      }
     }
   }
 }
