@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/data/models/congregant_model.dart';
-import 'package:pan_de_vida/app/data/services/congregante_service.dart';
 
-class CongregantsController extends GetxController {
+import '../../../data/models/congregant_model.dart';
+import '../../../data/services/congregante_service.dart';
+
+class CongregantsIndexController extends GetxController {
   var ovejas = <Congregant>[].obs;
   var nietos = <Congregant>[].obs;
 
@@ -15,7 +16,7 @@ class CongregantsController extends GetxController {
   }
 
   getCongregants() async {
-    CongreganteService congreganteService = CongreganteService();
+    CongregantService congreganteService = CongregantService();
 
     var result = await congreganteService.getCongregants();
 

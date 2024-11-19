@@ -64,12 +64,9 @@ class CustomScaffold extends StatelessWidget {
             ),
           ),
           // Contenido de la pantalla
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
+          Positioned.fill(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
                 if (setBanner) const SizedBox(height: 160),

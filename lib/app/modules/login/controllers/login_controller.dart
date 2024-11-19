@@ -51,7 +51,7 @@ class LoginController extends GetxController {
         ),
       );
     } else {
-      CongreganteService congreganteService = CongreganteService();
+      CongregantService congreganteService = CongregantService();
       response = await congreganteService.getMenu();
 
       Get.back();

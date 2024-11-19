@@ -11,6 +11,7 @@ class MapGroupsView extends GetView<MapGroupsController> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
+      setBanner: false,
       body: Obx(
         () {
           return GoogleMap(

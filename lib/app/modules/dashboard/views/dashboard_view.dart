@@ -11,8 +11,9 @@ class DashboardView extends GetView<DashboardController> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       body: ListView(
-        padding: const EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.all(0),
         children: [
+          const SizedBox(height: 20),
           for (var item in controller.getMenu())
             Padding(
               padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
@@ -48,7 +49,7 @@ class DashboardView extends GetView<DashboardController> {
                             'Error',
                             'No se ha implementado la ruta',
                             colorText: Colors.white,
-                            duration: const Duration(milliseconds: 800),
+                            duration: const Duration(milliseconds: 600),
                           );
                         }
                       },
