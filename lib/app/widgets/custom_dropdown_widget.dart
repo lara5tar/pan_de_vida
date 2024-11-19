@@ -34,9 +34,6 @@ class CustomDropdown extends StatelessWidget {
             label: Text(hint),
           ),
           isExpanded: true,
-          hint: Text(
-            hint,
-          ),
           value: selectedItem.value.isEmpty ? null : selectedItem.value,
           items: items
               .map((item) => DropdownMenuItem(

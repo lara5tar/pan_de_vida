@@ -17,7 +17,7 @@ abstract class Routes {
   static const CONGREGANT_ADRESS = _Paths.CONGREGANT_ADRESS;
   static const CONGREGANT_AFFIRMATION = _Paths.CONGREGANT_AFFIRMATION;
   static const CONGREGANT_ATTENDANCE = _Paths.CONGREGANT_ATTENDANCE;
-  static const NEW_RPA = _Paths.NEW_RPA;
+  // static const NEW_RPA = _Paths.NEW_RPA;
   static const RPA_INDEX = _Paths.RPA_INDEX;
   static const TEAM = _Paths.TEAM;
   static const PROSPECTOS = _Paths.PROSPECTOS;
@@ -40,13 +40,13 @@ abstract class _Paths {
   static const CONGREGANT_ADRESS = '$CONGREGANT/adress';
   static const CONGREGANT_AFFIRMATION = '$CONGREGANT/affirmation';
   static const CONGREGANT_ATTENDANCE = '$CONGREGANT/attendance';
-  static const NEW_RPA = '/cumbre';
+  // static const NEW_RPA = '/cumbre';
   static const RPA_INDEX = '/hist-cumbre';
   static const TEAM = '/list-cumbre-equipo';
   static const PROSPECTOS = '/listProspecto';
   static const NEW_PROSPECTO = '/new-prospecto';
   static const PROSPECTO_VIDEOS = '/prospecto-videos';
-  static const CUMBRE_INDEX = '/cumbres';
+  static const CUMBRE_INDEX = '/cumbre';
 }
 
 // List<String> opciones = [
