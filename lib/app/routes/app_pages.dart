@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:pan_de_vida/app/modules/cumbres/bindings/cumbres_binding.dart';
+import 'package:pan_de_vida/app/modules/cumbres/views/cumbres_view.dart';
 
 import '../modules/congregants/bindings/congregants_binding.dart';
 import '../modules/congregants/views/congregants_view.dart';
@@ -20,7 +22,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.LANDING;
+  static const INITIAL = Routes.CUMBRE_INDEX;
 
   static final routes = [
     GetPage(
@@ -52,6 +54,11 @@ class AppPages {
       name: _Paths.CONGREGANTS_INDEX,
       page: () => const CongregantsView(),
       binding: CongregantsBinding(),
+    ),
+    GetPage(
+      name: _Paths.CUMBRE_INDEX,
+      page: () => const CumbresView(),
+      binding: CumbresBinding(),
     ),
   ];
 }

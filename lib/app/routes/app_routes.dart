@@ -11,6 +11,7 @@ abstract class Routes {
   static const DASHBOARD = _Paths.DASHBOARD;
   static const MAP_GROUPS = _Paths.MAP_GROUPS;
   static const CONGREGANTS_INDEX = _Paths.CONGREGANTS_INDEX;
+  static const CUMBRE_INDEX = _Paths.CUMBRE_INDEX;
 }
 
 abstract class _Paths {
@@ -22,6 +23,7 @@ abstract class _Paths {
   static const DASHBOARD = '/dashboard';
   static const MAP_GROUPS = '/map-groups';
   static const CONGREGANTS_INDEX = '/search-congregant';
+  static const CUMBRE_INDEX = '/cumbres';
 }
 
 // List<String> opciones = [
