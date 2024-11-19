@@ -84,24 +84,22 @@ class CongregantService {
 
   Future<Map<String, dynamic>> getCongregant(String codCongregant) async {
     final String url = '${Keys.URL_SERVICE}/congregante/obtener';
-    final Map<String, String> body = {
-      'codCongregante': codCongregant,
-      'idCongregante': codCongregant,
-    };
 
     try {
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(body),
+        body: jsonEncode({
+          Keys.COD_CONGREGANTE_KEY: codCongregant,
+          'idCongregante': codCongregant,
+        }),
       );
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> data = jsonDecode(response.body);
-
         return {
           'error': false,
-          'congregant': Congregant.fromJson(data['congregante'])
+          'congregant':
+              Congregant.fromJson(jsonDecode(response.body)['congregante'])
         };
       } else {
         return {'error': true, 'message': 'Error en la respuesta del servidor'};
@@ -113,23 +111,18 @@ class CongregantService {
 
   Future<Map<String, dynamic>> getAffirmation(String codCongregante) async {
     final String url = '${Keys.URL_SERVICE}/afirmacion/detalle';
-    final Map<String, String> body = {
-      'codCongregante': codCongregante,
-    };
 
     try {
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(body),
+        body: jsonEncode({Keys.COD_CONGREGANTE_KEY: codCongregante}),
       );
 
       if (response.statusCode == 200) {
-        var data = jsonDecode(response.body);
-        print(data['afirmacion']);
         return {
           'error': false,
-          // 'afirmacion': data['afirmacion'],
+          'data': jsonDecode(response.body),
         };
       } else {
         return {'error': true, 'message': 'Error en la respuesta del servidor'};
@@ -142,23 +135,18 @@ class CongregantService {
   Future<Map<String, dynamic>> getSchoolAttandance(
       String codCongregante) async {
     final String url = '${Keys.URL_SERVICE}/escuela/obtener_asistencia';
-    final Map<String, String> body = {
-      'codCongregante': codCongregante,
-    };
 
     try {
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(body),
+        body: jsonEncode({Keys.COD_CONGREGANTE_KEY: codCongregante}),
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-
         return {
           'error': false,
-          'attendance': SchoolAttendace.fromJson(data),
+          'attendance': SchoolAttendace.fromJson(jsonDecode(response.body)),
         };
       } else {
         return {'error': true, 'message': 'Error en la respuesta del servidor'};
@@ -170,23 +158,18 @@ class CongregantService {
 
   Future<Map<String, dynamic>> getGroupAttendance(String codCongregante) async {
     final String url = '${Keys.URL_SERVICE}/grupoVida/obtener_asistencia';
-    final Map<String, String> body = {
-      'codCongregante': codCongregante,
-    };
 
     try {
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(body),
+        body: jsonEncode({Keys.COD_CONGREGANTE_KEY: codCongregante}),
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-
         return {
           'error': false,
-          'attendance': GroupAttendace.fromJson(data),
+          'attendance': GroupAttendace.fromJson(jsonDecode(response.body)),
         };
       } else {
         return {'error': true, 'message': 'Error en la respuesta del servidor'};

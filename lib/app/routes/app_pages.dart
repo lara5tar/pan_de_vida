@@ -1,11 +1,14 @@
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/modules/congregants/views/congregant_adress_view.dart';
-import 'package:pan_de_vida/app/modules/congregants/views/congregant_affirmation_view.dart';
-import 'package:pan_de_vida/app/modules/congregants/views/congregant_attandance_view.dart';
-import 'package:pan_de_vida/app/modules/congregants/views/congregant_info_view.dart';
-import 'package:pan_de_vida/app/modules/congregants/views/congregant_profile_view.dart';
+import 'package:pan_de_vida/app/modules/rpa/views/new_rpa_view.dart';
+import 'package:pan_de_vida/app/modules/rpa/views/prospectos_view.dart';
+import 'package:pan_de_vida/app/modules/rpa/views/team_view.dart';
 
 import '../modules/congregants/bindings/congregants_binding.dart';
+import '../modules/congregants/views/congregant_adress_view.dart';
+import '../modules/congregants/views/congregant_affirmation_view.dart';
+import '../modules/congregants/views/congregant_attandance_view.dart';
+import '../modules/congregants/views/congregant_info_view.dart';
+import '../modules/congregants/views/congregant_profile_view.dart';
 import '../modules/congregants/views/congregants_index_view.dart';
 import '../modules/dashboard/bindings/dashboard_binding.dart';
 import '../modules/dashboard/views/dashboard_view.dart';
@@ -17,6 +20,8 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/map_groups/bindings/map_groups_binding.dart';
 import '../modules/map_groups/views/map_groups_view.dart';
+import '../modules/rpa/bindings/rpa_binding.dart';
+import '../modules/rpa/views/rpa_index_view.dart';
 
 // ignore_for_file: constant_identifier_names
 
@@ -82,6 +87,26 @@ class AppPages {
       name: _Paths.CONGREGANT_ATTENDANCE,
       page: () => const CongregantAttandanceView(),
       binding: CongregantsBinding(),
+    ),
+    GetPage(
+      name: _Paths.NEW_RPA,
+      page: () => const NewRpaView(),
+      binding: RpaBinding(),
+    ),
+    GetPage(
+      name: _Paths.RPA_INDEX,
+      page: () => const RpaIndexView(),
+      binding: RpaBinding(),
+    ),
+    GetPage(
+      name: _Paths.TEAM,
+      page: () => const TeamView(),
+      binding: RpaBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROSPECTOS,
+      page: () => const ProspectosView(),
+      binding: RpaBinding(),
     ),
   ];
 }

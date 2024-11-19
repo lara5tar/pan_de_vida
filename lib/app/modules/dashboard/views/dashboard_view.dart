@@ -41,6 +41,7 @@ class DashboardView extends GetView<DashboardController> {
                     InkWell(
                       onTap: () async {
                         try {
+                          print(subItem['URL']);
                           Get.toNamed(
                             '/${subItem['URL'].toString().replaceAll('/', '')}',
                           );

@@ -14,49 +14,43 @@ class CongregantsIndexView extends GetView<CongregantsIndexController> {
   Widget build(BuildContext context) {
     controller.getCongregants();
     return CustomScaffold(
-      body: Column(
-        children: [
-          Obx(
-            () => Expanded(
-              child: ListView(
-                padding: const EdgeInsets.all(0),
-                children: [
-                  const SizedBox(height: 20),
-                  const TextTitleWidget('Mis 3'),
-                  for (var congregant in controller.ovejas)
-                    ButtonWidget(
-                      text: congregant.nombre,
-                      subtitle: congregant.fecAlta,
-                      icon: Icons.person,
-                      onTap: () {
-                        Get.toNamed(
-                          Routes.CONGREGANT_PROFILE,
-                          parameters: {'id': congregant.codCongregant},
-                        );
-                      },
-                      isLast: controller.ovejas.last == congregant,
-                    ),
-                  const SizedBox(height: 20),
-                  const TextTitleWidget('Los 3 de mis 3'),
-                  for (var congregant in controller.nietos)
-                    ButtonWidget(
-                      text: '${congregant.nombre}\n(${congregant.mentor})',
-                      subtitle: congregant.fecAlta,
-                      icon: Icons.person,
-                      onTap: () {
-                        Get.toNamed(
-                          Routes.CONGREGANT_PROFILE,
-                          parameters: {'id': congregant.codCongregant},
-                        );
-                      },
-                      isLast: controller.nietos.last == congregant,
-                    ),
-                  const SizedBox(height: 20),
-                ],
+      body: Obx(
+        () => ListView(
+          padding: const EdgeInsets.all(0),
+          children: [
+            const SizedBox(height: 20),
+            const TextTitleWidget('Mis 3'),
+            for (var congregant in controller.ovejas)
+              ButtonWidget(
+                text: congregant.nombre,
+                subtitle: congregant.fecAlta,
+                icon: Icons.person,
+                onTap: () {
+                  Get.toNamed(
+                    Routes.CONGREGANT_PROFILE,
+                    parameters: {'id': congregant.codCongregant},
+                  );
+                },
+                isLast: controller.ovejas.last == congregant,
               ),
-            ),
-          ),
-        ],
+            const SizedBox(height: 20),
+            const TextTitleWidget('Los 3 de mis 3'),
+            for (var congregant in controller.nietos)
+              ButtonWidget(
+                text: '${congregant.nombre}\n(${congregant.mentor})',
+                subtitle: congregant.fecAlta,
+                icon: Icons.person,
+                onTap: () {
+                  Get.toNamed(
+                    Routes.CONGREGANT_PROFILE,
+                    parameters: {'id': congregant.codCongregant},
+                  );
+                },
+                isLast: controller.nietos.last == congregant,
+              ),
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }

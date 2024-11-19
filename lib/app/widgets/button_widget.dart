@@ -4,7 +4,9 @@ class ButtonWidget extends StatelessWidget {
   final String? title;
   final String text;
   final String? subtitle;
+  final String? trailing;
   final IconData icon;
+
   final Function? onTap;
   final bool isLast;
   final Color colorText;
@@ -15,6 +17,7 @@ class ButtonWidget extends StatelessWidget {
     this.title,
     required this.text,
     this.subtitle,
+    this.trailing,
     required this.icon,
     this.onTap,
     this.isLast = false,
@@ -38,6 +41,7 @@ class ButtonWidget extends StatelessWidget {
             children: [
               Row(
                 mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
                     height: 60,
@@ -80,6 +84,16 @@ class ButtonWidget extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 20),
+                  if (trailing != null) ...[
+                    SizedBox(
+                      height: 60,
+                      width: 60,
+                      child: Center(
+                        child: Text(trailing!.substring(0, 6)),
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                  ]
                 ],
               ),
               Row(
