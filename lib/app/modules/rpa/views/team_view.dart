@@ -34,6 +34,19 @@ class TeamView extends GetView<TeamController> {
                       onTap: () {
                         controller.toRpaIndex(item.codCongregant);
                       },
+                      options: [
+                        OptionWidget(
+                          text: 'Llamar',
+                          icon: Icons.phone,
+                          onTap: () {},
+                        ),
+                        OptionWidget(
+                          text: 'Mensaje',
+                          icon: Icons.message,
+                          onTap: () {},
+                        ),
+                      ],
+                      isLast: item == controller.sinRegistro.last,
                     ),
                   const TextSubtitleWidget('No movieron el marcador'),
                   for (var item in controller.noMarcador)
@@ -41,9 +54,22 @@ class TeamView extends GetView<TeamController> {
                       text: item.nombre,
                       subtitle: item.nomCasaVida,
                       icon: Icons.person,
+                      options: [
+                        OptionWidget(
+                          text: 'Llamar',
+                          icon: Icons.phone,
+                          onTap: () {},
+                        ),
+                        OptionWidget(
+                          text: 'Mensaje',
+                          icon: Icons.message,
+                          onTap: () {},
+                        ),
+                      ],
                       onTap: () {
                         controller.toRpaIndex(item.codCongregant);
                       },
+                      isLast: item == controller.noMarcador.last,
                     ),
                   const TextSubtitleWidget('Si movieron el marcador'),
                   for (var item in controller.marcador)
@@ -51,9 +77,22 @@ class TeamView extends GetView<TeamController> {
                       text: item.nombre,
                       subtitle: item.nomCasaVida,
                       icon: Icons.person,
+                      options: [
+                        OptionWidget(
+                          text: 'Llamar',
+                          icon: Icons.phone,
+                          onTap: () {},
+                        ),
+                        OptionWidget(
+                          text: 'Mensaje',
+                          icon: Icons.message,
+                          onTap: () {},
+                        ),
+                      ],
                       onTap: () {
                         controller.toRpaIndex(item.codCongregant);
                       },
+                      isLast: item == controller.marcador.last,
                     ),
                   const SizedBox(height: 20),
                 ],

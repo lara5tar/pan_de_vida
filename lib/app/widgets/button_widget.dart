@@ -5,11 +5,12 @@ class ButtonWidget extends StatelessWidget {
   final String text;
   final String? subtitle;
   final String? trailing;
+  final List<OptionWidget>? options;
   final IconData icon;
   final Function? onTap;
-  final bool isLast;
   final Color colorText;
   final Color colorIcon;
+  final bool isLast;
 
   const ButtonWidget({
     super.key,
@@ -17,11 +18,12 @@ class ButtonWidget extends StatelessWidget {
     required this.text,
     this.subtitle,
     this.trailing,
+    this.options,
     required this.icon,
     this.onTap,
-    this.isLast = false,
     this.colorText = Colors.black,
     this.colorIcon = const Color(0xFF616161),
+    this.isLast = false,
   });
 
   @override
@@ -40,10 +42,9 @@ class ButtonWidget extends StatelessWidget {
             children: [
               Row(
                 mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 60,
                     width: 60,
                     child: Icon(
                       icon,
@@ -55,6 +56,7 @@ class ButtonWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        const SizedBox(height: 20),
                         if (title != null)
                           Text(
                             title!,
@@ -79,20 +81,37 @@ class ButtonWidget extends StatelessWidget {
                               color: Colors.grey[800],
                             ),
                           ),
+                        if (options != null)
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              for (var option in options!)
+                                Expanded(
+                                  child: IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      option.icon,
+                                      size: 20,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        if (options == null) const SizedBox(height: 20),
                       ],
                     ),
                   ),
                   const SizedBox(width: 20),
                   if (trailing != null) ...[
                     SizedBox(
-                      height: 60,
                       width: 60,
                       child: Center(
                         child: Text(trailing!.substring(0, 6)),
                       ),
                     ),
                     const SizedBox(width: 20),
-                  ]
+                  ],
                 ],
               ),
               Row(
@@ -117,4 +136,16 @@ class ButtonWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+class OptionWidget {
+  final String text;
+  final IconData icon;
+  final Function onTap;
+
+  OptionWidget({
+    required this.text,
+    required this.icon,
+    required this.onTap,
+  });
 }

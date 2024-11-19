@@ -5,6 +5,7 @@ import '../../../data/services/cumbres_services.dart';
 
 class RpaIndexController extends GetxController {
   var cumbres = <Cumbre>[].obs;
+  String? codCongregante = Get.parameters['id'];
 
   @override
   void onInit() {
@@ -13,7 +14,6 @@ class RpaIndexController extends GetxController {
   }
 
   getCumbres() async {
-    String? codCongregante = Get.parameters['id'];
     var response = await CumbresServices().getCumbres(codCongregante);
 
     if (!response['error']) {
