@@ -11,6 +11,7 @@ abstract class Routes {
   static const DASHBOARD = _Paths.DASHBOARD;
   static const MAP_GROUPS = _Paths.MAP_GROUPS;
   static const CONGREGANTS_INDEX = _Paths.CONGREGANTS_INDEX;
+  static const CUMBRE_INDEX = _Paths.CUMBRE_INDEX;
   static const CONGREGANT_PROFILE = _Paths.CONGREGANT_PROFILE;
   static const CONGREGANT_INFO = _Paths.CONGREGANT_INFO;
   static const CONGREGANT_ADRESS = _Paths.CONGREGANT_ADRESS;
@@ -45,6 +46,7 @@ abstract class _Paths {
   static const PROSPECTOS = '/listProspecto';
   static const NEW_PROSPECTO = '/new-prospecto';
   static const PROSPECTO_VIDEOS = '/prospecto-videos';
+  static const CUMBRE_INDEX = '/cumbres';
 }
 
 // List<String> opciones = [

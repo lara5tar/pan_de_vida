@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:pan_de_vida/app/modules/cumbres/bindings/cumbres_binding.dart';
+import 'package:pan_de_vida/app/modules/cumbres/views/cumbres_view.dart';
 import 'package:pan_de_vida/app/modules/rpa/controllers/new_prospecto_controller.dart';
 import 'package:pan_de_vida/app/modules/rpa/views/new_prospecto_view.dart';
 import 'package:pan_de_vida/app/modules/rpa/views/new_rpa_view.dart';
@@ -90,6 +92,11 @@ class AppPages {
       name: _Paths.CONGREGANT_ATTENDANCE,
       page: () => const CongregantAttandanceView(),
       binding: CongregantsBinding(),
+    ),
+    GetPage(
+      name: _Paths.CUMBRE_INDEX,
+      page: () => const CumbresView(),
+      binding: CumbresBinding(),
     ),
     GetPage(
       name: _Paths.NEW_RPA,
