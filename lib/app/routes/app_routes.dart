@@ -20,6 +20,8 @@ abstract class Routes {
   static const RPA_INDEX = _Paths.RPA_INDEX;
   static const TEAM = _Paths.TEAM;
   static const PROSPECTOS = _Paths.PROSPECTOS;
+  static const NEW_PROSPECTO = _Paths.NEW_PROSPECTO;
+  static const PROSPECTO_VIDEOS = _Paths.PROSPECTO_VIDEOS;
 }
 
 abstract class _Paths {
@@ -41,6 +43,8 @@ abstract class _Paths {
   static const RPA_INDEX = '/hist-cumbre';
   static const TEAM = '/list-cumbre-equipo';
   static const PROSPECTOS = '/listProspecto';
+  static const NEW_PROSPECTO = '/new-prospecto';
+  static const PROSPECTO_VIDEOS = '/prospecto-videos';
 }
 
 // List<String> opciones = [

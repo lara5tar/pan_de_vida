@@ -5,6 +5,7 @@ class ButtonWidget extends StatelessWidget {
   final String text;
   final String? subtitle;
   final String? trailing;
+  final Widget? trailingWidget;
   final List<OptionWidget>? options;
   final IconData icon;
   final Function? onTap;
@@ -18,6 +19,7 @@ class ButtonWidget extends StatelessWidget {
     required this.text,
     this.subtitle,
     this.trailing,
+    this.trailingWidget,
     this.options,
     required this.icon,
     this.onTap,
@@ -108,6 +110,15 @@ class ButtonWidget extends StatelessWidget {
                       width: 60,
                       child: Center(
                         child: Text(trailing!.substring(0, 6)),
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                  ],
+                  if (trailingWidget != null) ...[
+                    SizedBox(
+                      width: 60,
+                      child: Center(
+                        child: trailingWidget,
                       ),
                     ),
                     const SizedBox(width: 20),

@@ -2,6 +2,7 @@ import 'package:get_storage/get_storage.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:pan_de_vida/app/data/models/congregant_model.dart';
+import 'package:pan_de_vida/app/data/models/prospecto_model.dart';
 
 import '../../../core/values/keys.dart';
 import '../models/cumbre_model.dart';
@@ -90,23 +91,11 @@ class CumbresServices {
     }
   }
 
-  //  get_prospectos(codCongregante: string, codAccion: string) {
-
-  //   const url = URL_SERVICIOS + '/cumbres/prospectos';
-  //   const data = {
-  //     codCongregante,
-  //     codAccion
-  //   };
-  //   console.log(data);
-  //   return this.http.post(url, data)
-  //     .pipe(map((dataResp: any) => dataResp.prospectos));
-  // }
-
   getProspectos(String codCongregante, String codAccion) async {
     final url = Uri.parse('${Keys.URL_SERVICE}/cumbres/prospectos');
     final data = {
       Keys.COD_CONGREGANTE_KEY: codCongregante,
-      // Keys.COD_ACCION_KEY: codAccion,
+      'codAccion': codAccion,
     };
 
     try {
@@ -118,10 +107,42 @@ class CumbresServices {
 
       if (response.statusCode == 200) {
         final result = json.decode(response.body);
-        List<Congregant> prospectos = [];
+
+        print(result);
+
+        return {
+          'error': false,
+          // 'prospectos': prospectos,
+        };
+      } else {
+        return {'error': true, 'message': 'Error en la respuesta del servidor'};
+      }
+    } catch (e) {
+      return {'error': true, 'message': 'Error de conexión: $e'};
+    }
+  }
+
+  getProspectoDetail() async {
+    final url = Uri.parse('${Keys.URL_SERVICE}/cumbres/prospectoDetail');
+    final data = {
+      Keys.COD_CONGREGANTE_KEY: GetStorage(Keys.LOGIN_KEY).read(
+        Keys.COD_CONGREGANTE_KEY,
+      ),
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(data),
+      );
+
+      if (response.statusCode == 200) {
+        final result = json.decode(response.body);
+        List<Prospecto> prospectos = [];
 
         for (var congregant in result['prospectos']) {
-          prospectos.add(Congregant.fromJson(congregant));
+          prospectos.add(Prospecto.fromJson(congregant));
         }
 
         return {
@@ -136,10 +157,14 @@ class CumbresServices {
     }
   }
 
-  getProspectoDetail(String codCongregante) async {
-    final url = Uri.parse('${Keys.URL_SERVICE}/cumbres/prospectoDetail');
+  setProspecto(String nombre, String cel) async {
+    final url = Uri.parse('${Keys.URL_SERVICE}/cumbres/prospecto');
     final data = {
-      Keys.COD_CONGREGANTE_KEY: codCongregante,
+      Keys.COD_CONGREGANTE_KEY: GetStorage(Keys.LOGIN_KEY).read(
+        Keys.COD_CONGREGANTE_KEY,
+      ),
+      'nombre': nombre,
+      'cel': cel,
     };
 
     try {
@@ -151,16 +176,38 @@ class CumbresServices {
 
       if (response.statusCode == 200) {
         final result = json.decode(response.body);
-        print(result);
-        // List<Congregant> prospectos = [];
-
-        // for (var congregant in result['prospectos']) {
-        //   prospectos.add(Congregant.fromJson(congregant));
-        // }
 
         return {
           'error': false,
-          // 'prospectos': prospectos,
+          'message': result['message'],
+        };
+      } else {
+        return {'error': true, 'message': 'Error en la respuesta del servidor'};
+      }
+    } catch (e) {
+      return {'error': true, 'message': 'Error de conexión: $e'};
+    }
+  }
+
+  deleteProspecto(String idProspecto) async {
+    final url = Uri.parse('${Keys.URL_SERVICE}/cumbres/baja_prospecto');
+    final data = {
+      'idProspecto': idProspecto,
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(data),
+      );
+
+      if (response.statusCode == 200) {
+        final result = json.decode(response.body);
+
+        return {
+          'error': false,
+          'message': result['message'],
         };
       } else {
         return {'error': true, 'message': 'Error en la respuesta del servidor'};

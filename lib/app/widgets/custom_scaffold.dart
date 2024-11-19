@@ -8,6 +8,7 @@ class CustomScaffold extends StatelessWidget {
   final bool setBanner;
   final Widget? leading;
   final bool setLeading;
+  final FloatingButtonWidget? floatingActionButton;
 
   const CustomScaffold({
     super.key,
@@ -17,6 +18,7 @@ class CustomScaffold extends StatelessWidget {
     this.setBanner = true,
     this.leading,
     this.setLeading = true,
+    this.floatingActionButton,
   });
 
   @override
@@ -84,6 +86,30 @@ class CustomScaffold extends StatelessWidget {
               child: BannerWidget(),
             ),
         ],
+      ),
+      floatingActionButton: floatingActionButton,
+    );
+  }
+}
+
+class FloatingButtonWidget extends StatelessWidget {
+  const FloatingButtonWidget({
+    super.key,
+    required this.onPressed,
+    required this.icon,
+  });
+
+  final VoidCallback onPressed;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: onPressed,
+      backgroundColor: Colors.blue.shade900,
+      child: Icon(
+        icon,
+        color: Colors.white,
       ),
     );
   }

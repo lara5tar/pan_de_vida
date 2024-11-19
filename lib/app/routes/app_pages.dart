@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
+import 'package:pan_de_vida/app/modules/rpa/controllers/new_prospecto_controller.dart';
+import 'package:pan_de_vida/app/modules/rpa/views/new_prospecto_view.dart';
 import 'package:pan_de_vida/app/modules/rpa/views/new_rpa_view.dart';
+import 'package:pan_de_vida/app/modules/rpa/views/prospectos_videos_view.dart';
 import 'package:pan_de_vida/app/modules/rpa/views/prospectos_view.dart';
 import 'package:pan_de_vida/app/modules/rpa/views/team_view.dart';
 
@@ -106,6 +109,16 @@ class AppPages {
     GetPage(
       name: _Paths.PROSPECTOS,
       page: () => const ProspectosView(),
+      binding: RpaBinding(),
+    ),
+    GetPage(
+      name: _Paths.NEW_PROSPECTO,
+      page: () => const NewProspectoView(),
+      binding: RpaBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROSPECTO_VIDEOS,
+      page: () => const ProspectosVideosView(),
       binding: RpaBinding(),
     ),
   ];
