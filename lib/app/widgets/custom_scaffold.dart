@@ -9,6 +9,7 @@ class CustomScaffold extends StatelessWidget {
   final Widget? leading;
   final bool setLeading;
   final FloatingButtonWidget? floatingActionButton;
+  final Widget? bottomSheet;
 
   const CustomScaffold({
     super.key,
@@ -19,6 +20,7 @@ class CustomScaffold extends StatelessWidget {
     this.leading,
     this.setLeading = true,
     this.floatingActionButton,
+    this.bottomSheet,
   });
 
   @override
@@ -88,6 +90,7 @@ class CustomScaffold extends StatelessWidget {
         ],
       ),
       floatingActionButton: floatingActionButton,
+      bottomSheet: bottomSheet,
     );
   }
 }
