@@ -218,14 +218,6 @@ class CumbresServices {
     }
   }
 
-  //   getVideosP(idProspecto: string) {
-  //   this.url = URL_SERVICIOS + '/evangelismo/videosP';
-  //   this.data = {
-  //     idProspecto
-  //   };
-  //   return this.http.post(this.url, this.data);
-  // }
-
   getProspectoVideos(String idProspecto) async {
     final url = Uri.parse('${Keys.URL_SERVICE}/evangelismo/videosP');
     print(idProspecto);
@@ -252,6 +244,204 @@ class CumbresServices {
         return {
           'error': false,
           'videos': videos,
+        };
+      } else {
+        return {'error': true, 'message': 'Error en la respuesta del servidor'};
+      }
+    } catch (e) {
+      return {'error': true, 'message': 'Error de conexión: $e'};
+    }
+  }
+
+  getCumbreAcciones() async {
+    final url = Uri.parse('${Keys.URL_SERVICE}/accion/obtener');
+    final data = {
+      Keys.COD_CONGREGANTE_KEY: GetStorage(Keys.LOGIN_KEY).read(
+        Keys.COD_CONGREGANTE_KEY,
+      ),
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(data),
+      );
+
+      if (response.statusCode == 200) {
+        final result = json.decode(response.body);
+
+        print(result);
+
+        return {
+          'error': false,
+          'acciones': result['acciones'],
+        };
+      } else {
+        return {'error': true, 'message': 'Error en la respuesta del servidor'};
+      }
+    } catch (e) {
+      return {'error': true, 'message': 'Error de conexión: $e'};
+    }
+  }
+
+  getCumbreMarcadores(String idAccion) async {
+    final url = Uri.parse('${Keys.URL_SERVICE}/marcador/marcadores');
+    final data = {
+      Keys.COD_CONGREGANTE_KEY: GetStorage(Keys.LOGIN_KEY).read(
+        Keys.COD_CONGREGANTE_KEY,
+      ),
+      'idAccion': idAccion,
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(data),
+      );
+
+      if (response.statusCode == 200) {
+        final result = json.decode(response.body);
+
+        print(result);
+
+        return {
+          'error': false,
+          'marcadores': result['marcadores'],
+        };
+      } else {
+        return {'error': true, 'message': 'Error en la respuesta del servidor'};
+      }
+    } catch (e) {
+      return {'error': true, 'message': 'Error de conexión: $e'};
+    }
+  }
+
+  ///cumbres/obtener_catalogo
+  ///
+
+  getCumbreCompromisoAccion() async {
+    final url = Uri.parse('${Keys.URL_SERVICE}/cumbres/obtener_catalogo');
+    final data = {
+      Keys.COD_CONGREGANTE_KEY: GetStorage(Keys.LOGIN_KEY).read(
+        Keys.COD_CONGREGANTE_KEY,
+      ),
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(data),
+      );
+
+      if (response.statusCode == 200) {
+        final result = json.decode(response.body);
+
+        print(result);
+
+        return {
+          'error': false,
+          'cumbres': result['cumbres'],
+        };
+      } else {
+        return {'error': true, 'message': 'Error en la respuesta del servidor'};
+      }
+    } catch (e) {
+      return {'error': true, 'message': 'Error de conexión: $e'};
+    }
+  }
+
+  //   get_prospectos(codCongregante: string, codAccion: string) {
+
+  //   const url = URL_SERVICIOS + '/cumbres/prospectos';
+  //   const data = {
+  //     'codCongregante': '1',
+  //     codAccion
+  //   };
+  //   console.log(data);
+  //   return this.http.post(url, data)
+  //     .pipe(map((dataResp: any) => dataResp.prospectos));
+  // }
+
+  getCumbreCompromisoPersona(String codAccion) async {
+    final url = Uri.parse('${Keys.URL_SERVICE}/cumbres/prospectos');
+    final data = {
+      Keys.COD_CONGREGANTE_KEY: GetStorage(Keys.LOGIN_KEY).read(
+        Keys.COD_CONGREGANTE_KEY,
+      ),
+      'codAccion': codAccion,
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(data),
+      );
+
+      if (response.statusCode == 200) {
+        final result = json.decode(response.body);
+
+        print(result);
+
+        return {
+          'error': false,
+          'prospectos': result['prospectos'],
+        };
+      } else {
+        return {'error': true, 'message': 'Error en la respuesta del servidor'};
+      }
+    } catch (e) {
+      return {'error': true, 'message': 'Error de conexión: $e'};
+    }
+  }
+
+  //   set_cumbre(codCongregante: string, idAccion: string,
+  //   idMarcador: string, accSig: string, prospectoSig: string) {
+  //   const url = URL_SERVICIOS + '/cumbres/guardar21';
+  //   const data = {
+  //     codCongregante,
+  //     idAccion,
+  //     idMarcador,
+  //     accSig,
+  //     prospectoSig
+  //   };
+  //   console.log(data);
+  //   return this.http.post(url, data);
+  // }
+
+  setCumbre(
+    String idAccion,
+    String idMarcador,
+    String accSig,
+    String prospectoSig,
+  ) async {
+    final url = Uri.parse('${Keys.URL_SERVICE}/cumbres/guardar21');
+    final data = {
+      Keys.COD_CONGREGANTE_KEY: GetStorage(Keys.LOGIN_KEY).read(
+        Keys.COD_CONGREGANTE_KEY,
+      ),
+      'idAccion': idAccion,
+      'idMarcador': idMarcador,
+      'accSig': accSig,
+      'prospectoSig': prospectoSig,
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(data),
+      );
+
+      if (response.statusCode == 200) {
+        final result = json.decode(response.body);
+
+        return {
+          'error': false,
+          'message': result['message'],
         };
       } else {
         return {'error': true, 'message': 'Error en la respuesta del servidor'};

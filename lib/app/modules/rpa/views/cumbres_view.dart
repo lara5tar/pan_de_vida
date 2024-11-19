@@ -24,27 +24,57 @@ class CumbresView extends GetView<CumbresController> {
           const TextTitleWidget('Nueva Cumbre'),
           const SizedBox(height: 20),
           const TextSubtitleWidget('1. ACCIÓN'),
-          CustomDropdown(
-            items: const [],
-            selectedItem: controller.accion,
-            hint: 'Seleccione una acción',
+          Obx(
+            () => CustomDropdown(
+              items: [
+                for (int i = 0; i < controller.listAcciones.length; i++)
+                  '$i. ${controller.listAcciones[i]['ACCION']}',
+              ],
+              selectedItem: controller.accion,
+              hint: 'Seleccione una acción',
+            ),
           ),
           const SizedBox(height: 20),
           const TextSubtitleWidget('2. MARCADOR'),
-          CustomDropdown(
-            items: const [],
-            selectedItem: controller.marcador,
-            hint: 'Movimiento',
-          ),
+          Obx(() {
+            if (controller.accion.value.isNotEmpty) {
+              controller.getCumbreMarcadores(
+                  controller.accion.value.split('.').first);
+            }
+            return CustomDropdown(
+              items: [
+                for (int i = 0; i < controller.listMarcadores.length; i++)
+                  '${i + 1}. ${controller.listMarcadores[i]['MARCADOR']}',
+              ],
+              selectedItem: controller.marcador,
+              hint: 'Movimiento',
+            );
+          }),
           const SizedBox(height: 20),
           const TextSubtitleWidget('3. COMPROMISO'),
-          CustomDropdown(
-            items: const [],
-            selectedItem: controller.comprmisoAccion,
-            hint: 'Seleccione una acción',
+          Obx(
+            () {
+              if (controller.comprmisoAccion.value.isNotEmpty) {
+                controller.getCumbreComprosimoPersona(
+                    controller.comprmisoAccion.value.split('.').first);
+              }
+              return CustomDropdown(
+                items: [
+                  for (int i = 0;
+                      i < controller.listCompromisosAccion.length;
+                      i++)
+                    '${i + 1}. ${controller.listCompromisosAccion[i]['CODCUMBRE']}',
+                ],
+                selectedItem: controller.comprmisoAccion,
+                hint: 'Seleccione una acción',
+              );
+            },
           ),
           CustomDropdown(
-            items: const [],
+            items: [
+              for (int i = 0; i < controller.listCompromisosPersona.length; i++)
+                '${i + 1}. ${controller.listCompromisosPersona[i]['NOMBRE']}',
+            ],
             selectedItem: controller.compromisoPerosna,
             hint: 'Seleccione una persona',
           ),
