@@ -15,6 +15,7 @@ class CongregantAdressView extends GetView<CongregantAdressController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: 20),
             const TextTitleWidget('Dirección'),
             ButtonWidget(
               icon: Icons.home,

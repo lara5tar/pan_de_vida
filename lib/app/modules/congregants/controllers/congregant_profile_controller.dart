@@ -11,7 +11,6 @@ class CongregantProfileController extends GetxController {
 
   var congregant = Congregant.empty();
   var groupAttendance = GroupAttendace.empty();
-
   var schoolAttendance = SchoolAttendace.empty();
 
   @override
@@ -46,7 +45,6 @@ class CongregantProfileController extends GetxController {
         groupAttendance = response['attendance'];
       }
     }
-    isLoading(false);
   }
 
   getSchoolAttandace() async {
@@ -60,6 +58,7 @@ class CongregantProfileController extends GetxController {
         schoolAttendance = response['attendance'];
       }
     }
+    isLoading(false);
   }
 
   // getAffirmations() async {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class ButtonWidget extends StatelessWidget {
   final String? title;
   final String text;
+  final String? subtitle;
   final IconData icon;
   final Function? onTap;
   final bool isLast;
@@ -13,6 +14,7 @@ class ButtonWidget extends StatelessWidget {
     super.key,
     this.title,
     required this.text,
+    this.subtitle,
     required this.icon,
     this.onTap,
     this.isLast = false,
@@ -66,6 +68,14 @@ class ButtonWidget extends StatelessWidget {
                           ),
                           overflow: TextOverflow.visible,
                         ),
+                        if (subtitle != null)
+                          Text(
+                            subtitle!,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[800],
+                            ),
+                          ),
                       ],
                     ),
                   ),
