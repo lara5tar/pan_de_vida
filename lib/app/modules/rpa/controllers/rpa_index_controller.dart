@@ -13,7 +13,8 @@ class RpaIndexController extends GetxController {
   }
 
   getCumbres() async {
-    var response = await CumbresServices().getCumbres();
+    String? codCongregante = Get.parameters['id'];
+    var response = await CumbresServices().getCumbres(codCongregante);
 
     if (!response['error']) {
       cumbres.value = response['cumbres'];

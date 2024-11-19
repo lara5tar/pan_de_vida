@@ -6,7 +6,6 @@ class ButtonWidget extends StatelessWidget {
   final String? subtitle;
   final String? trailing;
   final IconData icon;
-
   final Function? onTap;
   final bool isLast;
   final Color colorText;
@@ -74,7 +73,7 @@ class ButtonWidget extends StatelessWidget {
                         ),
                         if (subtitle != null)
                           Text(
-                            subtitle!,
+                            subtitle!.isEmpty ? 'Sin datos' : subtitle!,
                             style: TextStyle(
                               fontSize: 12,
                               color: Colors.grey[800],

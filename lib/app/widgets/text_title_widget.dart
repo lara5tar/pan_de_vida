@@ -18,12 +18,15 @@ class TextTitleWidget extends StatelessWidget {
               const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
           child: Row(
             children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey[800],
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[800],
+                    overflow: TextOverflow.visible,
+                  ),
                 ),
               ),
             ],
