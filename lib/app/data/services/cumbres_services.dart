@@ -6,6 +6,7 @@ import 'package:pan_de_vida/app/data/models/prospecto_model.dart';
 
 import '../../../core/values/keys.dart';
 import '../models/cumbre_model.dart';
+import '../models/video_model.dart';
 
 class CumbresServices {
   getCumbres(String? codCongregante) async {
@@ -208,6 +209,49 @@ class CumbresServices {
         return {
           'error': false,
           'message': result['message'],
+        };
+      } else {
+        return {'error': true, 'message': 'Error en la respuesta del servidor'};
+      }
+    } catch (e) {
+      return {'error': true, 'message': 'Error de conexión: $e'};
+    }
+  }
+
+  //   getVideosP(idProspecto: string) {
+  //   this.url = URL_SERVICIOS + '/evangelismo/videosP';
+  //   this.data = {
+  //     idProspecto
+  //   };
+  //   return this.http.post(this.url, this.data);
+  // }
+
+  getProspectoVideos(String idProspecto) async {
+    final url = Uri.parse('${Keys.URL_SERVICE}/evangelismo/videosP');
+    print(idProspecto);
+    final data = {
+      'idProspecto': idProspecto,
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(data),
+      );
+
+      if (response.statusCode == 200) {
+        final result = json.decode(response.body);
+
+        List<Video> videos = [];
+
+        for (var video in result['videos']) {
+          videos.add(Video.fromJson(video));
+        }
+
+        return {
+          'error': false,
+          'videos': videos,
         };
       } else {
         return {'error': true, 'message': 'Error en la respuesta del servidor'};

@@ -15,7 +15,7 @@ class ProspectosController extends GetxController {
   }
 
   toProspectoVideos(Prospecto prospecto) {
-    Get.toNamed(Routes.PROSPECTO_VIDEOS, arguments: prospecto);
+    Get.toNamed(Routes.PROSPECTO_VIDEOS, arguments: prospecto.idProspecto);
   }
 
   getProspectos() async {
