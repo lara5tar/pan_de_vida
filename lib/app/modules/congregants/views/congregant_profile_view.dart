@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../routes/app_pages.dart';
 import '../../../widgets/custom_scaffold.dart';
 import '../../../widgets/button_widget.dart';
 import '../controllers/congregant_profile_controller.dart';
@@ -13,7 +12,7 @@ class CongregantProfileView extends GetView<CongregantProfileController> {
     return CustomScaffold(
       body: Obx(
         () {
-          return controller.congregant.value.codCongregant.isEmpty
+          return controller.isLoading.value
               ? Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -39,7 +38,7 @@ class CongregantProfileView extends GetView<CongregantProfileController> {
                     Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Text(
-                        controller.congregant.value.nombreF,
+                        controller.congregant.nombreF,
                         style: const TextStyle(fontSize: 30),
                         textAlign: TextAlign.center,
                       ),
@@ -48,30 +47,22 @@ class CongregantProfileView extends GetView<CongregantProfileController> {
                     ButtonWidget(
                       text: 'Datos Personales',
                       icon: Icons.fingerprint,
-                      onTap: () {
-                        Get.toNamed(Routes.CONGREGANT_INFO);
-                      },
+                      onTap: controller.toCongregantInfo,
                     ),
                     ButtonWidget(
                       text: 'Direccion',
                       icon: Icons.location_on,
-                      onTap: () {
-                        Get.toNamed(Routes.CONGREGANT_ADRESS);
-                      },
+                      onTap: controller.toCongregantAdress,
                     ),
                     ButtonWidget(
                       text: 'Afirmacion',
                       icon: Icons.info,
-                      onTap: () {
-                        Get.toNamed(Routes.CONGREGANT_AFFIRMATION);
-                      },
+                      onTap: controller.toCongregantAffirmations,
                     ),
                     ButtonWidget(
                       text: 'Asistencia',
                       icon: Icons.school,
-                      onTap: () {
-                        Get.toNamed(Routes.CONGREGANT_ATTENDANCE);
-                      },
+                      onTap: controller.toCongrengatAttendance,
                       isLast: true,
                     ),
                   ],

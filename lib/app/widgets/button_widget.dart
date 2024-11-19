@@ -6,6 +6,8 @@ class ButtonWidget extends StatelessWidget {
   final IconData icon;
   final Function? onTap;
   final bool isLast;
+  final Color colorText;
+  final Color colorIcon;
 
   const ButtonWidget({
     super.key,
@@ -14,6 +16,8 @@ class ButtonWidget extends StatelessWidget {
     required this.icon,
     this.onTap,
     this.isLast = false,
+    this.colorText = Colors.black,
+    this.colorIcon = const Color(0xFF616161),
   });
 
   @override
@@ -39,7 +43,7 @@ class ButtonWidget extends StatelessWidget {
                     child: Icon(
                       icon,
                       size: 20,
-                      color: Colors.grey[700],
+                      color: colorIcon,
                     ),
                   ),
                   Expanded(
@@ -56,8 +60,9 @@ class ButtonWidget extends StatelessWidget {
                           ),
                         Text(
                           text.isEmpty ? 'Sin datos' : text,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
+                            color: colorText,
                           ),
                           overflow: TextOverflow.visible,
                         ),

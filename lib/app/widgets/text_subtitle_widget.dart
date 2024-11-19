@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class TextTitleWidget extends StatelessWidget {
+class TextSubtitleWidget extends StatelessWidget {
   final String title;
-  const TextTitleWidget(
+  const TextSubtitleWidget(
     this.title, {
     super.key,
   });
@@ -17,11 +17,12 @@ class TextTitleWidget extends StatelessWidget {
           padding:
               const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: Colors.grey[800],
                 ),

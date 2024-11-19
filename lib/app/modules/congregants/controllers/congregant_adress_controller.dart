@@ -8,7 +8,7 @@ class CongregantAdressController extends GetxController {
 
   @override
   void onInit() {
-    congregant = Get.find<CongregantProfileController>().congregant.value;
+    congregant = Get.find<CongregantProfileController>().congregant;
 
     super.onInit();
   }

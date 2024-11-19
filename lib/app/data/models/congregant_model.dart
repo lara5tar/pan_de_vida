@@ -19,12 +19,12 @@ class Congregant {
   final String fecAlta;
   // final String fecAltaF;
   // final String fecLibro1;
-  // final String fecLibro1F;
+  final String fecLibro1F;
   // final String fecLibro2;
-  // final String fecLibro2F;
+  final String fecLibro2F;
   // final String fecLibro3;
-  // final String fecLibro3F;
-  final String fecNac;
+  final String fecLibro3F;
+  // final String fecNac;
   final String fecNacF;
   final String horario;
   final String iglesia;
@@ -34,7 +34,7 @@ class Congregant {
   final String nombre;
   final String nombreF;
   final String observaciones;
-  final String otraIgl;
+  // final String otraIgl;
   final String otraIglF;
   final String plataforma;
   final String platAsignada;
@@ -42,7 +42,7 @@ class Congregant {
   final String sexoF;
   final String telCasa;
   final String verificador;
-  final String via;
+  // final String via;
   final String viaF;
 
   Congregant({
@@ -66,12 +66,12 @@ class Congregant {
     required this.fecAlta,
     // required this.fecAltaF,
     // required this.fecLibro1,
-    // required this.fecLibro1F,
+    required this.fecLibro1F,
     // required this.fecLibro2,
-    // required this.fecLibro2F,
+    required this.fecLibro2F,
     // required this.fecLibro3,
-    // required this.fecLibro3F,
-    required this.fecNac,
+    required this.fecLibro3F,
+    // required this.fecNac,
     required this.fecNacF,
     required this.horario,
     required this.iglesia,
@@ -81,7 +81,7 @@ class Congregant {
     required this.nombre,
     required this.nombreF,
     required this.observaciones,
-    required this.otraIgl,
+    // required this.otraIgl,
     required this.otraIglF,
     required this.plataforma,
     required this.platAsignada,
@@ -89,7 +89,7 @@ class Congregant {
     required this.sexoF,
     required this.telCasa,
     required this.verificador,
-    required this.via,
+    // required this.via,
     required this.viaF,
   });
 
@@ -115,12 +115,12 @@ class Congregant {
       fecAlta: json['FECALTA'] ?? '',
       // fecAltaF: json['FECALTAF'] ?? '',
       // fecLibro1: json['FECLIBRO1'] ?? '',
-      // fecLibro1F: json['FECLIBRO1F'] ?? '',
+      fecLibro1F: json['FECLIBRO1F'] ?? '',
       // fecLibro2: json['FECLIBRO2'] ?? '',
-      // fecLibro2F: json['FECLIBRO2F'] ?? '',
+      fecLibro2F: json['FECLIBRO2F'] ?? '',
       // fecLibro3: json['FECLIBRO3'] ?? '',
-      // fecLibro3F: json['FECLIBRO3F'] ?? '',
-      fecNac: json['FECNAC'] ?? '',
+      fecLibro3F: json['FECLIBRO3F'] ?? '',
+      // fecNac: json['FECNAC'] ?? '',
       fecNacF: json['FECNACF'] ?? '',
       horario: json['HORARIO'] ?? '',
       iglesia: json['IGLESIA'] ?? '',
@@ -130,7 +130,7 @@ class Congregant {
       nombre: json['NOMBRE'] ?? '',
       nombreF: json['NOMBREF'] ?? '',
       observaciones: json['OBSERVACIONES'] ?? '',
-      otraIgl: json['OTRAIGL'] ?? '',
+      // otraIgl: json['OTRAIGL'] ?? '',
       otraIglF: json['OTRAIGLF'] ?? '',
       plataforma: json['PLATAFORMA'] ?? '',
       platAsignada: json['PLATASIGNADA'] ?? '',
@@ -138,7 +138,7 @@ class Congregant {
       sexoF: json['SEXOF'] ?? '',
       telCasa: json['TELCASA'] ?? '',
       verificador: json['VERIFICADOR'] ?? '',
-      via: json['VIA'] ?? '',
+      // via: json['VIA'] ?? '',
       viaF: json['VIAF'] ?? '',
     );
   }
@@ -165,12 +165,12 @@ class Congregant {
       'FECALTA': fecAlta,
       // 'FECALTAF': fecAltaF,
       // 'FECLIBRO1': fecLibro1,
-      // 'FECLIBRO1F': fecLibro1F,
+      'FECLIBRO1F': fecLibro1F,
       // 'FECLIBRO2': fecLibro2,
-      // 'FECLIBRO2F': fecLibro2F,
+      'FECLIBRO2F': fecLibro2F,
       // 'FECLIBRO3': fecLibro3,
-      // 'FECLIBRO3F': fecLibro3F,
-      'FECNAC': fecNac,
+      'FECLIBRO3F': fecLibro3F,
+      // 'FECNAC': fecNac,
       'FECNACF': fecNacF,
       'HORARIO': horario,
       'IGLESIA': iglesia,
@@ -180,7 +180,7 @@ class Congregant {
       'NOMBRE': nombre,
       'NOMBREF': nombreF,
       'OBSERVACIONES': observaciones,
-      'OTRAIGL': otraIgl,
+      // 'OTRAIGL': otraIgl,
       'OTRAIGLF': otraIglF,
       'PLATAFORMA': plataforma,
       'PLATASIGNADA': platAsignada,
@@ -188,7 +188,7 @@ class Congregant {
       'SEXOF': sexoF,
       'TELCASA': telCasa,
       'VERIFICADOR': verificador,
-      'VIA': via,
+      // 'VIA': via,
       'VIAF': viaF,
     };
   }
@@ -215,12 +215,12 @@ class Congregant {
       fecAlta: '',
       // fecAltaF: '',
       // fecLibro1: '',
-      // fecLibro1F: '',
+      fecLibro1F: '',
       // fecLibro2: '',
-      // fecLibro2F: '',
+      fecLibro2F: '',
       // fecLibro3: '',
-      // fecLibro3F: '',
-      fecNac: '',
+      fecLibro3F: '',
+      // fecNac: '',
       fecNacF: '',
       horario: '',
       iglesia: '',
@@ -230,7 +230,7 @@ class Congregant {
       nombre: '',
       nombreF: '',
       observaciones: '',
-      otraIgl: '',
+      // otraIgl: '',
       otraIglF: '',
       plataforma: '',
       platAsignada: '',
@@ -238,7 +238,7 @@ class Congregant {
       sexoF: '',
       telCasa: '',
       verificador: '',
-      via: '',
+      // via: '',
       viaF: '',
     );
   }

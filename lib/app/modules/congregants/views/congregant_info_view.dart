@@ -16,6 +16,7 @@ class CongregantInfoView extends GetView<CongregantInfoController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: 20),
             const TextTitleWidget('Datos Generales'),
             ButtonWidget(
               icon: Icons.info,
@@ -63,6 +64,7 @@ class CongregantInfoView extends GetView<CongregantInfoController> {
               text: controller.congregant.horario,
               isLast: true,
             ),
+            const SizedBox(height: 20),
             const TextTitleWidget('Datos Congregacionales'),
             ButtonWidget(
               icon: Icons.volunteer_activism,
