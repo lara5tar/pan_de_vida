@@ -58,7 +58,9 @@ class ButtonWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 20),
+                        if (title == null && subtitle == null)
+                          const SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         if (title != null)
                           Text(
                             title!,
@@ -83,24 +85,26 @@ class ButtonWidget extends StatelessWidget {
                               color: Colors.grey[800],
                             ),
                           ),
-                        if (options != null)
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              for (var option in options!)
-                                Expanded(
-                                  child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      option.icon,
-                                      size: 20,
-                                      color: Colors.grey[600],
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                        if (options == null) const SizedBox(height: 20),
+                        // if (options != null)
+                        //   Row(
+                        //     mainAxisSize: MainAxisSize.max,
+                        //     children: [
+                        //       for (var option in options!)
+                        //         Expanded(
+                        //           child: IconButton(
+                        //             onPressed: () {},
+                        //             icon: Icon(
+                        //               option.icon,
+                        //               size: 20,
+                        //               color: Colors.grey[600],
+                        //             ),
+                        //           ),
+                        //         ),
+                        //     ],
+                        //   ),
+                        const SizedBox(height: 10),
+                        if (title == null && subtitle == null)
+                          const SizedBox(height: 10),
                       ],
                     ),
                   ),
@@ -128,19 +132,18 @@ class ButtonWidget extends StatelessWidget {
               Row(
                 children: [
                   const SizedBox(width: 60),
-                  if (!isLast)
-                    Expanded(
-                      child: Container(
-                        height: 2,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                  Expanded(
+                    child: Container(
+                      height: 2,
+                      decoration: BoxDecoration(
+                        color: isLast ? Colors.transparent : Colors.grey[300],
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
+                  ),
                   const SizedBox(width: 20),
                 ],
-              )
+              ),
             ],
           ),
         ),

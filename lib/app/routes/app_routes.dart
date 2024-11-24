@@ -23,6 +23,8 @@ abstract class Routes {
   static const PROSPECTOS = _Paths.PROSPECTOS;
   static const NEW_PROSPECTO = _Paths.NEW_PROSPECTO;
   static const PROSPECTO_VIDEOS = _Paths.PROSPECTO_VIDEOS;
+  static const AFFIRMATION_INDEX = _Paths.AFFIRMATION_INDEX;
+  static const AFFIRMATION_VIDEOS = _Paths.AFFIRMATION_VIDEOS;
 }
 
 abstract class _Paths {
@@ -47,6 +49,8 @@ abstract class _Paths {
   static const NEW_PROSPECTO = '/new-prospecto';
   static const PROSPECTO_VIDEOS = '/prospecto-videos';
   static const CUMBRE_INDEX = '/cumbre';
+  static const AFFIRMATION_INDEX = '/list-afirmacion';
+  static const AFFIRMATION_VIDEOS = '/affirmation/videos';
 }
 
 // List<String> opciones = [

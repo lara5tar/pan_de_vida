@@ -303,7 +303,7 @@ class CumbresServices {
 
       if (response.statusCode == 200) {
         final result = json.decode(response.body);
-
+        print('MARCADORES');
         print(result);
 
         return {
@@ -317,9 +317,6 @@ class CumbresServices {
       return {'error': true, 'message': 'Error de conexión: $e'};
     }
   }
-
-  ///cumbres/obtener_catalogo
-  ///
 
   getCumbreCompromisoAccion() async {
     final url = Uri.parse('${Keys.URL_SERVICE}/cumbres/obtener_catalogo');
@@ -353,18 +350,6 @@ class CumbresServices {
     }
   }
 
-  //   get_prospectos(codCongregante: string, codAccion: string) {
-
-  //   const url = URL_SERVICIOS + '/cumbres/prospectos';
-  //   const data = {
-  //     'codCongregante': '1',
-  //     codAccion
-  //   };
-  //   console.log(data);
-  //   return this.http.post(url, data)
-  //     .pipe(map((dataResp: any) => dataResp.prospectos));
-  // }
-
   getCumbreCompromisoPersona(String codAccion) async {
     final url = Uri.parse('${Keys.URL_SERVICE}/cumbres/prospectos');
     final data = {
@@ -397,20 +382,6 @@ class CumbresServices {
       return {'error': true, 'message': 'Error de conexión: $e'};
     }
   }
-
-  //   set_cumbre(codCongregante: string, idAccion: string,
-  //   idMarcador: string, accSig: string, prospectoSig: string) {
-  //   const url = URL_SERVICIOS + '/cumbres/guardar21';
-  //   const data = {
-  //     codCongregante,
-  //     idAccion,
-  //     idMarcador,
-  //     accSig,
-  //     prospectoSig
-  //   };
-  //   console.log(data);
-  //   return this.http.post(url, data);
-  // }
 
   setCumbre(
     String idAccion,

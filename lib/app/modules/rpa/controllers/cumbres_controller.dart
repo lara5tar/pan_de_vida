@@ -47,6 +47,9 @@ class CumbresController extends GetxController {
   getCumbreComprosimoPersona(String codAccion) async {
     var result = await CumbresServices().getCumbreCompromisoPersona(codAccion);
 
+    print('result');
+    print(result);
+
     if (!result['error']) {
       listCompromisosPersona.value = result['prospectos'];
     }

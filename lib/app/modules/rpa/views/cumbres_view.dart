@@ -63,7 +63,7 @@ class CumbresView extends GetView<CumbresController> {
                   for (int i = 0;
                       i < controller.listCompromisosAccion.length;
                       i++)
-                    '${i + 1}. ${controller.listCompromisosAccion[i]['CODCUMBRE']}',
+                    '$i. ${controller.listCompromisosAccion[i]['CODCUMBRE']}',
                 ],
                 selectedItem: controller.comprmisoAccion,
                 hint: 'Seleccione una acción',
@@ -73,7 +73,7 @@ class CumbresView extends GetView<CumbresController> {
           CustomDropdown(
             items: [
               for (int i = 0; i < controller.listCompromisosPersona.length; i++)
-                '${i + 1}. ${controller.listCompromisosPersona[i]['NOMBRE']}',
+                '$i. ${controller.listCompromisosPersona[i]['NOMBRE']}',
             ],
             selectedItem: controller.compromisoPerosna,
             hint: 'Seleccione una persona',

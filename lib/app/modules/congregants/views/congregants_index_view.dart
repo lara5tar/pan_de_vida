@@ -40,7 +40,8 @@ class CongregantsIndexView extends GetView<CongregantsIndexController> {
                   const TextTitleWidget('Los 3 de mis 3'),
                   for (var congregant in controller.nietos)
                     ButtonWidget(
-                      text: '${congregant.nombre}\n(${congregant.mentor})',
+                      title: '(${congregant.mentor})',
+                      text: congregant.nombre,
                       subtitle: congregant.fecAlta,
                       icon: Icons.person,
                       onTap: () {

@@ -1,10 +1,8 @@
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/modules/rpa/views/cumbres_view.dart';
-import 'package:pan_de_vida/app/modules/rpa/views/new_prospecto_view.dart';
-import 'package:pan_de_vida/app/modules/rpa/views/prospectos_videos_view.dart';
-import 'package:pan_de_vida/app/modules/rpa/views/prospectos_view.dart';
-import 'package:pan_de_vida/app/modules/rpa/views/team_view.dart';
+import 'package:pan_de_vida/app/modules/affirmation/views/affirmation_index_view.dart';
+import 'package:pan_de_vida/app/modules/affirmation/views/affirmation_videos_view.dart';
 
+import '../modules/affirmation/bindings/affirmation_binding.dart';
 import '../modules/congregants/bindings/congregants_binding.dart';
 import '../modules/congregants/views/congregant_adress_view.dart';
 import '../modules/congregants/views/congregant_affirmation_view.dart';
@@ -23,7 +21,12 @@ import '../modules/login/views/login_view.dart';
 import '../modules/map_groups/bindings/map_groups_binding.dart';
 import '../modules/map_groups/views/map_groups_view.dart';
 import '../modules/rpa/bindings/rpa_binding.dart';
+import '../modules/rpa/views/cumbres_view.dart';
+import '../modules/rpa/views/new_prospecto_view.dart';
+import '../modules/rpa/views/prospectos_videos_view.dart';
+import '../modules/rpa/views/prospectos_view.dart';
 import '../modules/rpa/views/rpa_index_view.dart';
+import '../modules/rpa/views/team_view.dart';
 
 // ignore_for_file: constant_identifier_names
 
@@ -33,7 +36,7 @@ class AppPages {
   AppPages._();
 
   // static const INITIAL = Routes.LANDING;
-  static const INITIAL = Routes.MAP_GROUPS;
+  static const INITIAL = Routes.LANDING;
 
   static final routes = [
     GetPage(
@@ -120,6 +123,16 @@ class AppPages {
       name: _Paths.PROSPECTO_VIDEOS,
       page: () => const ProspectosVideosView(),
       binding: RpaBinding(),
+    ),
+    GetPage(
+      name: _Paths.AFFIRMATION_INDEX,
+      page: () => const AffirmationIndexView(),
+      binding: AffirmationBinding(),
+    ),
+    GetPage(
+      name: _Paths.AFFIRMATION_VIDEOS,
+      page: () => const AffirmationVideosView(),
+      binding: AffirmationBinding(),
     ),
   ];
 }
