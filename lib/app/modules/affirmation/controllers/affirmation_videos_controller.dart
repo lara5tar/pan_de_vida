@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/data/models/group_attendance_model.dart';
-import 'package:pan_de_vida/app/data/models/video_model.dart';
-import 'package:pan_de_vida/app/data/services/afirmacion_service.dart';
-import 'package:pan_de_vida/app/data/services/maps_service.dart';
+
+import '../../../../core/utils/copy_clip_board.dart';
+import '../../../data/models/group_attendance_model.dart';
+import '../../../data/models/video_model.dart';
+import '../../../data/services/afirmacion_service.dart';
 
 class AffirmationVideosController extends GetxController {
   String codCongregante = Get.arguments;
@@ -41,5 +42,13 @@ class AffirmationVideosController extends GetxController {
     if (!result['error']) {
       groupAttendance = result['data'];
     }
+  }
+
+  copyClipBoard(String url, String codVideo) {
+    print(codCongregante);
+    print(codVideo);
+    print(url);
+
+    copyClipBoardUtil('a', url, codVideo, codCongregante);
   }
 }

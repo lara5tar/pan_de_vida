@@ -1,9 +1,10 @@
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/data/models/school_attendace_model.dart';
-import 'package:pan_de_vida/app/data/services/congregante_service.dart';
 
+import '../../../data/models/affirmation_model.dart';
 import '../../../data/models/group_attendance_model.dart';
 import '../../../data/models/congregant_model.dart';
+import '../../../data/models/school_attendace_model.dart';
+import '../../../data/services/congregante_service.dart';
 import '../../../routes/app_pages.dart';
 
 class CongregantProfileController extends GetxController {
@@ -12,6 +13,7 @@ class CongregantProfileController extends GetxController {
   var congregant = Congregant.empty();
   var groupAttendance = GroupAttendace.empty();
   var schoolAttendance = SchoolAttendace.empty();
+  var affirmation = Affirmation.empty();
 
   @override
   Future<void> onInit() async {
@@ -19,6 +21,7 @@ class CongregantProfileController extends GetxController {
     await getCongregant();
     await getGruopAttandace();
     await getSchoolAttandace();
+    await getAffirmations();
   }
 
   getCongregant() async {
@@ -61,14 +64,14 @@ class CongregantProfileController extends GetxController {
     isLoading(false);
   }
 
-  // getAffirmations() async {
-  //   var response = await CongregantService()
-  //       .getAffirmation(congregant.value.codCongregant);
+  getAffirmations() async {
+    var response =
+        await CongregantService().getAffirmation(congregant.codCongregant);
 
-  //   // if (!response['error']) {
-  //   //   var affirmation = response['affirmations'];
-  //   // }
-  // }
+    if (!response['error'] && response['data'] != null) {
+      affirmation = response['data'];
+    }
+  }
 
   toCongregantInfo() {
     Get.toNamed(Routes.CONGREGANT_INFO);

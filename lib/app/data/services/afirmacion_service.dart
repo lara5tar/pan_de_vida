@@ -85,14 +85,6 @@ class AfirmacionService {
     }
   }
 
-  // getAsistencia(codCongregante: string) {
-  //   let url = URL_SERVICIOS + '/grupoVida/obtener_asistencia';
-  //   let data = {
-  //     'codCongregante': codCongregante
-  //   };
-  //   return this.http.post(url, data);
-  // }
-
   getAsistencia(String codCongregante) async {
     final url = Uri.parse('${Keys.URL_SERVICE}/grupoVida/obtener_asistencia');
 

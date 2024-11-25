@@ -30,7 +30,7 @@ class AffirmationVideosView extends GetView<AffirmationVideosController> {
                           ? Colors.green
                           : Colors.red,
                       onTap: () {
-                        // controller.toAffirmationVideos(congregant.codCongregant);
+                        controller.copyClipBoard(video.url, video.codvideo);
                       },
                       isLast: controller.videos.last == video,
                     ),

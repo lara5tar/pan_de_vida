@@ -1,10 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:pan_de_vida/app/data/models/video_model.dart';
 
-import '../../../../core/values/keys.dart';
+import '../../../../core/utils/copy_clip_board.dart';
+import '../../../data/models/video_model.dart';
 import '../../../data/services/cumbres_services.dart';
 
 class ProspectosVideosController extends GetxController {
@@ -30,18 +27,6 @@ class ProspectosVideosController extends GetxController {
   }
 
   copyClipBoard(String url, String codVideo) {
-    Get.snackbar(
-      'Copiado',
-      'Texto copiado al portapapeles',
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.white,
-    );
-    String idCogregante =
-        GetStorage(Keys.LOGIN_KEY).read(Keys.COD_CONGREGANTE_KEY);
-
-    String link =
-        'http://www.sarmientos.net/#/video/e/$url/$idProspecto/$codVideo/$idCogregante';
-
-    Clipboard.setData(ClipboardData(text: link));
+    copyClipBoardUtil('e', url, codVideo, idProspecto);
   }
 }

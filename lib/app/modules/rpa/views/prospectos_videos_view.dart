@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/modules/rpa/controllers/prospectos_videos_controller.dart';
-import 'package:pan_de_vida/app/widgets/custom_scaffold.dart';
-import 'package:pan_de_vida/app/widgets/loading_widget.dart';
-import 'package:pan_de_vida/app/widgets/text_title_widget.dart';
 
 import '../../../widgets/button_widget.dart';
+import '../../../widgets/custom_scaffold.dart';
+import '../../../widgets/loading_widget.dart';
+import '../../../widgets/text_title_widget.dart';
+import '../controllers/prospectos_videos_controller.dart';
 
 class ProspectosVideosView extends GetView<ProspectosVideosController> {
   const ProspectosVideosView({super.key});
