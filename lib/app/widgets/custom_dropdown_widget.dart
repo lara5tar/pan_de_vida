@@ -6,6 +6,7 @@ class CustomDropdown extends StatelessWidget {
   final RxString selectedItem;
   final String hint;
   final Function(dynamic)? onChanged;
+  final Function()? onTap;
 
   const CustomDropdown({
     super.key,
@@ -13,6 +14,7 @@ class CustomDropdown extends StatelessWidget {
     required this.selectedItem,
     required this.hint,
     this.onChanged,
+    this.onTap,
   });
 
   @override
@@ -28,31 +30,43 @@ class CustomDropdown extends StatelessWidget {
         horizontal: 20,
       ),
       child: Obx(
-        () => DropdownButtonFormField(
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(
-              borderSide: BorderSide.none,
-            ),
-            label: Text(hint),
-          ),
-          isExpanded: true,
-          value: selectedItem.value.isEmpty ? null : selectedItem.value,
-          items: items
-              .map(
-                (item) => DropdownMenuItem(
-                  value: item.text,
-                  child: Text(item.text),
-                  onTap: () {
-                    if (onChanged != null) {
-                      onChanged!(item.value);
-                    }
-                  },
-                ),
-              )
-              .toList(),
-          onChanged: (value) {
-            selectedItem.value = value.toString();
+        () => InkWell(
+          onTap: () {
+            if (items.isEmpty) {
+              Get.snackbar(
+                'Error',
+                'No hay opciones disponibles',
+                backgroundColor: Colors.white,
+                colorText: Colors.black,
+              );
+            }
           },
+          child: DropdownButtonFormField(
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(
+                borderSide: BorderSide.none,
+              ),
+              label: Text(hint),
+            ),
+            isExpanded: true,
+            value: selectedItem.value.isEmpty ? null : selectedItem.value,
+            items: items
+                .map(
+                  (item) => DropdownMenuItem(
+                    value: item.text,
+                    child: Text(item.text),
+                    onTap: () {
+                      if (onChanged != null) {
+                        onChanged!(item.value);
+                      }
+                    },
+                  ),
+                )
+                .toList(),
+            onChanged: (value) {
+              selectedItem.value = value.toString();
+            },
+          ),
         ),
       ),
     );
