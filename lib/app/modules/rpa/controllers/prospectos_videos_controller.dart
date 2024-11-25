@@ -22,7 +22,7 @@ class ProspectosVideosController extends GetxController {
       idProspecto = Get.arguments;
     }
 
-    var result = await CumbresServices().getProspectoVideos(idProspecto);
+    var result = await CumbresServices.getProspectoVideos(idProspecto);
 
     if (!result['error']) {
       videos.value = result['videos'];

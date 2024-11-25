@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CustomDropdown extends StatelessWidget {
-  final List<String> items;
+  final List<DropDownItem> items;
   final RxString selectedItem;
   final String hint;
-  //onChanged
+  final Function(dynamic)? onChanged;
 
   const CustomDropdown({
     super.key,
     required this.items,
     required this.selectedItem,
     required this.hint,
+    this.onChanged,
   });
 
   @override
@@ -37,10 +38,17 @@ class CustomDropdown extends StatelessWidget {
           isExpanded: true,
           value: selectedItem.value.isEmpty ? null : selectedItem.value,
           items: items
-              .map((item) => DropdownMenuItem(
-                    value: item,
-                    child: Text(item),
-                  ))
+              .map(
+                (item) => DropdownMenuItem(
+                  value: item.text,
+                  child: Text(item.text),
+                  onTap: () {
+                    if (onChanged != null) {
+                      onChanged!(item.value);
+                    }
+                  },
+                ),
+              )
               .toList(),
           onChanged: (value) {
             selectedItem.value = value.toString();
@@ -49,4 +57,14 @@ class CustomDropdown extends StatelessWidget {
       ),
     );
   }
+}
+
+class DropDownItem {
+  final String text;
+  final dynamic value;
+
+  DropDownItem({
+    required this.text,
+    required this.value,
+  });
 }

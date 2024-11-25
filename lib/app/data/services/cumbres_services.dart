@@ -1,424 +1,243 @@
-import 'package:get_storage/get_storage.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:pan_de_vida/app/data/models/congregant_model.dart';
-import 'package:pan_de_vida/app/data/models/prospecto_model.dart';
+import 'package:pan_de_vida/app/data/models/accion_model.dart';
+import 'package:pan_de_vida/app/data/models/marcador_model.dart';
 
+import '../../../core/utils/print_debug.dart';
 import '../../../core/values/keys.dart';
+import '../models/congregant_model.dart';
 import '../models/cumbre_model.dart';
+import '../models/prospecto_model.dart';
 import '../models/video_model.dart';
+import 'api_service.dart';
+import 'auth_service.dart';
 
 class CumbresServices {
-  getCumbres(String? codCongregante) async {
-    final url = Uri.parse('${Keys.URL_SERVICE}/cumbres/obtener21');
-    final data = {
-      Keys.COD_CONGREGANTE_KEY: codCongregante ??
-          GetStorage(Keys.LOGIN_KEY).read(
-            Keys.COD_CONGREGANTE_KEY,
-          )
+  static Future<Map<String, dynamic>> getCumbres(String? codCongregante) async {
+    printD('CumbresServices.getCumbres');
+    codCongregante = codCongregante ?? AuthService.getCodCongregante();
+
+    var result = await ApiService.request(
+      '/cumbres/obtener21',
+      {Keys.COD_CONGREGANTE_KEY: codCongregante},
+    );
+
+    if (result['error']) return result;
+
+    return {
+      'error': false,
+      'cumbres': List<Cumbre>.from(
+        result['cumbres'].map((e) => Cumbre.fromJson(e)),
+      ),
     };
-
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(data),
-      );
-
-      if (response.statusCode == 200) {
-        final result = json.decode(response.body);
-        List<Cumbre> cumbres = [];
-
-        for (var cumbre in result['cumbres']) {
-          cumbres.add(Cumbre.fromJson(cumbre));
-        }
-
-        return {
-          'error': false,
-          'cumbres': cumbres,
-        };
-      } else {
-        return {'error': true, 'message': 'Error en la respuesta del servidor'};
-      }
-    } catch (e) {
-      return {'error': true, 'message': 'Error de conexión: $e'};
-    }
   }
 
-  getCumbresEquipo() async {
-    final url = Uri.parse('${Keys.URL_SERVICE}/cumbres/obtener_equipo');
-    final data = {
-      Keys.COD_CONGREGANTE_KEY: GetStorage(Keys.LOGIN_KEY).read(
-        Keys.COD_CONGREGANTE_KEY,
+  static Future<Map<String, dynamic>> getCumbresEquipo() async {
+    printD('CumbresServices.getCumbresEquipo');
+    var result = await ApiService.request(
+      '/cumbres/obtener_equipo',
+      {Keys.COD_CONGREGANTE_KEY: AuthService.getCodCongregante()},
+    );
+
+    if (result['error']) return result;
+
+    return {
+      'error': false,
+      'sinRegistro': List<Congregant>.from(
+        result['sinRegistro'].map((e) => Congregant.fromJson(e)),
+      ),
+      'marcador': List<Congregant>.from(
+        result['marcador'].map((e) => Congregant.fromJson(e)),
+      ),
+      'noMarcador': List<Congregant>.from(
+        result['noMarcador'].map((e) => Congregant.fromJson(e)),
+      ),
+    };
+  }
+
+  static Future<Map<String, dynamic>> getProspectos(
+      String codCongregante, String codAccion) async {
+    printD('CumbresServices.getProspectos');
+    var result = await ApiService.request(
+      '/cumbres/prospectos',
+      {
+        Keys.COD_CONGREGANTE_KEY: codCongregante,
+        'codAccion': codAccion,
+      },
+    );
+
+    if (result['error']) return result;
+
+    return {
+      'error': false,
+      'prospectos': List<Prospecto>.from(
+        result['prospectos'].map((e) => Prospecto.fromJson(e)),
       )
     };
-
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(data),
-      );
-
-      if (response.statusCode == 200) {
-        final result = json.decode(response.body);
-        List<Congregant> sinRegistro = [];
-        List<Congregant> marcador = [];
-        List<Congregant> noMarcador = [];
-
-        for (var congregant in result['sinRegistro']) {
-          sinRegistro.add(Congregant.fromJson(congregant));
-        }
-
-        for (var congregant in result['marcador']) {
-          marcador.add(Congregant.fromJson(congregant));
-        }
-
-        for (var congregant in result['noMarcador']) {
-          noMarcador.add(Congregant.fromJson(congregant));
-        }
-
-        return {
-          'error': false,
-          'sinRegistro': sinRegistro,
-          'marcador': marcador,
-          'noMarcador': noMarcador,
-        };
-      } else {
-        return {'error': true, 'message': 'Error en la respuesta del servidor'};
-      }
-    } catch (e) {
-      return {'error': true, 'message': 'Error de conexión: $e'};
-    }
   }
 
-  getProspectos(String codCongregante, String codAccion) async {
-    final url = Uri.parse('${Keys.URL_SERVICE}/cumbres/prospectos');
-    final data = {
-      Keys.COD_CONGREGANTE_KEY: codCongregante,
-      'codAccion': codAccion,
-    };
+  static Future<Map<String, dynamic>> getProspectoDetail() async {
+    printD('CumbresServices.getProspectoDetail');
+    var result = await ApiService.request(
+      '/cumbres/prospectoDetail',
+      {
+        Keys.COD_CONGREGANTE_KEY: AuthService.getCodCongregante(),
+      },
+    );
 
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(data),
-      );
+    if (result['error']) return result;
 
-      if (response.statusCode == 200) {
-        final result = json.decode(response.body);
-
-        print(result);
-
-        return {
-          'error': false,
-          // 'prospectos': prospectos,
-        };
-      } else {
-        return {'error': true, 'message': 'Error en la respuesta del servidor'};
-      }
-    } catch (e) {
-      return {'error': true, 'message': 'Error de conexión: $e'};
-    }
-  }
-
-  getProspectoDetail() async {
-    final url = Uri.parse('${Keys.URL_SERVICE}/cumbres/prospectoDetail');
-    final data = {
-      Keys.COD_CONGREGANTE_KEY: GetStorage(Keys.LOGIN_KEY).read(
-        Keys.COD_CONGREGANTE_KEY,
+    return {
+      'error': false,
+      'prospectos': List<Prospecto>.from(
+        result['prospectos'].map((e) => Prospecto.fromJson(e)),
       ),
     };
-
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(data),
-      );
-
-      if (response.statusCode == 200) {
-        final result = json.decode(response.body);
-        List<Prospecto> prospectos = [];
-
-        for (var congregant in result['prospectos']) {
-          prospectos.add(Prospecto.fromJson(congregant));
-        }
-
-        return {
-          'error': false,
-          'prospectos': prospectos,
-        };
-      } else {
-        return {'error': true, 'message': 'Error en la respuesta del servidor'};
-      }
-    } catch (e) {
-      return {'error': true, 'message': 'Error de conexión: $e'};
-    }
   }
 
-  setProspecto(String nombre, String cel) async {
-    final url = Uri.parse('${Keys.URL_SERVICE}/cumbres/prospecto');
-    final data = {
-      Keys.COD_CONGREGANTE_KEY: GetStorage(Keys.LOGIN_KEY).read(
-        Keys.COD_CONGREGANTE_KEY,
-      ),
-      'nombre': nombre,
-      'cel': cel,
-    };
+  static Future<Map<String, dynamic>> setProspecto(
+      String nombre, String cel) async {
+    printD('CumbresServices.setProspecto');
 
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(data),
-      );
-
-      if (response.statusCode == 200) {
-        final result = json.decode(response.body);
-
-        return {
-          'error': false,
-          'message': result['message'],
-        };
-      } else {
-        return {'error': true, 'message': 'Error en la respuesta del servidor'};
-      }
-    } catch (e) {
-      return {'error': true, 'message': 'Error de conexión: $e'};
-    }
+    return await ApiService.request(
+      '/cumbres/prospecto',
+      {
+        Keys.COD_CONGREGANTE_KEY: AuthService.getCodCongregante(),
+        'nombre': nombre,
+        'cel': cel,
+      },
+    );
   }
 
-  deleteProspecto(String idProspecto) async {
-    final url = Uri.parse('${Keys.URL_SERVICE}/cumbres/baja_prospecto');
-    final data = {
-      'idProspecto': idProspecto,
-    };
+  static Future<Map<String, dynamic>> deleteProspecto(
+      String idProspecto) async {
+    printD('CumbresServices.deleteProspecto');
 
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(data),
-      );
-
-      if (response.statusCode == 200) {
-        final result = json.decode(response.body);
-
-        return {
-          'error': false,
-          'message': result['message'],
-        };
-      } else {
-        return {'error': true, 'message': 'Error en la respuesta del servidor'};
-      }
-    } catch (e) {
-      return {'error': true, 'message': 'Error de conexión: $e'};
-    }
+    return await ApiService.request(
+      '/cumbres/baja_prospecto',
+      {'idProspecto': idProspecto},
+    );
   }
 
-  getProspectoVideos(String idProspecto) async {
-    final url = Uri.parse('${Keys.URL_SERVICE}/evangelismo/videosP');
-    print(idProspecto);
-    final data = {
-      'idProspecto': idProspecto,
-    };
+  static Future<Map<String, dynamic>> getProspectoVideos(
+      String idProspecto) async {
+    printD('CumbresServices.getProspectoVideos');
+    var result = await ApiService.request(
+      '/evangelismo/videosP',
+      {'idProspecto': idProspecto},
+    );
 
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(data),
-      );
+    if (result['error']) return result;
 
-      if (response.statusCode == 200) {
-        final result = json.decode(response.body);
-
-        List<Video> videos = [];
-
-        for (var video in result['videos']) {
-          videos.add(Video.fromJson(video));
-        }
-
-        return {
-          'error': false,
-          'videos': videos,
-        };
-      } else {
-        return {'error': true, 'message': 'Error en la respuesta del servidor'};
-      }
-    } catch (e) {
-      return {'error': true, 'message': 'Error de conexión: $e'};
-    }
-  }
-
-  getCumbreAcciones() async {
-    final url = Uri.parse('${Keys.URL_SERVICE}/accion/obtener');
-    final data = {
-      Keys.COD_CONGREGANTE_KEY: GetStorage(Keys.LOGIN_KEY).read(
-        Keys.COD_CONGREGANTE_KEY,
+    return {
+      'error': false,
+      'videos': List<Video>.from(
+        result['videos'].map((e) => Video.fromJson(e)),
       ),
     };
-
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(data),
-      );
-
-      if (response.statusCode == 200) {
-        final result = json.decode(response.body);
-
-        print(result);
-
-        return {
-          'error': false,
-          'acciones': result['acciones'],
-        };
-      } else {
-        return {'error': true, 'message': 'Error en la respuesta del servidor'};
-      }
-    } catch (e) {
-      return {'error': true, 'message': 'Error de conexión: $e'};
-    }
   }
 
-  getCumbreMarcadores(String idAccion) async {
-    final url = Uri.parse('${Keys.URL_SERVICE}/marcador/marcadores');
-    final data = {
-      Keys.COD_CONGREGANTE_KEY: GetStorage(Keys.LOGIN_KEY).read(
-        Keys.COD_CONGREGANTE_KEY,
-      ),
-      'idAccion': idAccion,
-    };
+  static Future<Map<String, dynamic>> getCumbreAcciones() async {
+    printD('CumbresServices.getCumbreAcciones');
 
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(data),
-      );
+    var result = await ApiService.request(
+      '/accion/obtener',
+      {
+        Keys.COD_CONGREGANTE_KEY: AuthService.getCodCongregante(),
+      },
+    );
 
-      if (response.statusCode == 200) {
-        final result = json.decode(response.body);
-        print('MARCADORES');
-        print(result);
+    if (result['error']) return result;
 
-        return {
-          'error': false,
-          'marcadores': result['marcadores'],
-        };
-      } else {
-        return {'error': true, 'message': 'Error en la respuesta del servidor'};
-      }
-    } catch (e) {
-      return {'error': true, 'message': 'Error de conexión: $e'};
-    }
-  }
-
-  getCumbreCompromisoAccion() async {
-    final url = Uri.parse('${Keys.URL_SERVICE}/cumbres/obtener_catalogo');
-    final data = {
-      Keys.COD_CONGREGANTE_KEY: GetStorage(Keys.LOGIN_KEY).read(
-        Keys.COD_CONGREGANTE_KEY,
+    return {
+      'error': false,
+      'acciones': List<Accion>.from(
+        result['acciones'].map((e) => Accion.fromJson(e)),
       ),
     };
-
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(data),
-      );
-
-      if (response.statusCode == 200) {
-        final result = json.decode(response.body);
-
-        print(result);
-
-        return {
-          'error': false,
-          'cumbres': result['cumbres'],
-        };
-      } else {
-        return {'error': true, 'message': 'Error en la respuesta del servidor'};
-      }
-    } catch (e) {
-      return {'error': true, 'message': 'Error de conexión: $e'};
-    }
   }
 
-  getCumbreCompromisoPersona(String codAccion) async {
-    final url = Uri.parse('${Keys.URL_SERVICE}/cumbres/prospectos');
-    final data = {
-      Keys.COD_CONGREGANTE_KEY: GetStorage(Keys.LOGIN_KEY).read(
-        Keys.COD_CONGREGANTE_KEY,
+  static Future<Map<String, dynamic>> getCumbreMarcadores(
+      String idAccion) async {
+    printD('CumbresServices.getCumbreMarcadores');
+
+    var result = await ApiService.request(
+      '/marcador/marcadores',
+      {
+        Keys.COD_CONGREGANTE_KEY: AuthService.getCodCongregante(),
+        'idAccion': idAccion,
+      },
+    );
+
+    if (result['error']) return result;
+
+    return {
+      'error': false,
+      'marcadores': List<Marcador>.from(
+        result['marcadores'].map((e) => Marcador.fromJson(e)),
       ),
-      'codAccion': codAccion,
     };
-
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(data),
-      );
-
-      if (response.statusCode == 200) {
-        final result = json.decode(response.body);
-
-        print(result);
-
-        return {
-          'error': false,
-          'prospectos': result['prospectos'],
-        };
-      } else {
-        return {'error': true, 'message': 'Error en la respuesta del servidor'};
-      }
-    } catch (e) {
-      return {'error': true, 'message': 'Error de conexión: $e'};
-    }
   }
 
-  setCumbre(
+  static Future<Map<String, dynamic>> getCumbreCompromisoAccion() async {
+    printD('CumbresServices.getCumbreCompromisoAccion');
+
+    var result = await ApiService.request(
+      '/cumbres/obtener_catalogo',
+      {
+        Keys.COD_CONGREGANTE_KEY: AuthService.getCodCongregante(),
+      },
+    );
+
+    if (result['error']) return result;
+
+    return {
+      'error': false,
+      'cumbres': List<Cumbre>.from(
+        result['cumbres'].map((e) => Cumbre.fromJson(e)),
+      ),
+    };
+  }
+
+  static Future<Map<String, dynamic>> getCumbreCompromisoPersona(
+      String codAccion) async {
+    printD('CumbresServices.getCumbreCompromisoPersona');
+
+    var result = await ApiService.request(
+      '/cumbres/prospectos',
+      {
+        Keys.COD_CONGREGANTE_KEY: AuthService.getCodCongregante(),
+        'codAccion': codAccion,
+      },
+    );
+
+    if (result['error']) return result;
+
+    printD(result['prospectos']);
+
+    return {
+      'error': false,
+      'prospectos': List<Prospecto>.from(
+        result['prospectos'].map((e) => Prospecto.fromJson(e)),
+      ),
+    };
+  }
+
+  static Future<Map<String, dynamic>> setCumbre(
     String idAccion,
     String idMarcador,
     String accSig,
     String prospectoSig,
   ) async {
-    final url = Uri.parse('${Keys.URL_SERVICE}/cumbres/guardar21');
-    final data = {
-      Keys.COD_CONGREGANTE_KEY: GetStorage(Keys.LOGIN_KEY).read(
-        Keys.COD_CONGREGANTE_KEY,
-      ),
-      'idAccion': idAccion,
-      'idMarcador': idMarcador,
-      'accSig': accSig,
-      'prospectoSig': prospectoSig,
-    };
+    printD('CumbresServices.setCumbre');
 
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(data),
-      );
-
-      if (response.statusCode == 200) {
-        final result = json.decode(response.body);
-
-        return {
-          'error': false,
-          'message': result['message'],
-        };
-      } else {
-        return {'error': true, 'message': 'Error en la respuesta del servidor'};
-      }
-    } catch (e) {
-      return {'error': true, 'message': 'Error de conexión: $e'};
-    }
+    return await ApiService.request(
+      '/cumbres/guardar21',
+      {
+        Keys.COD_CONGREGANTE_KEY: AuthService.getCodCongregante(),
+        'idAccion': idAccion,
+        'idMarcador': idMarcador,
+        'accSig': accSig,
+        'prospectoSig': prospectoSig,
+      },
+    );
   }
 }

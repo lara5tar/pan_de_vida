@@ -19,20 +19,16 @@ class TextSubtitleWidget extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Icon(
-              //   Icons.circle,
-              //   size: 10,
-              //   color: Colors.grey[800],
-              // ),
-              // const SizedBox(width: 20),
-              Text(
-                title.toUpperCase(),
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey[800],
+              Expanded(
+                child: Text(
+                  title.toUpperCase(),
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[800],
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                // textAlign: TextAlign.center,
               ),
             ],
           ),

@@ -16,7 +16,7 @@ class NewProspectoController extends GetxController {
       return;
     }
 
-    var result = await CumbresServices().setProspecto(
+    var result = await CumbresServices.setProspecto(
       nameController.text,
       phoneController.text,
     );

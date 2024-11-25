@@ -15,11 +15,11 @@ class Prospecto {
 
   factory Prospecto.fromJson(Map<String, dynamic> json) {
     return Prospecto(
-      idProspecto: json['IDPROSPECTO'],
-      nombre: json['NOMBRE'],
-      cel: json['CEL'],
-      fecreg: json['FECREG'],
-      codStatus: json['CODSTATUS'],
+      idProspecto: json['IDPROSPECTO'] ?? '',
+      nombre: json['NOMBRE'] ?? '',
+      cel: json['CEL'] ?? '',
+      fecreg: json['FECREG'] ?? '',
+      codStatus: json['CODSTATUS'] ?? '',
     );
   }
 

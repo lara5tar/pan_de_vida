@@ -1,44 +1,26 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:pan_de_vida/core/utils/print_debug.dart';
 
 import '../../../core/values/keys.dart';
+import 'api_service.dart';
 
 class AuthService extends GetxService {
-  Future<Map<String, dynamic>> login(String user, String pass) async {
-    final url = Uri.parse('${Keys.URL_SERVICE}/app/login');
-    final data = {
-      'user': user,
-      'contra': pass,
-    };
+  static String getCodCongregante() {
+    return GetStorage(Keys.LOGIN_KEY).read(Keys.COD_CONGREGANTE_KEY);
+  }
 
-    try {
-      final response = await http.post(
-        url,
-        body: json.encode(data),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      );
+  Future<Map<String, dynamic>> login(String user, String password) async {
+    printD('AuthService.login');
 
-      if (response.statusCode == 200) {
-        final respData = json.decode(response.body);
-        if (respData['error'] == true) {
-          return {'error': true, 'message': respData['mensaje']};
-        } else {
-          await saveLoginData(respData);
-          return respData;
-        }
-      } else {
-        return {
-          'error': true,
-          'message': 'Error en la respuesta del servidor',
-        };
-      }
-    } catch (e) {
-      return {'error': true, 'message': 'Error de conexión: $e'};
-    }
+    var result = await ApiService.request(
+      '/app/login',
+      {'user': user, 'contra': password},
+    );
+
+    if (!result['error']) await saveLoginData(result);
+
+    return result;
   }
 
   Future<void> saveLoginData(Map<String, dynamic> data) async {

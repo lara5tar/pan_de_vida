@@ -19,7 +19,7 @@ class ProspectosController extends GetxController {
   }
 
   getProspectos() async {
-    var result = await CumbresServices().getProspectoDetail();
+    var result = await CumbresServices.getProspectoDetail();
 
     if (!result['error']) {
       prospectos.value = result['prospectos'];
@@ -40,7 +40,7 @@ class ProspectosController extends GetxController {
           ),
           TextButton(
             onPressed: () async {
-              var result = await CumbresServices().deleteProspecto(idProspecto);
+              var result = await CumbresServices.deleteProspecto(idProspecto);
 
               if (!result['error']) {
                 Get.back();

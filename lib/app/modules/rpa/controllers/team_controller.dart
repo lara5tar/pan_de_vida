@@ -16,7 +16,7 @@ class TeamController extends GetxController {
   }
 
   getCumbresEquipo() async {
-    var result = await CumbresServices().getCumbresEquipo();
+    var result = await CumbresServices.getCumbresEquipo();
 
     if (!result['error']) {
       sinRegistro.value = result['sinRegistro'];
