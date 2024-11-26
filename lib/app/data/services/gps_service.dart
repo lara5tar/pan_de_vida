@@ -1,6 +1,5 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:pan_de_vida/app/modules/landing/bindings/landing_binding.dart';
 
 class GpsService {
   Future<Position> _determinePosition() async {
