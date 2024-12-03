@@ -1,5 +1,7 @@
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+// import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 import '../../../data/services/youtube_service.dart';
 import '../../../routes/app_pages.dart';
@@ -20,7 +22,10 @@ class GruposDeVidaController extends GetxController {
     );
   }
 
-  void callButton() {}
+  Future<void> callButton() async {
+    await FlutterPhoneDirectCaller.callNumber('8331259913');
+  }
+
   void webButton() {}
   void joinButton() {}
 
