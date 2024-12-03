@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/modules/affirmation/views/affirmation_index_view.dart';
-import 'package:pan_de_vida/app/modules/affirmation/views/affirmation_videos_view.dart';
 
 import '../modules/affirmation/bindings/affirmation_binding.dart';
+import '../modules/affirmation/views/affirmation_index_view.dart';
+import '../modules/affirmation/views/affirmation_videos_view.dart';
 import '../modules/congregants/bindings/congregants_binding.dart';
 import '../modules/congregants/views/congregant_adress_view.dart';
 import '../modules/congregants/views/congregant_affirmation_view.dart';
@@ -13,7 +13,9 @@ import '../modules/congregants/views/congregants_index_view.dart';
 import '../modules/dashboard/bindings/dashboard_binding.dart';
 import '../modules/dashboard/views/dashboard_view.dart';
 import '../modules/grupos_de_vida/bindings/grupos_de_vida_binding.dart';
+import '../modules/grupos_de_vida/bindings/quiero_asistir_binding.dart';
 import '../modules/grupos_de_vida/views/grupos_de_vida_view.dart';
+import '../modules/grupos_de_vida/views/quiero_asistir_view.dart';
 import '../modules/landing/bindings/landing_binding.dart';
 import '../modules/landing/views/landing_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -133,6 +135,11 @@ class AppPages {
       name: _Paths.AFFIRMATION_VIDEOS,
       page: () => const AffirmationVideosView(),
       binding: AffirmationBinding(),
+    ),
+    GetPage(
+      name: _Paths.JOIN_GROUP,
+      page: () => const QuieroAsistirView(),
+      binding: QuieroAsistirBinding(),
     ),
   ];
 }

@@ -27,7 +27,9 @@ class GruposDeVidaController extends GetxController {
   }
 
   void webButton() {}
-  void joinButton() {}
+  void joinButton() {
+    Get.toNamed(Routes.JOIN_GROUP);
+  }
 
   void mapsButton() {
     Get.toNamed(Routes.MAP_GROUPS);
