@@ -26,6 +26,7 @@ abstract class Routes {
   static const AFFIRMATION_INDEX = _Paths.AFFIRMATION_INDEX;
   static const AFFIRMATION_VIDEOS = _Paths.AFFIRMATION_VIDEOS;
   static const JOIN_GROUP = _Paths.JOIN_GROUP;
+  static const ASISTENCIA = _Paths.ASISTENCIA;
 }
 
 abstract class _Paths {
@@ -53,6 +54,7 @@ abstract class _Paths {
   static const AFFIRMATION_INDEX = '/list-afirmacion';
   static const AFFIRMATION_VIDEOS = '/affirmation/videos';
   static const JOIN_GROUP = '/grupos-de-vida/join';
+  static const ASISTENCIA = '/asistencia';
 }
 
 // List<String> opciones = [

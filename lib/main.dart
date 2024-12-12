@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'app/routes/app_pages.dart';
 import 'core/values/keys.dart';
@@ -18,6 +19,12 @@ Future<void> main() async {
       getPages: AppPages.routes,
       color: Colors.blue,
       defaultTransition: Transition.topLevel,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('es'),
+      ],
     ),
   );
 }
