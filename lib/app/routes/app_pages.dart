@@ -21,7 +21,10 @@ import '../modules/login/views/login_view.dart';
 import '../modules/map_groups/bindings/map_groups_binding.dart';
 import '../modules/map_groups/views/map_groups_view.dart';
 import '../modules/restauracion/bindings/restauracion_binding.dart';
+import '../modules/restauracion/views/restauracion_congregante_view.dart';
 import '../modules/restauracion/views/restauracion_view.dart';
+import '../modules/reuniones/bindings/reuniones_binding.dart';
+import '../modules/reuniones/views/reuniones_view.dart';
 import '../modules/rpa/bindings/rpa_binding.dart';
 import '../modules/rpa/views/cumbres_view.dart';
 import '../modules/rpa/views/new_prospecto_view.dart';
@@ -140,6 +143,16 @@ class AppPages {
       name: _Paths.RESTAURACION,
       page: () => const RestauracionView(),
       binding: RestauracionBinding(),
+    ),
+    GetPage(
+      name: _Paths.RESTAURACION_CONGREGANTES,
+      page: () => const RestauracionCongreganteView(),
+      binding: RestauracionBinding(),
+    ),
+    GetPage(
+      name: _Paths.REUNIONES,
+      page: () => const ReunionesView(),
+      binding: ReunionesBinding(),
     ),
   ];
 }

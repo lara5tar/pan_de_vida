@@ -25,6 +25,8 @@ abstract class Routes {
   static const AFFIRMATION_INDEX = _Paths.AFFIRMATION_INDEX;
   static const AFFIRMATION_VIDEOS = _Paths.AFFIRMATION_VIDEOS;
   static const RESTAURACION = _Paths.RESTAURACION;
+  static const RESTAURACION_CONGREGANTES = _Paths.RESTAURACION_CONGREGANTES;
+  static const REUNIONES = _Paths.REUNIONES;
 }
 
 abstract class _Paths {
@@ -51,6 +53,8 @@ abstract class _Paths {
   static const AFFIRMATION_INDEX = '/list-afirmacion';
   static const AFFIRMATION_VIDEOS = '/affirmation/videos';
   static const RESTAURACION = '/list-restauracion';
+  static const RESTAURACION_CONGREGANTES = '$RESTAURACION/congregantes';
+  static const REUNIONES = '/grupoVida-hist-grupo';
 }
 
 // List<String> opciones = [

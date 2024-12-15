@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/widgets/loading_widget.dart';
 
 import '../../../widgets/button_widget.dart';
 import '../../../widgets/custom_scaffold.dart';
 import '../../../widgets/elevated_button_widget.dart';
+import '../../../widgets/loading_widget.dart';
 import '../../../widgets/text_title_widget.dart';
 import '../controllers/restauracion_controller.dart';
 
@@ -19,7 +18,9 @@ class RestauracionView extends GetView<RestauracionController> {
           const SizedBox(height: 20),
           ElevatedButtonWidget(
             text: 'Capturar Visita',
-            onPressed: () {},
+            onPressed: () async {
+              controller.setRestauracionVisita();
+            },
           ),
           Obx(
             () => controller.congregantes.isEmpty
@@ -37,6 +38,10 @@ class RestauracionView extends GetView<RestauracionController> {
                                 '${congregant.fecAlta} - ${congregant.curso}',
                             icon: Icons.person,
                             isLast: controller.congregantes.last == congregant,
+                            onTap: () {
+                              controller.toCongreganteDetail(
+                                  congregant.codCongregant);
+                            },
                           ),
                       ],
                     ),

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
-import 'package:pan_de_vida/app/data/services/api_service.dart';
 
 import '../../../core/values/keys.dart';
 import '../models/affirmation_model.dart';

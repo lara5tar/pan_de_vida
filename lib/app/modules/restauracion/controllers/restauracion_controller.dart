@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/data/models/congregant_model.dart';
-import 'package:pan_de_vida/app/data/services/restauracion_service.dart';
+
+import '../../../../core/utils/barcode_dialog.dart';
+import '../../../data/models/congregant_model.dart';
+import '../../../data/services/restauracion_service.dart';
+import '../../../routes/app_pages.dart';
 
 class RestauracionController extends GetxController {
   var congregantes = <Congregant>[].obs;
@@ -18,9 +21,26 @@ class RestauracionController extends GetxController {
 
     if (!result['error']) {
       congregantes.addAll(result['data']);
-      print(congregantes);
     } else {
       Get.snackbar('Error', result['message']);
     }
+  }
+
+  void setRestauracionVisita() async {
+    String? barcode = await barcodeDialog();
+
+    if (barcode == null) return;
+
+    var result = await RestauracionService().setRestauracionVisita(barcode);
+
+    if (!result['error']) {
+      Get.snackbar('Visita', 'Visita guardada correctamente.');
+    } else {
+      Get.snackbar('Error', result['message']);
+    }
+  }
+
+  void toCongreganteDetail(String codCongregante) {
+    Get.toNamed('${Routes.RESTAURACION_CONGREGANTES}?id=$codCongregante');
   }
 }
