@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AsistenciaController extends GetxController {
-  final fecha = ''.obs;
-  final tema = ''.obs;
-  final predicador = ''.obs;
-  final horaInicio = ''.obs;
-  final horaFin = ''.obs;
-  final ofrenda = ''.obs;
+  final fecha = TextEditingController();
+  final tema = TextEditingController();
+  final predicador = TextEditingController();
+  final horaInicio = TextEditingController();
+  final horaFin = TextEditingController();
+  final ofrenda = TextEditingController();
 }

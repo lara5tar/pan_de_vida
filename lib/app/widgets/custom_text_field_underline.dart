@@ -4,12 +4,10 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:wheel_picker/wheel_picker.dart';
 
-import '../../core/utils/print_debug.dart';
-
 class CustomTextFieldUnderline extends StatelessWidget {
   final String label;
   final String hintText;
-  final RxString info;
+  final TextEditingController info;
   final TypeField typefield;
   const CustomTextFieldUnderline({
     super.key,
@@ -18,14 +16,6 @@ class CustomTextFieldUnderline extends StatelessWidget {
     required this.hintText,
     required this.typefield,
   });
-
-  Widget isObx(widget) {
-    if (typefield == TypeField.DATE) {
-      return widget;
-    } else {
-      return Obx(() => widget);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,173 +28,172 @@ class CustomTextFieldUnderline extends StatelessWidget {
       magnification: 1.2,
     );
 
-    return Obx(
-      () => Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 5,
-        ),
-        color: Colors.white,
-        child: TextField(
-          controller: TextEditingController(text: info.value),
-          inputFormatters: [
-            //chulada
-            typefield == TypeField.MONEY
-                ? FilteringTextInputFormatter.allow(
-                    RegExp(r'^\d+\.?\d{0,2}'),
-                  )
-                : FilteringTextInputFormatter.singleLineFormatter,
-          ],
-          //
-          // [Don't use this line]
-          // onChanged: (s) => info.value = s,
-          // because controllerEditingController(text: info.value) is used
-          // to set the value of the textfield
-          // and the Obx is used to update the value of the textfield
-          // when the value of the variable changes
-          //
-          onTap: typefield == TypeField.DATE
-              ? () {
-                  showDatePicker(
-                    context: context,
-                    locale: const Locale('es', 'es_MX'),
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2100),
-                  ).then((value) {
-                    if (value != null) {
-                      info.value = DateFormat('dd/MM/yyyy').format(value);
-                    }
-                  });
-                }
-              : typefield == TypeField.TIME
-                  ? () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          int hora = 1, minutos = 0;
-                          bool am = true;
-                          return AlertDialog(
-                            title: const Text('Selecciona la hora'),
-                            content: SizedBox(
-                              height: 300,
-                              width: 200,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: WheelPicker(
-                                      itemCount: 12, // 12 horas
-                                      looping: false,
-                                      builder: (context, index) {
-                                        return Text(
-                                          '${index + 1}',
-                                          style: const TextStyle(fontSize: 24),
-                                        ); // Horas de 1 a 12
-                                      },
-                                      onIndexChanged: (index) {
-                                        hora = index + 1;
-                                      },
-                                      style: wheelStyle.copyWith(
-                                        shiftAnimationStyle:
-                                            const WheelShiftAnimationStyle(
-                                          duration: Duration(seconds: 1),
-                                          curve: Curves.bounceOut,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: WheelPicker(
-                                      itemCount: 60, // 60 minutos
-                                      onIndexChanged: (index) {
-                                        minutos = index;
-                                      },
-                                      builder: (context, index) {
-                                        return Text(
-                                          index.toString().padLeft(2, '0'),
-                                          style: const TextStyle(fontSize: 24),
-                                        ); // Minutos 00-59
-                                      },
-                                      style: wheelStyle.copyWith(
-                                        shiftAnimationStyle:
-                                            const WheelShiftAnimationStyle(
-                                          duration: Duration(seconds: 1),
-                                          curve: Curves.bounceOut,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: WheelPicker(
-                                      itemCount: 2, // AM y PM
-                                      looping: false,
-                                      onIndexChanged: (index) {
-                                        am = index == 0;
-                                      },
-                                      builder: (context, index) {
-                                        return Text(
-                                          index == 0 ? 'AM' : 'PM',
-                                          style: const TextStyle(fontSize: 24),
-                                        );
-                                      },
-                                      style: wheelStyle.copyWith(
-                                        shiftAnimationStyle:
-                                            const WheelShiftAnimationStyle(
-                                          duration: Duration(seconds: 1),
-                                          curve: Curves.bounceOut,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.of(context).pop(),
-                                child: const Text('CANCELAR'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  info.value =
-                                      '${hora.toString().padLeft(2, '0')}:'
-                                      '${minutos.toString().padLeft(2, '0')} '
-                                      '${am ? 'AM' : 'PM'}';
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('ACEPTAR'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    }
-                  : null,
-          readOnly: typefield == TypeField.DATE,
-          keyboardType: typefield == TypeField.MONEY
-              ? TextInputType.number
-              : TextInputType.text,
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 15,
+        vertical: 5,
+      ),
+      color: Colors.white,
+      child: TextField(
+        controller: info,
+        inputFormatters: [
+          //chulada
+          typefield == TypeField.MONEY
+              ? FilteringTextInputFormatter.allow(
+                  RegExp(r'^\d+\.?\d{0,2}'),
+                )
+              : FilteringTextInputFormatter.singleLineFormatter,
+        ],
 
-          decoration: InputDecoration(
-            prefixIcon: Text(
-              '$label: ${typefield == TypeField.MONEY ? '\$' : ''}',
-            ),
-            hintText: hintText,
-            hintStyle: const TextStyle(
-              color: Colors.grey,
-            ),
-            prefixIconConstraints: const BoxConstraints(
-              minWidth: 80,
-            ),
-            contentPadding: const EdgeInsets.all(0),
-            suffixIcon: typefield == TypeField.DATE
-                ? const Icon(
-                    Icons.calendar_today,
-                  )
+        //
+        // [Don't use this line]
+        // onChanged: (value) => info.value = value,
+        // because controllerEditingController(text: info.value) is used
+        // to set the value of the textfield
+        // and the Obx is used to update the value of the textfield
+        // when the value of the variable changes
+        //
+        onTap: typefield == TypeField.DATE
+            ? () {
+                showDatePicker(
+                  context: context,
+                  locale: const Locale('es', 'es_MX'),
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime(2100),
+                ).then((value) {
+                  if (value != null) {
+                    info.text = DateFormat('dd/MM/yyyy').format(value);
+                  }
+                });
+              }
+            : typefield == TypeField.TIME
+                ? () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        int hora = 1, minutos = 0;
+                        bool am = true;
+                        return AlertDialog(
+                          title: const Text('Selecciona la hora'),
+                          content: SizedBox(
+                            height: 300,
+                            width: 200,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: WheelPicker(
+                                    itemCount: 12, // 12 horas
+                                    looping: false,
+                                    builder: (context, index) {
+                                      return Text(
+                                        '${index + 1}',
+                                        style: const TextStyle(fontSize: 24),
+                                      ); // Horas de 1 a 12
+                                    },
+                                    onIndexChanged: (index) {
+                                      hora = index + 1;
+                                    },
+                                    style: wheelStyle.copyWith(
+                                      shiftAnimationStyle:
+                                          const WheelShiftAnimationStyle(
+                                        duration: Duration(seconds: 1),
+                                        curve: Curves.bounceOut,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: WheelPicker(
+                                    itemCount: 60, // 60 minutos
+                                    onIndexChanged: (index) {
+                                      minutos = index;
+                                    },
+                                    builder: (context, index) {
+                                      return Text(
+                                        index.toString().padLeft(2, '0'),
+                                        style: const TextStyle(fontSize: 24),
+                                      ); // Minutos 00-59
+                                    },
+                                    style: wheelStyle.copyWith(
+                                      shiftAnimationStyle:
+                                          const WheelShiftAnimationStyle(
+                                        duration: Duration(seconds: 1),
+                                        curve: Curves.bounceOut,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: WheelPicker(
+                                    itemCount: 2, // AM y PM
+                                    looping: false,
+                                    onIndexChanged: (index) {
+                                      am = index == 0;
+                                    },
+                                    builder: (context, index) {
+                                      return Text(
+                                        index == 0 ? 'AM' : 'PM',
+                                        style: const TextStyle(fontSize: 24),
+                                      );
+                                    },
+                                    style: wheelStyle.copyWith(
+                                      shiftAnimationStyle:
+                                          const WheelShiftAnimationStyle(
+                                        duration: Duration(seconds: 1),
+                                        curve: Curves.bounceOut,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: const Text('CANCELAR'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                info.text =
+                                    '${hora.toString().padLeft(2, '0')}:'
+                                    '${minutos.toString().padLeft(2, '0')} '
+                                    '${am ? 'AM' : 'PM'}';
+                              },
+                              child: const Text('ACEPTAR'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
                 : null,
-            suffixIconConstraints: const BoxConstraints(
-              minWidth: 50,
-            ),
+        readOnly: typefield == TypeField.DATE,
+        keyboardType: typefield == TypeField.MONEY
+            ? TextInputType.number
+            : TextInputType.text,
+
+        decoration: InputDecoration(
+          prefixIcon: Text(
+            '$label: ${typefield == TypeField.MONEY ? '\$' : ''}',
+          ),
+          hintText: hintText,
+          hintStyle: const TextStyle(
+            color: Colors.grey,
+          ),
+          prefixIconConstraints: const BoxConstraints(
+            minWidth: 80,
+          ),
+          contentPadding: const EdgeInsets.all(0),
+          suffixIcon: typefield == TypeField.DATE
+              ? const Icon(
+                  Icons.calendar_today,
+                )
+              : null,
+          suffixIconConstraints: const BoxConstraints(
+            minWidth: 50,
           ),
         ),
       ),

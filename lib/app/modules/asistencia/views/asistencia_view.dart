@@ -13,11 +13,6 @@ class AsistenciaView extends GetView<AsistenciaController> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      // appBar: AppBar(
-      //   title: const Text('AsistenciaView'),
-      //   centerTitle: true,
-      // ),
-
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(
           vertical: 20,
@@ -65,12 +60,12 @@ class AsistenciaView extends GetView<AsistenciaController> {
             ElevatedButtonWidget(
               text: 'Guardar',
               onPressed: () {
-                printD(controller.fecha.value);
-                printD(controller.tema.value);
-                printD(controller.predicador.value);
-                printD(controller.horaInicio.value);
-                printD(controller.horaFin.value);
-                printD(controller.ofrenda.value);
+                printD(controller.fecha.text);
+                printD(controller.tema.text);
+                printD(controller.predicador.text);
+                printD(controller.horaInicio.text);
+                printD(controller.horaFin.text);
+                printD(controller.ofrenda.text);
               },
             ),
           ],
