@@ -1,17 +1,23 @@
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:pan_de_vida/app/data/services/gps_service.dart';
 
 import '../../../data/services/maps_service.dart';
 
 class MapGroupsController extends GetxController {
   RxSet<Marker> markers = <Marker>{}.obs;
+  var nearbyMarkers = <Marker>[].obs;
+  var bottomSheetVisible = false.obs;
 
   final MapsService apiService = MapsService();
 
   @override
   void onInit() {
     super.onInit();
-    loadMarkers();
+    loadMarkers().then((_) {
+      getNearbyGroups();
+    });
+    // getNearbyGroups();
   }
 
   Future<void> loadMarkers() async {
@@ -30,6 +36,12 @@ class MapGroupsController extends GetxController {
     }
 
     markers.assignAll(newMarkers);
+  }
+
+  Future<void> getNearbyGroups() async {
+    GpsService gpsService = GpsService();
+    nearbyMarkers.assignAll(await gpsService.getNearbyGroups(markers));
+    // print(nearbyMarkers.length);
   }
 
   BitmapDescriptor getColorIcon(String color) {

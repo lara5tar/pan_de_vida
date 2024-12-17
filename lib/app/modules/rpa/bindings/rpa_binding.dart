@@ -1,16 +1,15 @@
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/modules/rpa/controllers/new_rpa_controller.dart';
+import 'package:pan_de_vida/app/modules/rpa/controllers/cumbres_controller.dart';
 import 'package:pan_de_vida/app/modules/rpa/controllers/prospectos_controller.dart';
 
+import '../controllers/new_prospecto_controller.dart';
+import '../controllers/prospectos_videos_controller.dart';
 import '../controllers/rpa_index_controller.dart';
 import '../controllers/team_controller.dart';
 
 class RpaBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<NewRpaController>(
-      () => NewRpaController(),
-    );
     Get.lazyPut<RpaIndexController>(
       () => RpaIndexController(),
     );
@@ -19,6 +18,15 @@ class RpaBinding extends Bindings {
     );
     Get.lazyPut<ProspectosController>(
       () => ProspectosController(),
+    );
+    Get.lazyPut<NewProspectoController>(
+      () => NewProspectoController(),
+    );
+    Get.lazyPut<ProspectosVideosController>(
+      () => ProspectosVideosController(),
+    );
+    Get.lazyPut<CumbresController>(
+      () => CumbresController(),
     );
   }
 }

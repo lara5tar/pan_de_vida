@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
 
 import '../../../core/values/keys.dart';
+import '../models/affirmation_model.dart';
 import '../models/group_attendance_model.dart';
 import '../models/congregant_model.dart';
 import '../models/school_attendace_model.dart';
@@ -120,9 +121,11 @@ class CongregantService {
       );
 
       if (response.statusCode == 200) {
+        var result = jsonDecode(response.body);
+
         return {
           'error': false,
-          'data': jsonDecode(response.body),
+          'data': Affirmation.fromJson(result['afirmacion']),
         };
       } else {
         return {'error': true, 'message': 'Error en la respuesta del servidor'};
@@ -135,6 +138,20 @@ class CongregantService {
   Future<Map<String, dynamic>> getSchoolAttandance(
       String codCongregante) async {
     final String url = '${Keys.URL_SERVICE}/escuela/obtener_asistencia';
+
+    // var result = await ApiService.request(
+    //   '${Keys.URL_SERVICE}/escuela/obtener_asistencia',
+    //   {Keys.COD_CONGREGANTE_KEY: codCongregante},
+    // );
+
+    // if (!result['error']) {
+    //   return {
+    //     'error': false,
+    //     'attendance': SchoolAttendace.fromJson(result['asistencia']),
+    //   };
+    // } else {
+    //   return result;
+    // }
 
     try {
       final response = await http.post(

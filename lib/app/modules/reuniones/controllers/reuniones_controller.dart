@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-class CongregantsController extends GetxController {
-  //TODO: Implement CongregantsController
+class ReunionesController extends GetxController {
+  //TODO: Implement ReunionesController
 
   final count = 0.obs;
   @override

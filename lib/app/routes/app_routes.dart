@@ -11,15 +11,22 @@ abstract class Routes {
   static const DASHBOARD = _Paths.DASHBOARD;
   static const MAP_GROUPS = _Paths.MAP_GROUPS;
   static const CONGREGANTS_INDEX = _Paths.CONGREGANTS_INDEX;
+  static const CUMBRE_INDEX = _Paths.CUMBRE_INDEX;
   static const CONGREGANT_PROFILE = _Paths.CONGREGANT_PROFILE;
   static const CONGREGANT_INFO = _Paths.CONGREGANT_INFO;
   static const CONGREGANT_ADRESS = _Paths.CONGREGANT_ADRESS;
   static const CONGREGANT_AFFIRMATION = _Paths.CONGREGANT_AFFIRMATION;
   static const CONGREGANT_ATTENDANCE = _Paths.CONGREGANT_ATTENDANCE;
-  static const NEW_RPA = _Paths.NEW_RPA;
   static const RPA_INDEX = _Paths.RPA_INDEX;
   static const TEAM = _Paths.TEAM;
   static const PROSPECTOS = _Paths.PROSPECTOS;
+  static const NEW_PROSPECTO = _Paths.NEW_PROSPECTO;
+  static const PROSPECTO_VIDEOS = _Paths.PROSPECTO_VIDEOS;
+  static const AFFIRMATION_INDEX = _Paths.AFFIRMATION_INDEX;
+  static const AFFIRMATION_VIDEOS = _Paths.AFFIRMATION_VIDEOS;
+  static const RESTAURACION = _Paths.RESTAURACION;
+  static const RESTAURACION_CONGREGANTES = _Paths.RESTAURACION_CONGREGANTES;
+  static const REUNIONES = _Paths.REUNIONES;
 }
 
 abstract class _Paths {
@@ -37,10 +44,17 @@ abstract class _Paths {
   static const CONGREGANT_ADRESS = '$CONGREGANT/adress';
   static const CONGREGANT_AFFIRMATION = '$CONGREGANT/affirmation';
   static const CONGREGANT_ATTENDANCE = '$CONGREGANT/attendance';
-  static const NEW_RPA = '/cumbre';
   static const RPA_INDEX = '/hist-cumbre';
   static const TEAM = '/list-cumbre-equipo';
   static const PROSPECTOS = '/listProspecto';
+  static const NEW_PROSPECTO = '/new-prospecto';
+  static const PROSPECTO_VIDEOS = '/prospecto-videos';
+  static const CUMBRE_INDEX = '/cumbre';
+  static const AFFIRMATION_INDEX = '/list-afirmacion';
+  static const AFFIRMATION_VIDEOS = '/affirmation/videos';
+  static const RESTAURACION = '/list-restauracion';
+  static const RESTAURACION_CONGREGANTES = '$RESTAURACION/congregantes';
+  static const REUNIONES = '/grupoVida-hist-grupo';
 }
 
 // List<String> opciones = [

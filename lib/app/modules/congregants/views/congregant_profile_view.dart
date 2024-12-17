@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../widgets/custom_scaffold.dart';
 import '../../../widgets/button_widget.dart';
+import '../../../widgets/loading_widget.dart';
 import '../controllers/congregant_profile_controller.dart';
 
 class CongregantProfileView extends GetView<CongregantProfileController> {
@@ -13,26 +14,7 @@ class CongregantProfileView extends GetView<CongregantProfileController> {
       body: Obx(
         () {
           return controller.isLoading.value
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Cargando...',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.blue.shade900,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 20),
-                      CircularProgressIndicator(
-                        color: Colors.blue.shade900,
-                      ),
-                    ],
-                  ),
-                )
+              ? const LoadingWidget()
               : Column(
                   children: [
                     Padding(

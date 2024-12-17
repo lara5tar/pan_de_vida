@@ -5,12 +5,13 @@ class ButtonWidget extends StatelessWidget {
   final String text;
   final String? subtitle;
   final String? trailing;
+  final Widget? trailingWidget;
+  final List<OptionWidget>? options;
   final IconData icon;
-
   final Function? onTap;
-  final bool isLast;
   final Color colorText;
   final Color colorIcon;
+  final bool isLast;
 
   const ButtonWidget({
     super.key,
@@ -18,11 +19,13 @@ class ButtonWidget extends StatelessWidget {
     required this.text,
     this.subtitle,
     this.trailing,
+    this.trailingWidget,
+    this.options,
     required this.icon,
     this.onTap,
-    this.isLast = false,
     this.colorText = Colors.black,
     this.colorIcon = const Color(0xFF616161),
+    this.isLast = false,
   });
 
   @override
@@ -41,10 +44,9 @@ class ButtonWidget extends StatelessWidget {
             children: [
               Row(
                 mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 60,
                     width: 60,
                     child: Icon(
                       icon,
@@ -56,6 +58,9 @@ class ButtonWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        if (title == null && subtitle == null)
+                          const SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         if (title != null)
                           Text(
                             title!,
@@ -74,48 +79,87 @@ class ButtonWidget extends StatelessWidget {
                         ),
                         if (subtitle != null)
                           Text(
-                            subtitle!,
+                            subtitle!.isEmpty ? 'Sin datos' : subtitle!,
                             style: TextStyle(
                               fontSize: 12,
                               color: Colors.grey[800],
                             ),
                           ),
+                        // if (options != null)
+                        //   Row(
+                        //     mainAxisSize: MainAxisSize.max,
+                        //     children: [
+                        //       for (var option in options!)
+                        //         Expanded(
+                        //           child: IconButton(
+                        //             onPressed: () {},
+                        //             icon: Icon(
+                        //               option.icon,
+                        //               size: 20,
+                        //               color: Colors.grey[600],
+                        //             ),
+                        //           ),
+                        //         ),
+                        //     ],
+                        //   ),
+                        const SizedBox(height: 10),
+                        if (title == null && subtitle == null)
+                          const SizedBox(height: 10),
                       ],
                     ),
                   ),
                   const SizedBox(width: 20),
                   if (trailing != null) ...[
                     SizedBox(
-                      height: 60,
                       width: 60,
                       child: Center(
                         child: Text(trailing!.substring(0, 6)),
                       ),
                     ),
                     const SizedBox(width: 20),
-                  ]
+                  ],
+                  if (trailingWidget != null) ...[
+                    SizedBox(
+                      width: 60,
+                      child: Center(
+                        child: trailingWidget,
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                  ],
                 ],
               ),
               Row(
                 children: [
                   const SizedBox(width: 60),
-                  if (!isLast)
-                    Expanded(
-                      child: Container(
-                        height: 2,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                  Expanded(
+                    child: Container(
+                      height: 2,
+                      decoration: BoxDecoration(
+                        color: isLast ? Colors.transparent : Colors.grey[300],
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
+                  ),
                   const SizedBox(width: 20),
                 ],
-              )
+              ),
             ],
           ),
         ),
       ),
     );
   }
+}
+
+class OptionWidget {
+  final String text;
+  final IconData icon;
+  final Function onTap;
+
+  OptionWidget({
+    required this.text,
+    required this.icon,
+    required this.onTap,
+  });
 }

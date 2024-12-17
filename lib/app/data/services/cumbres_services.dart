@@ -1,43 +1,243 @@
-import 'package:get_storage/get_storage.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:pan_de_vida/app/data/models/accion_model.dart';
+import 'package:pan_de_vida/app/data/models/marcador_model.dart';
 
+import '../../../core/utils/print_debug.dart';
 import '../../../core/values/keys.dart';
+import '../models/congregant_model.dart';
 import '../models/cumbre_model.dart';
+import '../models/prospecto_model.dart';
+import '../models/video_model.dart';
+import 'api_service.dart';
+import 'auth_service.dart';
 
 class CumbresServices {
-  getCumbres() async {
-    final url = Uri.parse('${Keys.URL_SERVICE}/cumbres/obtener21');
-    final data = {
-      Keys.COD_CONGREGANTE_KEY: GetStorage(Keys.LOGIN_KEY).read(
-        Keys.COD_CONGREGANTE_KEY,
+  static Future<Map<String, dynamic>> getCumbres(String? codCongregante) async {
+    printD('CumbresServices.getCumbres');
+    codCongregante = codCongregante ?? AuthService.getCodCongregante();
+
+    var result = await ApiService.request(
+      '/cumbres/obtener21',
+      {Keys.COD_CONGREGANTE_KEY: codCongregante},
+    );
+
+    if (result['error']) return result;
+
+    return {
+      'error': false,
+      'cumbres': List<Cumbre>.from(
+        result['cumbres'].map((e) => Cumbre.fromJson(e)),
+      ),
+    };
+  }
+
+  static Future<Map<String, dynamic>> getCumbresEquipo() async {
+    printD('CumbresServices.getCumbresEquipo');
+    var result = await ApiService.request(
+      '/cumbres/obtener_equipo',
+      {Keys.COD_CONGREGANTE_KEY: AuthService.getCodCongregante()},
+    );
+
+    if (result['error']) return result;
+
+    return {
+      'error': false,
+      'sinRegistro': List<Congregant>.from(
+        result['sinRegistro'].map((e) => Congregant.fromJson(e)),
+      ),
+      'marcador': List<Congregant>.from(
+        result['marcador'].map((e) => Congregant.fromJson(e)),
+      ),
+      'noMarcador': List<Congregant>.from(
+        result['noMarcador'].map((e) => Congregant.fromJson(e)),
+      ),
+    };
+  }
+
+  static Future<Map<String, dynamic>> getProspectos(
+      String codCongregante, String codAccion) async {
+    printD('CumbresServices.getProspectos');
+    var result = await ApiService.request(
+      '/cumbres/prospectos',
+      {
+        Keys.COD_CONGREGANTE_KEY: codCongregante,
+        'codAccion': codAccion,
+      },
+    );
+
+    if (result['error']) return result;
+
+    return {
+      'error': false,
+      'prospectos': List<Prospecto>.from(
+        result['prospectos'].map((e) => Prospecto.fromJson(e)),
       )
     };
+  }
 
-    try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(data),
-      );
+  static Future<Map<String, dynamic>> getProspectoDetail() async {
+    printD('CumbresServices.getProspectoDetail');
+    var result = await ApiService.request(
+      '/cumbres/prospectoDetail',
+      {
+        Keys.COD_CONGREGANTE_KEY: AuthService.getCodCongregante(),
+      },
+    );
 
-      if (response.statusCode == 200) {
-        final result = json.decode(response.body);
-        List<Cumbre> cumbres = [];
+    if (result['error']) return result;
 
-        for (var cumbre in result['cumbres']) {
-          cumbres.add(Cumbre.fromJson(cumbre));
-        }
+    return {
+      'error': false,
+      'prospectos': List<Prospecto>.from(
+        result['prospectos'].map((e) => Prospecto.fromJson(e)),
+      ),
+    };
+  }
 
-        return {
-          'error': false,
-          'cumbres': cumbres,
-        };
-      } else {
-        return {'error': true, 'message': 'Error en la respuesta del servidor'};
-      }
-    } catch (e) {
-      return {'error': true, 'message': 'Error de conexión: $e'};
-    }
+  static Future<Map<String, dynamic>> setProspecto(
+      String nombre, String cel) async {
+    printD('CumbresServices.setProspecto');
+
+    return await ApiService.request(
+      '/cumbres/prospecto',
+      {
+        Keys.COD_CONGREGANTE_KEY: AuthService.getCodCongregante(),
+        'nombre': nombre,
+        'cel': cel,
+      },
+    );
+  }
+
+  static Future<Map<String, dynamic>> deleteProspecto(
+      String idProspecto) async {
+    printD('CumbresServices.deleteProspecto');
+
+    return await ApiService.request(
+      '/cumbres/baja_prospecto',
+      {'idProspecto': idProspecto},
+    );
+  }
+
+  static Future<Map<String, dynamic>> getProspectoVideos(
+      String idProspecto) async {
+    printD('CumbresServices.getProspectoVideos');
+    var result = await ApiService.request(
+      '/evangelismo/videosP',
+      {'idProspecto': idProspecto},
+    );
+
+    if (result['error']) return result;
+
+    return {
+      'error': false,
+      'videos': List<Video>.from(
+        result['videos'].map((e) => Video.fromJson(e)),
+      ),
+    };
+  }
+
+  static Future<Map<String, dynamic>> getCumbreAcciones() async {
+    printD('CumbresServices.getCumbreAcciones');
+
+    var result = await ApiService.request(
+      '/accion/obtener',
+      {
+        Keys.COD_CONGREGANTE_KEY: AuthService.getCodCongregante(),
+      },
+    );
+
+    if (result['error']) return result;
+
+    return {
+      'error': false,
+      'acciones': List<Accion>.from(
+        result['acciones'].map((e) => Accion.fromJson(e)),
+      ),
+    };
+  }
+
+  static Future<Map<String, dynamic>> getCumbreMarcadores(
+      String idAccion) async {
+    printD('CumbresServices.getCumbreMarcadores');
+
+    var result = await ApiService.request(
+      '/marcador/marcadores',
+      {
+        Keys.COD_CONGREGANTE_KEY: AuthService.getCodCongregante(),
+        'idAccion': idAccion,
+      },
+    );
+
+    if (result['error']) return result;
+
+    return {
+      'error': false,
+      'marcadores': List<Marcador>.from(
+        result['marcadores'].map((e) => Marcador.fromJson(e)),
+      ),
+    };
+  }
+
+  static Future<Map<String, dynamic>> getCumbreCompromisoAccion() async {
+    printD('CumbresServices.getCumbreCompromisoAccion');
+
+    var result = await ApiService.request(
+      '/cumbres/obtener_catalogo',
+      {
+        Keys.COD_CONGREGANTE_KEY: AuthService.getCodCongregante(),
+      },
+    );
+
+    if (result['error']) return result;
+
+    return {
+      'error': false,
+      'cumbres': List<Cumbre>.from(
+        result['cumbres'].map((e) => Cumbre.fromJson(e)),
+      ),
+    };
+  }
+
+  static Future<Map<String, dynamic>> getCumbreCompromisoPersona(
+      String codAccion) async {
+    printD('CumbresServices.getCumbreCompromisoPersona');
+
+    var result = await ApiService.request(
+      '/cumbres/prospectos',
+      {
+        Keys.COD_CONGREGANTE_KEY: AuthService.getCodCongregante(),
+        'codAccion': codAccion,
+      },
+    );
+
+    if (result['error']) return result;
+
+    printD(result['prospectos']);
+
+    return {
+      'error': false,
+      'prospectos': List<Prospecto>.from(
+        result['prospectos'].map((e) => Prospecto.fromJson(e)),
+      ),
+    };
+  }
+
+  static Future<Map<String, dynamic>> setCumbre(
+    String idAccion,
+    String idMarcador,
+    String accSig,
+    String prospectoSig,
+  ) async {
+    printD('CumbresServices.setCumbre');
+
+    return await ApiService.request(
+      '/cumbres/guardar21',
+      {
+        Keys.COD_CONGREGANTE_KEY: AuthService.getCodCongregante(),
+        'idAccion': idAccion,
+        'idMarcador': idMarcador,
+        'accSig': accSig,
+        'prospectoSig': prospectoSig,
+      },
+    );
   }
 }

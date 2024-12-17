@@ -44,6 +44,8 @@ class Congregant {
   final String verificador;
   // final String via;
   final String viaF;
+  final String nomCasaVida;
+  final String curso;
 
   Congregant({
     required this.apellido,
@@ -91,6 +93,8 @@ class Congregant {
     required this.verificador,
     // required this.via,
     required this.viaF,
+    required this.nomCasaVida,
+    required this.curso,
   });
 
   factory Congregant.fromJson(Map<String, dynamic> json) {
@@ -140,6 +144,8 @@ class Congregant {
       verificador: json['VERIFICADOR'] ?? '',
       // via: json['VIA'] ?? '',
       viaF: json['VIAF'] ?? '',
+      nomCasaVida: json['NOMCASAVIDA'] ?? '',
+      curso: json['CURSO'] ?? '',
     );
   }
 
@@ -190,6 +196,8 @@ class Congregant {
       'VERIFICADOR': verificador,
       // 'VIA': via,
       'VIAF': viaF,
+      'NOMCASAVIDA': nomCasaVida,
+      'CURSO': curso,
     };
   }
 
@@ -240,6 +248,13 @@ class Congregant {
       verificador: '',
       // via: '',
       viaF: '',
+      nomCasaVida: '',
+      curso: '',
     );
+  }
+
+  @override
+  String toString() {
+    return 'Congregant(apellido: $apellido, asisdisc: $asisdisc, asisgpoVidaF: $asisgpoVidaF, calle: $calle, cel: $cel, ciudad: $ciudad, codCongregant: $codCongregant, codMentor: $codMentor, codPostal: $codPostal, codStatus: $codStatus, colonia: $colonia, edad: $edad, edoCivF: $edoCivF, entreCalles: $entreCalles, estatus: $estatus, fecAlta: $fecAlta, fecLibro1F: $fecLibro1F, fecLibro2F: $fecLibro2F, fecLibro3F: $fecLibro3F, fecNacF: $fecNacF, horario: $horario, iglesia: $iglesia, mail: $mail, mentor: $mentor, necesidad: $necesidad, nombre: $nombre, nombreF: $nombreF, observaciones: $observaciones, otraIglF: $otraIglF, plataforma: $plataforma, platAsignada: $platAsignada, sexoF: $sexoF, telCasa: $telCasa, verificador: $verificador, viaF: $viaF, nomCasaVida: $nomCasaVida)';
   }
 }

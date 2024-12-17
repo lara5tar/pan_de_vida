@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/modules/rpa/views/new_rpa_view.dart';
-import 'package:pan_de_vida/app/modules/rpa/views/prospectos_view.dart';
-import 'package:pan_de_vida/app/modules/rpa/views/team_view.dart';
 
+import '../modules/affirmation/bindings/affirmation_binding.dart';
+import '../modules/affirmation/views/affirmation_index_view.dart';
+import '../modules/affirmation/views/affirmation_videos_view.dart';
 import '../modules/congregants/bindings/congregants_binding.dart';
 import '../modules/congregants/views/congregant_adress_view.dart';
 import '../modules/congregants/views/congregant_affirmation_view.dart';
@@ -20,8 +20,18 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/map_groups/bindings/map_groups_binding.dart';
 import '../modules/map_groups/views/map_groups_view.dart';
+import '../modules/restauracion/bindings/restauracion_binding.dart';
+import '../modules/restauracion/views/restauracion_congregante_view.dart';
+import '../modules/restauracion/views/restauracion_view.dart';
+import '../modules/reuniones/bindings/reuniones_binding.dart';
+import '../modules/reuniones/views/reuniones_view.dart';
 import '../modules/rpa/bindings/rpa_binding.dart';
+import '../modules/rpa/views/cumbres_view.dart';
+import '../modules/rpa/views/new_prospecto_view.dart';
+import '../modules/rpa/views/prospectos_videos_view.dart';
+import '../modules/rpa/views/prospectos_view.dart';
 import '../modules/rpa/views/rpa_index_view.dart';
+import '../modules/rpa/views/team_view.dart';
 
 // ignore_for_file: constant_identifier_names
 
@@ -30,6 +40,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
+  // static const INITIAL = Routes.LANDING;
   static const INITIAL = Routes.LANDING;
 
   static final routes = [
@@ -89,8 +100,8 @@ class AppPages {
       binding: CongregantsBinding(),
     ),
     GetPage(
-      name: _Paths.NEW_RPA,
-      page: () => const NewRpaView(),
+      name: _Paths.CUMBRE_INDEX,
+      page: () => const CumbresView(),
       binding: RpaBinding(),
     ),
     GetPage(
@@ -107,6 +118,41 @@ class AppPages {
       name: _Paths.PROSPECTOS,
       page: () => const ProspectosView(),
       binding: RpaBinding(),
+    ),
+    GetPage(
+      name: _Paths.NEW_PROSPECTO,
+      page: () => const NewProspectoView(),
+      binding: RpaBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROSPECTO_VIDEOS,
+      page: () => const ProspectosVideosView(),
+      binding: RpaBinding(),
+    ),
+    GetPage(
+      name: _Paths.AFFIRMATION_INDEX,
+      page: () => const AffirmationIndexView(),
+      binding: AffirmationBinding(),
+    ),
+    GetPage(
+      name: _Paths.AFFIRMATION_VIDEOS,
+      page: () => const AffirmationVideosView(),
+      binding: AffirmationBinding(),
+    ),
+    GetPage(
+      name: _Paths.RESTAURACION,
+      page: () => const RestauracionView(),
+      binding: RestauracionBinding(),
+    ),
+    GetPage(
+      name: _Paths.RESTAURACION_CONGREGANTES,
+      page: () => const RestauracionCongreganteView(),
+      binding: RestauracionBinding(),
+    ),
+    GetPage(
+      name: _Paths.REUNIONES,
+      page: () => const ReunionesView(),
+      binding: ReunionesBinding(),
     ),
   ];
 }
