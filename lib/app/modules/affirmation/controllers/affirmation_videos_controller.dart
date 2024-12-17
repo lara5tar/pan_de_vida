@@ -45,10 +45,6 @@ class AffirmationVideosController extends GetxController {
   }
 
   copyClipBoard(String url, String codVideo) {
-    print(codCongregante);
-    print(codVideo);
-    print(url);
-
     copyClipBoardUtil('a', url, codVideo, codCongregante);
   }
 }

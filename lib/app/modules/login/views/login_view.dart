@@ -42,11 +42,14 @@ class LoginView extends GetView<LoginController> {
                       controller: controller.passwordController,
                     ),
                     const SizedBox(height: 20),
-                    ElevatedButtonWidget(
-                      text: 'Ingresar al sistema',
-                      onPressed: () {
-                        controller.login();
-                      },
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: ElevatedButtonWidget(
+                        text: 'Ingresar al sistema',
+                        onPressed: () {
+                          controller.login();
+                        },
+                      ),
                     ),
                     const SizedBox(height: 40),
                   ],

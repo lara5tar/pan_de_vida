@@ -45,6 +45,7 @@ class Congregant {
   // final String via;
   final String viaF;
   final String nomCasaVida;
+  final String curso;
 
   Congregant({
     required this.apellido,
@@ -93,6 +94,7 @@ class Congregant {
     // required this.via,
     required this.viaF,
     required this.nomCasaVida,
+    required this.curso,
   });
 
   factory Congregant.fromJson(Map<String, dynamic> json) {
@@ -143,6 +145,7 @@ class Congregant {
       // via: json['VIA'] ?? '',
       viaF: json['VIAF'] ?? '',
       nomCasaVida: json['NOMCASAVIDA'] ?? '',
+      curso: json['CURSO'] ?? '',
     );
   }
 
@@ -194,6 +197,7 @@ class Congregant {
       // 'VIA': via,
       'VIAF': viaF,
       'NOMCASAVIDA': nomCasaVida,
+      'CURSO': curso,
     };
   }
 
@@ -245,6 +249,7 @@ class Congregant {
       // via: '',
       viaF: '',
       nomCasaVida: '',
+      curso: '',
     );
   }
 

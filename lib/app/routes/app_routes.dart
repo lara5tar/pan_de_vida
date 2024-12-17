@@ -17,7 +17,6 @@ abstract class Routes {
   static const CONGREGANT_ADRESS = _Paths.CONGREGANT_ADRESS;
   static const CONGREGANT_AFFIRMATION = _Paths.CONGREGANT_AFFIRMATION;
   static const CONGREGANT_ATTENDANCE = _Paths.CONGREGANT_ATTENDANCE;
-  // static const NEW_RPA = _Paths.NEW_RPA;
   static const RPA_INDEX = _Paths.RPA_INDEX;
   static const TEAM = _Paths.TEAM;
   static const PROSPECTOS = _Paths.PROSPECTOS;
@@ -27,6 +26,11 @@ abstract class Routes {
   static const AFFIRMATION_VIDEOS = _Paths.AFFIRMATION_VIDEOS;
   static const JOIN_GROUP = _Paths.JOIN_GROUP;
   static const ASISTENCIA = _Paths.ASISTENCIA;
+
+  static const RESTAURACION = _Paths.RESTAURACION;
+  static const RESTAURACION_CONGREGANTES = _Paths.RESTAURACION_CONGREGANTES;
+  static const REUNIONES = _Paths.REUNIONES;
+
 }
 
 abstract class _Paths {
@@ -44,7 +48,6 @@ abstract class _Paths {
   static const CONGREGANT_ADRESS = '$CONGREGANT/adress';
   static const CONGREGANT_AFFIRMATION = '$CONGREGANT/affirmation';
   static const CONGREGANT_ATTENDANCE = '$CONGREGANT/attendance';
-  // static const NEW_RPA = '/cumbre';
   static const RPA_INDEX = '/hist-cumbre';
   static const TEAM = '/list-cumbre-equipo';
   static const PROSPECTOS = '/listProspecto';
@@ -53,8 +56,14 @@ abstract class _Paths {
   static const CUMBRE_INDEX = '/cumbre';
   static const AFFIRMATION_INDEX = '/list-afirmacion';
   static const AFFIRMATION_VIDEOS = '/affirmation/videos';
+
   static const JOIN_GROUP = '/grupos-de-vida/join';
   static const ASISTENCIA = '/asistencia';
+
+  static const RESTAURACION = '/list-restauracion';
+  static const RESTAURACION_CONGREGANTES = '$RESTAURACION/congregantes';
+  static const REUNIONES = '/grupoVida-hist-grupo';
+
 }
 
 // List<String> opciones = [
