@@ -8,6 +8,7 @@ class MapGroupsController extends GetxController {
   RxSet<Marker> markers = <Marker>{}.obs;
   var nearbyMarkers = <Marker>[].obs;
   var bottomSheetVisible = false.obs;
+  late GoogleMapController googleMapController;
 
   final MapsService apiService = MapsService();
 
@@ -17,7 +18,18 @@ class MapGroupsController extends GetxController {
     loadMarkers().then((_) {
       getNearbyGroups();
     });
-    // getNearbyGroups();
+  }
+
+  void goToMarker(Marker marker) {
+    googleMapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: marker.position,
+          zoom: 15,
+        ),
+      ),
+    );
+    googleMapController.showMarkerInfoWindow(marker.markerId);
   }
 
   Future<void> loadMarkers() async {

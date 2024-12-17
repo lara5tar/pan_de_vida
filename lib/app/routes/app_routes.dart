@@ -24,9 +24,13 @@ abstract class Routes {
   static const PROSPECTO_VIDEOS = _Paths.PROSPECTO_VIDEOS;
   static const AFFIRMATION_INDEX = _Paths.AFFIRMATION_INDEX;
   static const AFFIRMATION_VIDEOS = _Paths.AFFIRMATION_VIDEOS;
+  static const JOIN_GROUP = _Paths.JOIN_GROUP;
+  static const ASISTENCIA = _Paths.ASISTENCIA;
+
   static const RESTAURACION = _Paths.RESTAURACION;
   static const RESTAURACION_CONGREGANTES = _Paths.RESTAURACION_CONGREGANTES;
   static const REUNIONES = _Paths.REUNIONES;
+
 }
 
 abstract class _Paths {
@@ -52,9 +56,14 @@ abstract class _Paths {
   static const CUMBRE_INDEX = '/cumbre';
   static const AFFIRMATION_INDEX = '/list-afirmacion';
   static const AFFIRMATION_VIDEOS = '/affirmation/videos';
+
+  static const JOIN_GROUP = '/grupos-de-vida/join';
+  static const ASISTENCIA = '/asistencia';
+
   static const RESTAURACION = '/list-restauracion';
   static const RESTAURACION_CONGREGANTES = '$RESTAURACION/congregantes';
   static const REUNIONES = '/grupoVida-hist-grupo';
+
 }
 
 // List<String> opciones = [

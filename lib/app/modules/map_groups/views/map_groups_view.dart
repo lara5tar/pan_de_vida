@@ -17,6 +17,9 @@ class MapGroupsView extends GetView<MapGroupsController> {
         body: Stack(
           children: [
             GoogleMap(
+              onMapCreated: (GoogleMapController googleMapController) {
+                controller.googleMapController = googleMapController;
+              },
               //quita los controles de zoom
               zoomControlsEnabled: false,
               initialCameraPosition: const CameraPosition(
@@ -25,6 +28,15 @@ class MapGroupsView extends GetView<MapGroupsController> {
               ),
               markers: controller.markers,
             ),
+            if (controller.bottomSheetVisible.value)
+              Positioned.fill(
+                child: InkWell(
+                  onTap: () {
+                    controller.bottomSheetVisible.value =
+                        !controller.bottomSheetVisible.value;
+                  },
+                ),
+              ),
             Positioned(
               bottom: 0,
               child: Container(
@@ -72,11 +84,11 @@ class MapGroupsView extends GetView<MapGroupsController> {
                     topRight: Radius.circular(20),
                   ),
                 ),
-                height: 250,
+                height: 350,
                 width: Get.width,
                 child: controller.nearbyMarkers.isEmpty
                     ? const Center(child: CircularProgressIndicator())
-                    : ListView(
+                    : Column(
                         children: [
                           IconButton(
                             splashColor: Colors.transparent,
@@ -98,12 +110,25 @@ class MapGroupsView extends GetView<MapGroupsController> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          ...controller.nearbyMarkers.map((marker) {
-                            return ListTile(
-                              title: Text(marker.infoWindow.title ?? ''),
-                              subtitle: Text(marker.infoWindow.snippet ?? ''),
-                            );
-                          }),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Expanded(
+                            child: ListView(
+                              children: [
+                                ...controller.nearbyMarkers.map((marker) {
+                                  return ListTile(
+                                    onTap: () {
+                                      controller.goToMarker(marker);
+                                    },
+                                    title: Text(marker.infoWindow.title ?? ''),
+                                    subtitle:
+                                        Text(marker.infoWindow.snippet ?? ''),
+                                  );
+                                }),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
               )
