@@ -1,9 +1,12 @@
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/modules/reuniones/views/reunion_form_view.dart';
+import 'package:pan_de_vida/app/modules/escuela/views/capturar_asistencia_view.dart';
+import 'package:pan_de_vida/app/modules/escuela/views/capturar_pago_view.dart';
 
 import '../modules/affirmation/bindings/affirmation_binding.dart';
 import '../modules/affirmation/views/affirmation_index_view.dart';
 import '../modules/affirmation/views/affirmation_videos_view.dart';
+import '../modules/alertas/bindings/alertas_binding.dart';
+import '../modules/alertas/views/alertas_view.dart';
 import '../modules/congregants/bindings/congregants_binding.dart';
 import '../modules/congregants/views/congregant_adress_view.dart';
 import '../modules/congregants/views/congregant_affirmation_view.dart';
@@ -13,6 +16,8 @@ import '../modules/congregants/views/congregant_profile_view.dart';
 import '../modules/congregants/views/congregants_index_view.dart';
 import '../modules/dashboard/bindings/dashboard_binding.dart';
 import '../modules/dashboard/views/dashboard_view.dart';
+import '../modules/escuela/bindings/escuela_binding.dart';
+import '../modules/escuela/views/escuela_view.dart';
 import '../modules/grupos_de_vida/bindings/grupos_de_vida_binding.dart';
 import '../modules/grupos_de_vida/bindings/quiero_asistir_binding.dart';
 import '../modules/grupos_de_vida/views/grupos_de_vida_view.dart';
@@ -28,6 +33,7 @@ import '../modules/restauracion/views/restauracion_congregante_view.dart';
 import '../modules/restauracion/views/restauracion_view.dart';
 import '../modules/reuniones/bindings/reuniones_binding.dart';
 import '../modules/reuniones/views/reunion_form_edit_view.dart';
+import '../modules/reuniones/views/reunion_form_view.dart';
 import '../modules/reuniones/views/reuniones_view.dart';
 import '../modules/rpa/bindings/rpa_binding.dart';
 import '../modules/rpa/views/cumbres_view.dart';
@@ -148,11 +154,6 @@ class AppPages {
       page: () => const QuieroAsistirView(),
       binding: QuieroAsistirBinding(),
     ),
-    // GetPage(
-    //   name: _Paths.ASISTENCIA,
-    //   page: () => const AsistenciaView(),
-    //   binding: AsistenciaBinding(),
-    // ),
     GetPage(
       name: _Paths.RESTAURACION,
       page: () => const RestauracionView(),
@@ -177,6 +178,21 @@ class AppPages {
       name: _Paths.REUNION_FORM_EDIT,
       page: () => const ReunionFormEditView(),
       binding: ReunionesBinding(),
+    ),
+    GetPage(
+      name: _Paths.ALERTAS,
+      page: () => const AlertasView(),
+      binding: AlertasBinding(),
+    ),
+    GetPage(
+      name: _Paths.CAPTURAR_ASISTENCIA,
+      page: () => const CapturarAsistenciaView(),
+      binding: EscuelaBinding(),
+    ),
+    GetPage(
+      name: _Paths.CAPTURAR_PAGO,
+      page: () => const CapturarPagoView(),
+      binding: EscuelaBinding(),
     ),
   ];
 }

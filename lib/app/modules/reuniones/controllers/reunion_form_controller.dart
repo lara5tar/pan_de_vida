@@ -4,6 +4,7 @@ import 'package:pan_de_vida/app/data/services/reuniones_service.dart';
 import 'package:pan_de_vida/core/utils/calendar_utils.dart';
 
 class ReunionFormController extends GetxController {
+  String? idReunion;
   final fecha = TextEditingController();
   final tema = TextEditingController();
   final predicador = TextEditingController();
@@ -17,9 +18,9 @@ class ReunionFormController extends GetxController {
     super.onInit();
     if (Get.arguments != null) {
       var reunion = Get.arguments;
-
+      idReunion = reunion['IDREUNION'].toString();
       String fechaReunion =
-          '${reunion['DIA']}/${getMonthInt(reunion['MES'])}/${DateTime.now().year}';
+          '${reunion['DIA']}/${getMonthInt(reunion['MES'])}/${reunion['ANIO']}';
 
       fecha.text = fechaReunion;
       tema.text = reunion['TEMA'];
@@ -31,8 +32,48 @@ class ReunionFormController extends GetxController {
     }
   }
 
+  guardar() {
+    if (idReunion == null) {
+      setReunion();
+    } else {
+      updateReunion();
+    }
+  }
+
   setReunion() async {
     var result = await ReunionesService().setReunion(
+      fecha.text,
+      tema.text,
+      predicador.text,
+      horaInicio.text,
+      horaFin.text,
+      ofrenda.text,
+      totalCongregantes.text,
+    );
+
+    if (result['error']) {
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Error'),
+          content: Text(result['message']),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text('Aceptar'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      Get.back();
+    }
+  }
+
+  updateReunion() async {
+    var result = await ReunionesService().updateReunion(
+      idReunion!,
       fecha.text,
       tema.text,
       predicador.text,

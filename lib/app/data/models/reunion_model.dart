@@ -4,6 +4,7 @@ class Reunion {
   String codCasaVida;
   String dia;
   String mes;
+  String anio;
   String tema;
   String predicador;
   String inicio;
@@ -16,6 +17,7 @@ class Reunion {
     required this.codCasaVida,
     required this.dia,
     required this.mes,
+    required this.anio,
     required this.tema,
     required this.predicador,
     required this.inicio,
@@ -30,6 +32,7 @@ class Reunion {
       codCasaVida: json['CODCASAVIDA'],
       dia: json['DIA'],
       mes: json['MES'],
+      anio: json['ANIO'],
       tema: json['TEMA'],
       predicador: json['PREDICADOR'],
       inicio: json['INICIO'],
@@ -45,6 +48,7 @@ class Reunion {
       'CODCASAVIDA': codCasaVida,
       'DIA': dia,
       'MES': mes,
+      'ANIO': anio,
       'TEMA': tema,
       'PREDICADOR': predicador,
       'INICIO': inicio,
@@ -56,6 +60,6 @@ class Reunion {
 
   @override
   String toString() {
-    return 'Reunion(idReunion: $idReunion, codCasaVida: $codCasaVida, dia: $dia, mes: $mes, tema: $tema, predicador: $predicador, inicio: $inicio, fin: $fin, ofrenda: $ofrenda, total: $total)';
+    return 'Reunion(idReunion: $idReunion, codCasaVida: $codCasaVida, dia: $dia, mes: $mes, anio: $anio,tema: $tema, predicador: $predicador, inicio: $inicio, fin: $fin, ofrenda: $ofrenda, total: $total)';
   }
 }

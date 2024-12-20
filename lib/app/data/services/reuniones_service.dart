@@ -26,29 +26,6 @@ class ReunionesService {
     }
   }
 
-  //   set_reunion(
-  //   fecha: string,
-  //   tema: string,
-  //   predicador: string,
-  //   hrInicio: string,
-  //   hrFin: string,
-  //   ofrenda: string,
-  //   tCongregantes: string) {
-  //   let url = URL_SERVICIOS + '/grupoVida/guardar_datos';
-  //   let data = {
-  //     'codCasaVida': this.codCasaVida,
-  //     'fecha': fecha,
-  //     'tema': tema,
-  //     'predicador': predicador,
-  //     'hrInicio': hrInicio,
-  //     'hrFin': hrFin,
-  //     'ofrenda': ofrenda,
-  //     'tCongregantes': tCongregantes
-  //   };
-  //   console.log(data);
-  //   return this.http.post(url, data);
-  // }
-
   Future<Map<dynamic, dynamic>> setReunion(
     String fecha,
     String tema,
@@ -64,6 +41,60 @@ class ReunionesService {
     var result = await ApiService.request(
       '/grupoVida/guardar_datos',
       {
+        'codCasaVida': codCasaVida,
+        'fecha': fecha,
+        'tema': tema,
+        'predicador': predicador,
+        'hrInicio': hrInicio,
+        'hrFin': hrFin,
+        'ofrenda': ofrenda,
+        'tCongregantes': tCongregantes,
+      },
+    );
+
+    return result;
+  }
+
+  //   update_reunion(idReunion: number,
+  //   fecha: string,
+  //   tema: string,
+  //   predicador: string,
+  //   hrInicio: string,
+  //   hrFin: string,
+  //   ofrenda: string,
+  //   tCongregantes: string) {
+  //   let url = URL_SERVICIOS + '/grupoVida/update_datos';
+  //   let data = {
+  //     'idReunion': idReunion,
+  //     'fecha': fecha,
+  //     'tema': tema,
+  //     'predicador': predicador,
+  //     'hrInicio': hrInicio,
+  //     'hrFin': hrFin,
+  //     'ofrenda': ofrenda,
+  //     'tCongregantes': tCongregantes
+  //   };
+  //   console.log(data);
+  //   return this.http.post(url, data);
+  // }
+
+  Future<Map> updateReunion(
+    String idReunion,
+    String fecha,
+    String tema,
+    String predicador,
+    String hrInicio,
+    String hrFin,
+    String ofrenda,
+    String tCongregantes,
+  ) async {
+    String codCasaVida =
+        GetStorage(Keys.LOGIN_KEY).read(Keys.COD_CASA_VIDA_KEY);
+
+    var result = await ApiService.request(
+      '/grupoVida/update_datos',
+      {
+        'idReunion': idReunion,
         'codCasaVida': codCasaVida,
         'fecha': fecha,
         'tema': tema,
