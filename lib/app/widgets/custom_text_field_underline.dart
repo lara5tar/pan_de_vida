@@ -42,7 +42,9 @@ class CustomTextFieldUnderline extends StatelessWidget {
               ? FilteringTextInputFormatter.allow(
                   RegExp(r'^\d+\.?\d{0,2}'),
                 )
-              : FilteringTextInputFormatter.singleLineFormatter,
+              : typefield == TypeField.NUMBER
+                  ? FilteringTextInputFormatter.digitsOnly
+                  : FilteringTextInputFormatter.singleLineFormatter,
         ],
 
         //
@@ -171,9 +173,10 @@ class CustomTextFieldUnderline extends StatelessWidget {
                   }
                 : null,
         readOnly: typefield == TypeField.DATE,
-        keyboardType: typefield == TypeField.MONEY
-            ? TextInputType.number
-            : TextInputType.text,
+        keyboardType:
+            typefield == TypeField.MONEY || typefield == TypeField.NUMBER
+                ? TextInputType.number
+                : TextInputType.text,
 
         decoration: InputDecoration(
           prefixIcon: Text(
@@ -206,4 +209,5 @@ enum TypeField {
   TEXT,
   TIME,
   MONEY,
+  NUMBER,
 }

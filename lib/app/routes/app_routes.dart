@@ -25,12 +25,13 @@ abstract class Routes {
   static const AFFIRMATION_INDEX = _Paths.AFFIRMATION_INDEX;
   static const AFFIRMATION_VIDEOS = _Paths.AFFIRMATION_VIDEOS;
   static const JOIN_GROUP = _Paths.JOIN_GROUP;
-  static const ASISTENCIA = _Paths.ASISTENCIA;
+  // static const ASISTENCIA = _Paths.ASISTENCIA;
 
   static const RESTAURACION = _Paths.RESTAURACION;
   static const RESTAURACION_CONGREGANTES = _Paths.RESTAURACION_CONGREGANTES;
   static const REUNIONES = _Paths.REUNIONES;
-
+  static const REUNION_FORM = _Paths.REUNION_FORM;
+  static const REUNION_FORM_EDIT = _Paths.REUNION_FORM_EDIT;
 }
 
 abstract class _Paths {
@@ -58,12 +59,14 @@ abstract class _Paths {
   static const AFFIRMATION_VIDEOS = '/affirmation/videos';
 
   static const JOIN_GROUP = '/grupos-de-vida/join';
-  static const ASISTENCIA = '/asistencia';
+  // static const ASISTENCIA = '/asistencia';
 
   static const RESTAURACION = '/list-restauracion';
   static const RESTAURACION_CONGREGANTES = '$RESTAURACION/congregantes';
-  static const REUNIONES = '/grupoVida-hist-grupo';
 
+  static const REUNIONES = '/grupoVida-hist-grupo';
+  static const REUNION_FORM = '/grupoVida-asistencia-datos';
+  static const REUNION_FORM_EDIT = '/reunion-form-edit';
 }
 
 // List<String> opciones = [

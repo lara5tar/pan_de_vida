@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/utils/barcode_dialog.dart';
@@ -34,9 +35,37 @@ class RestauracionController extends GetxController {
     var result = await RestauracionService().setRestauracionVisita(barcode);
 
     if (!result['error']) {
-      Get.snackbar('Visita', 'Visita guardada correctamente.');
+      // Get.snackbar('Visita', 'Visita guardada correctamente.');
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Visita'),
+          content: const Text('Visita guardada correctamente.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text('Aceptar'),
+            ),
+          ],
+        ),
+      );
     } else {
-      Get.snackbar('Error', result['message']);
+      // Get.snackbar('Error', result['message']);
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Error'),
+          content: Text(result['message']),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text('Aceptar'),
+            ),
+          ],
+        ),
+      );
     }
   }
 

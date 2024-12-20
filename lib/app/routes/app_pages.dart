@@ -1,10 +1,9 @@
 import 'package:get/get.dart';
+import 'package:pan_de_vida/app/modules/reuniones/views/reunion_form_view.dart';
 
 import '../modules/affirmation/bindings/affirmation_binding.dart';
 import '../modules/affirmation/views/affirmation_index_view.dart';
 import '../modules/affirmation/views/affirmation_videos_view.dart';
-import '../modules/asistencia/bindings/asistencia_binding.dart';
-import '../modules/asistencia/views/asistencia_view.dart';
 import '../modules/congregants/bindings/congregants_binding.dart';
 import '../modules/congregants/views/congregant_adress_view.dart';
 import '../modules/congregants/views/congregant_affirmation_view.dart';
@@ -28,6 +27,7 @@ import '../modules/restauracion/bindings/restauracion_binding.dart';
 import '../modules/restauracion/views/restauracion_congregante_view.dart';
 import '../modules/restauracion/views/restauracion_view.dart';
 import '../modules/reuniones/bindings/reuniones_binding.dart';
+import '../modules/reuniones/views/reunion_form_edit_view.dart';
 import '../modules/reuniones/views/reuniones_view.dart';
 import '../modules/rpa/bindings/rpa_binding.dart';
 import '../modules/rpa/views/cumbres_view.dart';
@@ -44,8 +44,8 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  // static const INITIAL = Routes.LANDING;
-  static const INITIAL = Routes.ASISTENCIA;
+  static const INITIAL = Routes.LANDING;
+  // static const INITIAL = Routes.ASISTENCIA;
 
   static final routes = [
     GetPage(
@@ -148,11 +148,12 @@ class AppPages {
       page: () => const QuieroAsistirView(),
       binding: QuieroAsistirBinding(),
     ),
+    // GetPage(
+    //   name: _Paths.ASISTENCIA,
+    //   page: () => const AsistenciaView(),
+    //   binding: AsistenciaBinding(),
+    // ),
     GetPage(
-      name: _Paths.ASISTENCIA,
-      page: () => const AsistenciaView(),
-      binding: AsistenciaBinding(),
-
       name: _Paths.RESTAURACION,
       page: () => const RestauracionView(),
       binding: RestauracionBinding(),
@@ -165,6 +166,16 @@ class AppPages {
     GetPage(
       name: _Paths.REUNIONES,
       page: () => const ReunionesView(),
+      binding: ReunionesBinding(),
+    ),
+    GetPage(
+      name: _Paths.REUNION_FORM,
+      page: () => const ReunionFormView(),
+      binding: ReunionesBinding(),
+    ),
+    GetPage(
+      name: _Paths.REUNION_FORM_EDIT,
+      page: () => const ReunionFormEditView(),
       binding: ReunionesBinding(),
     ),
   ];

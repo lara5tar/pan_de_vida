@@ -50,19 +50,31 @@ class CustomDropdown extends StatelessWidget {
             ),
             isExpanded: true,
             value: selectedItem.value.isEmpty ? null : selectedItem.value,
-            items: items
-                .map(
-                  (item) => DropdownMenuItem(
-                    value: item.text,
-                    child: Text(item.text),
-                    onTap: () {
-                      if (onChanged != null) {
-                        onChanged!(item.value);
-                      }
-                    },
-                  ),
-                )
-                .toList(),
+            items: [
+              for (int i = 0; i < items.length; i++)
+                DropdownMenuItem(
+                  value: items[i].text,
+                  child: Text(items[i].text),
+                  onTap: () {
+                    if (onChanged != null) {
+                      onChanged!(items[i].value);
+                    }
+                  },
+                ),
+            ],
+            // items
+            //     .map(
+            //       (item) => DropdownMenuItem(
+            //         value: item.text,
+            //         child: Text('${item.text}'),
+            //         onTap: () {
+            //           if (onChanged != null) {
+            //             onChanged!(item.value);
+            //           }
+            //         },
+            //       ),
+            //     )
+            //     .toList(),
             onChanged: (value) {
               selectedItem.value = value.toString();
             },

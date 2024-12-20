@@ -75,10 +75,12 @@ class CumbresView extends GetView<CumbresController> {
           Obx(
             () => CustomDropdown(
               items: [
-                for (var item in controller.listCompromisosPersona)
+                for (int i = 0;
+                    i < controller.listCompromisosPersona.length;
+                    i++)
                   DropDownItem(
-                    text: item.nombre,
-                    value: item,
+                    text: '$i. ${controller.listCompromisosPersona[i].nombre}',
+                    value: controller.listCompromisosPersona[i],
                   ),
               ],
               selectedItem: controller.compromisoPerosna,

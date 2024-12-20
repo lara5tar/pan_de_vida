@@ -108,21 +108,20 @@ class ButtonWidget extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(width: 20),
-                  if (trailing != null) ...[
-                    SizedBox(
-                      width: 60,
-                      child: Center(
-                        child: Text(trailing!.substring(0, 6)),
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                  ],
                   if (trailingWidget != null) ...[
                     SizedBox(
                       width: 60,
                       child: Center(
                         child: trailingWidget,
+                      ),
+                    ),
+                    if (trailing == null) const SizedBox(width: 20),
+                  ],
+                  if (trailing != null) ...[
+                    SizedBox(
+                      width: 60,
+                      child: Center(
+                        child: Text(trailing!.substring(0, 6)),
                       ),
                     ),
                     const SizedBox(width: 20),

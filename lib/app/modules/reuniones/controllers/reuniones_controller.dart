@@ -1,23 +1,24 @@
 import 'package:get/get.dart';
+import 'package:pan_de_vida/app/data/models/reunion_model.dart';
+import 'package:pan_de_vida/app/data/services/reuniones_service.dart';
 
 class ReunionesController extends GetxController {
-  //TODO: Implement ReunionesController
+  var reuniones = <Reunion>[].obs;
 
-  final count = 0.obs;
   @override
   void onInit() {
+    getReuniones();
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
+  getReuniones() async {
+    var result = await ReunionesService().getReuniones();
+    print(result);
 
-  @override
-  void onClose() {
-    super.onClose();
+    if (!result['error']) {
+      reuniones.value = result['data'];
+    } else {
+      Get.snackbar('Error', result['mensaje']);
+    }
   }
-
-  void increment() => count.value++;
 }
