@@ -1,23 +1,71 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pan_de_vida/app/data/services/escuela_service.dart';
+
+import '../../../../core/utils/barcode_dialog.dart';
 
 class CapturarAsistenciaController extends GetxController {
-  //TODO: Implement CapturarAsistenciaController
-
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  resultDialog(result) {
+    if (result['error']) {
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Error'),
+          content: Text(result['message']),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text('Aceptar'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Éxito'),
+          content: Text(result['message']),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text('Aceptar'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  setAsistencia() async {
+    String? barcode = await barcodeDialog();
+
+    if (barcode == null) return;
+
+    var result = await EscuelaService.setAsistencia(barcode);
+
+    resultDialog(result);
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  setTarea() async {
+    String? barcode = await barcodeDialog();
+
+    if (barcode == null) return;
+
+    var result = await EscuelaService.setTarea(barcode);
+
+    resultDialog(result);
   }
 
-  void increment() => count.value++;
+  setAsistenciaTarea() async {
+    String? barcode = await barcodeDialog();
+
+    if (barcode == null) return;
+
+    var result = await EscuelaService.setAsistenciaTarea(barcode);
+
+    resultDialog(result);
+  }
 }

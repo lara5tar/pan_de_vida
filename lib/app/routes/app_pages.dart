@@ -17,7 +17,6 @@ import '../modules/congregants/views/congregants_index_view.dart';
 import '../modules/dashboard/bindings/dashboard_binding.dart';
 import '../modules/dashboard/views/dashboard_view.dart';
 import '../modules/escuela/bindings/escuela_binding.dart';
-import '../modules/escuela/views/escuela_view.dart';
 import '../modules/grupos_de_vida/bindings/grupos_de_vida_binding.dart';
 import '../modules/grupos_de_vida/bindings/quiero_asistir_binding.dart';
 import '../modules/grupos_de_vida/views/grupos_de_vida_view.dart';
