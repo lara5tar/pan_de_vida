@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:pan_de_vida/app/widgets/button_widget.dart';
-import 'package:pan_de_vida/app/widgets/custom_scaffold.dart';
-import 'package:pan_de_vida/app/widgets/elevated_button_widget.dart';
 
+import '../../../widgets/custom_scaffold.dart';
+import '../../../widgets/elevated_button_widget.dart';
 import '../controllers/quiero_asistir_controller.dart';
 
 class QuieroAsistirView extends GetView<QuieroAsistirController> {
@@ -18,14 +16,12 @@ class QuieroAsistirView extends GetView<QuieroAsistirController> {
       setBanner: false,
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(
-          horizontal: 20,
+          horizontal: 30,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // SizedBox(
-            //   width: Get.width,
-            // ),
+            const SizedBox(height: 50),
             Image.asset(
               'assets/pandevida_logo.png',
               height: 200,
@@ -38,6 +34,7 @@ class QuieroAsistirView extends GetView<QuieroAsistirController> {
                 fontSize: 18,
                 // fontWeight: FontWeight.bold,
               ),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
             Container(
@@ -45,9 +42,6 @@ class QuieroAsistirView extends GetView<QuieroAsistirController> {
               padding: const EdgeInsets.symmetric(
                 horizontal: 20,
                 vertical: 10,
-              ),
-              margin: const EdgeInsets.symmetric(
-                horizontal: 15,
               ),
               child: Column(
                 children: [
@@ -102,7 +96,9 @@ class QuieroAsistirView extends GetView<QuieroAsistirController> {
             const SizedBox(height: 20),
             ElevatedButtonWidget(
               text: 'Enviar',
-              onPressed: () {},
+              onPressed: () {
+                controller.enviar();
+              },
             ),
           ],
         ),

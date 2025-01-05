@@ -8,6 +8,8 @@ import '../../../routes/app_pages.dart';
 class ProspectosController extends GetxController {
   var prospectos = <Prospecto>[].obs;
 
+  var isLoading = true.obs;
+
   @override
   void onInit() {
     getProspectos();
@@ -23,6 +25,7 @@ class ProspectosController extends GetxController {
 
     if (!result['error']) {
       prospectos.value = result['prospectos'];
+      isLoading.value = false;
     }
   }
 

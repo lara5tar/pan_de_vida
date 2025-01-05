@@ -27,6 +27,8 @@ class MapGroupsView extends GetView<MapGroupsController> {
                 zoom: 12,
               ),
               markers: controller.markers,
+              //mover las posiciones de los controles
+              padding: const EdgeInsets.only(bottom: 50),
             ),
             if (controller.bottomSheetVisible.value)
               Positioned.fill(

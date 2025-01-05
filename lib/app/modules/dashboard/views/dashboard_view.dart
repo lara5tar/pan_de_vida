@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../../routes/app_pages.dart';
 import '../../../widgets/custom_scaffold.dart';
 import '../controllers/dashboard_controller.dart';
 
@@ -10,6 +11,12 @@ class DashboardView extends GetView<DashboardController> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
+      leading: CustomLeadingButton(
+        icon: Icons.power_settings_new_outlined,
+        onPressed: () {
+          Get.offAllNamed(Routes.LANDING);
+        },
+      ),
       body: ListView(
         padding: const EdgeInsets.all(0),
         children: [

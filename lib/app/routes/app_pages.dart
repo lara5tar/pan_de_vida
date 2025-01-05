@@ -1,12 +1,15 @@
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/modules/escuela/views/capturar_asistencia_view.dart';
-import 'package:pan_de_vida/app/modules/escuela/views/capturar_pago_view.dart';
+import 'package:pan_de_vida/app/modules/clases/views/clase_cuestionario_video_view.dart';
+import 'package:pan_de_vida/app/modules/clases/views/clase_cuestionario_view.dart';
+import 'package:pan_de_vida/app/modules/clases/views/clase_videos_view.dart';
 
 import '../modules/affirmation/bindings/affirmation_binding.dart';
 import '../modules/affirmation/views/affirmation_index_view.dart';
 import '../modules/affirmation/views/affirmation_videos_view.dart';
 import '../modules/alertas/bindings/alertas_binding.dart';
 import '../modules/alertas/views/alertas_view.dart';
+import '../modules/clases/bindings/clases_binding.dart';
+import '../modules/clases/views/clases_view.dart';
 import '../modules/congregants/bindings/congregants_binding.dart';
 import '../modules/congregants/views/congregant_adress_view.dart';
 import '../modules/congregants/views/congregant_affirmation_view.dart';
@@ -17,6 +20,8 @@ import '../modules/congregants/views/congregants_index_view.dart';
 import '../modules/dashboard/bindings/dashboard_binding.dart';
 import '../modules/dashboard/views/dashboard_view.dart';
 import '../modules/escuela/bindings/escuela_binding.dart';
+import '../modules/escuela/views/capturar_asistencia_view.dart';
+import '../modules/escuela/views/capturar_pago_view.dart';
 import '../modules/grupos_de_vida/bindings/grupos_de_vida_binding.dart';
 import '../modules/grupos_de_vida/bindings/quiero_asistir_binding.dart';
 import '../modules/grupos_de_vida/views/grupos_de_vida_view.dart';
@@ -192,6 +197,26 @@ class AppPages {
       name: _Paths.CAPTURAR_PAGO,
       page: () => const CapturarPagoView(),
       binding: EscuelaBinding(),
+    ),
+    GetPage(
+      name: _Paths.CLASES,
+      page: () => const ClasesView(),
+      binding: ClasesBinding(),
+    ),
+    GetPage(
+      name: _Paths.CLASE_VIDEOS,
+      page: () => const ClaseVideosView(),
+      binding: ClasesBinding(),
+    ),
+    GetPage(
+      name: _Paths.CLASE_CUESTIONARIO,
+      page: () => const ClaseCuestionarioView(),
+      binding: ClasesBinding(),
+    ),
+    GetPage(
+      name: _Paths.CLASE_CUESTIONARIO_VIDEO,
+      page: () => const ClaseCuestionarioVideoView(),
+      binding: ClasesBinding(),
     ),
   ];
 }

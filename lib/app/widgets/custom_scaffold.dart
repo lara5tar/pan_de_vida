@@ -36,11 +36,12 @@ class CustomScaffold extends StatelessWidget {
             const SizedBox(height: 80),
             leading != null || setLeading
                 ? leading ??
-                    IconButton(
-                      icon: const Icon(
-                        Icons.arrow_back_ios_new_rounded,
-                        color: Colors.white,
-                        size: 35,
+                    CustomLeadingButton(
+                      style: ButtonStyle(
+                        padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+                          const EdgeInsets.only(
+                              left: 6, top: 8, right: 10, bottom: 8),
+                        ),
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -49,7 +50,7 @@ class CustomScaffold extends StatelessWidget {
                 : const SizedBox.shrink(),
           ],
         ),
-        leadingWidth: 90,
+        leadingWidth: 98,
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
           statusBarIconBrightness:
@@ -91,6 +92,51 @@ class CustomScaffold extends StatelessWidget {
       ),
       floatingActionButton: floatingActionButton,
       bottomSheet: bottomSheet,
+    );
+  }
+}
+
+class CustomLeadingButton extends StatelessWidget {
+  final IconData icon;
+  final ButtonStyle? style;
+  final Function()? onPressed;
+  const CustomLeadingButton({
+    super.key,
+    this.icon = Icons.arrow_back_ios_new_rounded,
+    this.style,
+    this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      style: style != null
+          ? style?.copyWith(
+              shape: WidgetStateProperty.all<CircleBorder>(
+                const CircleBorder(
+                  side: BorderSide(color: Colors.white, width: 3),
+                ),
+              ),
+              backgroundColor: WidgetStateProperty.all<Color>(
+                Colors.blue.shade800.withOpacity(0.5),
+              ),
+            )
+          : ButtonStyle(
+              shape: WidgetStateProperty.all<CircleBorder>(
+                const CircleBorder(
+                  side: BorderSide(color: Colors.white, width: 3),
+                ),
+              ),
+              backgroundColor: WidgetStateProperty.all<Color>(
+                Colors.blue.shade800.withOpacity(0.5),
+              ),
+            ),
+      icon: Icon(
+        icon,
+        color: Colors.white,
+        size: 35,
+      ),
+      onPressed: onPressed,
     );
   }
 }

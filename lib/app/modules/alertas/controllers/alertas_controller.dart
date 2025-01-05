@@ -1,23 +1,33 @@
 import 'package:get/get.dart';
 
-class AlertasController extends GetxController {
-  //TODO: Implement AlertasController
+import '../../../data/models/alerta_model.dart';
+import '../../../data/services/alerta_service.dart';
 
-  final count = 0.obs;
+class AlertasController extends GetxController {
+  List<Alerta> alertas = [];
+  List<Alerta> alertasEquipo = [];
+
+  var isLoading = true.obs;
+
   @override
   void onInit() {
+    getAlertas();
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
+  getAlertas() async {
+    var result = await AlertaService.obtener();
 
-  @override
-  void onClose() {
-    super.onClose();
+    if (!result['error']) {
+      alertas = result['alerta'];
+      alertasEquipo = result['alertaEquipo'];
+      isLoading.value = false;
+    } else {
+      Get.snackbar(
+        'Error',
+        'No se pudo obtener las alertas',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
-
-  void increment() => count.value++;
 }

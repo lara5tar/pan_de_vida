@@ -23,35 +23,66 @@ class LoginView extends GetView<LoginController> {
               'assets/pandevida_logo.png',
               height: 200,
             ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Column(
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              margin: const EdgeInsets.all(30.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Obx(
+                () => Column(
                   children: [
-                    const SizedBox(height: 40),
-                    CustomTextField(
-                      'Usuario',
-                      controller: controller.userController,
-                    ),
+                    if (controller.isLogged.value) ...[
+                      const SizedBox(height: 30),
+                      Row(
+                        children: [
+                          Text(
+                            'Bienvenido, ${controller.user}...',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[800],
+                              overflow: TextOverflow.visible,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ] else ...[
+                      const SizedBox(height: 40),
+                      CustomTextField(
+                        'Usuario',
+                        controller: controller.userController,
+                      ),
+                    ],
                     const SizedBox(height: 20),
                     PasswordField(
                       controller: controller.passwordController,
+                      onEditingComplete: () {
+                        controller.login();
+                      },
                     ),
                     const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: ElevatedButtonWidget(
-                        text: 'Ingresar al sistema',
-                        onPressed: () {
-                          controller.login();
-                        },
-                      ),
+                    ElevatedButtonWidget(
+                      text: 'Ingresar al sistema',
+                      onPressed: () {
+                        controller.login();
+                      },
                     ),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 10),
+                    if (controller.isLogged.value) ...[
+                      TextButton(
+                        onPressed: () {
+                          controller.logout();
+                        },
+                        child: Text(
+                          'Cerrar sessión',
+                          style: TextStyle(color: Colors.blue.shade800),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                    ] else
+                      const SizedBox(height: 30),
                   ],
                 ),
               ),

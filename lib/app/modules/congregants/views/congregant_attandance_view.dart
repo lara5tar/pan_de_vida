@@ -13,9 +13,9 @@ class CongregantAttandanceView extends GetView<CongregantAttandanceController> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            const SizedBox(height: 20),
             ...buildGroupAttendance(controller.groupAttendance),
             const SizedBox(height: 20),
             ...buildSchoolAttendance(controller.schoolAttendance),

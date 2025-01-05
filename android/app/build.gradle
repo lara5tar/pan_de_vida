@@ -18,9 +18,19 @@ android {
         jvmTarget = "17"
     }
 
+    signingConfigs {
+        release {
+            // Ruta al archivo KeyStore
+            storeFile file("../../keystore.jks") // Asegúrate de que esta ruta sea válida.
+            storePassword "hela031105" // Contraseña del KeyStore
+            keyAlias "pan_de_vida_test01" // Alias de la clave
+            keyPassword "hela031105" // Contraseña de la clave
+        }
+    }
+
     defaultConfig {
         // Cambia este applicationId a un ID único para tu aplicación.
-        applicationId = "com.example.pan_de_vida"
+        applicationId = "com.campustd.pandevida"
         // Configuración mínima, objetivo y versiones de SDK.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
@@ -30,10 +40,18 @@ android {
 
     buildTypes {
         release {
-            // Firma con claves de depuración para permitir `flutter run --release`.
-            signingConfig = signingConfigs.debug
+            // Asocia la configuración de firma con el tipo de build release
+            signingConfig signingConfigs.release
+
+            // Habilita la minimización de código y recursos
+            minifyEnabled true
+            shrinkResources true
+
+            // ProGuard
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 flutter {

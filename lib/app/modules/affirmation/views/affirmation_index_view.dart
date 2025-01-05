@@ -16,9 +16,8 @@ class AffirmationIndexView extends GetView<AffirmationIndexController> {
         () => controller.afirmaciones.isEmpty
             ? const LoadingWidget()
             : ListView(
-                padding: const EdgeInsets.all(0),
+                padding: const EdgeInsets.all(20),
                 children: [
-                  const SizedBox(height: 20),
                   const TextTitleWidget('Mis Ovejas'),
                   for (var congregant in controller.afirmaciones)
                     ButtonWidget(

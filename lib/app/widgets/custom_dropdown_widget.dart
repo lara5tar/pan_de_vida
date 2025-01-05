@@ -26,9 +26,9 @@ class CustomDropdown extends StatelessWidget {
       padding: const EdgeInsets.symmetric(
         vertical: 10,
       ),
-      margin: const EdgeInsets.symmetric(
-        horizontal: 20,
-      ),
+      // margin: const EdgeInsets.symmetric(
+      //   horizontal: 20,
+      // ),
       child: Obx(
         () => InkWell(
           onTap: () {

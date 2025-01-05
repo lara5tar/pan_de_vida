@@ -13,10 +13,10 @@ class CongregantInfoView extends GetView<CongregantInfoController> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
             const TextTitleWidget('Datos Generales'),
             ButtonWidget(
               icon: Icons.info,

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/routes/app_pages.dart';
-import 'package:pan_de_vida/app/widgets/button_widget.dart';
-import 'package:pan_de_vida/app/widgets/loading_widget.dart';
-import 'package:pan_de_vida/app/widgets/text_title_widget.dart';
+import 'package:pan_de_vida/app/widgets/text_subtitle_widget.dart';
 
+import '../../../routes/app_pages.dart';
+import '../../../widgets/button_widget.dart';
 import '../../../widgets/custom_scaffold.dart';
+import '../../../widgets/loading_widget.dart';
+import '../../../widgets/text_title_widget.dart';
 import '../controllers/congregants_index_controller.dart';
 
 class CongregantsIndexView extends GetView<CongregantsIndexController> {
@@ -16,13 +16,14 @@ class CongregantsIndexView extends GetView<CongregantsIndexController> {
     controller.getCongregants();
     return CustomScaffold(
       body: Obx(
-        () => controller.ovejas.isEmpty && controller.nietos.isEmpty
+        () => controller.isLoadning.value
             ? const LoadingWidget()
             : ListView(
-                padding: const EdgeInsets.all(0),
+                padding: const EdgeInsets.all(20),
                 children: [
-                  const SizedBox(height: 20),
                   const TextTitleWidget('Mis 3'),
+                  if (controller.ovejas.isEmpty)
+                    const TextSubtitleWidget('No hay congregantes'),
                   for (var congregant in controller.ovejas)
                     ButtonWidget(
                       text: congregant.nombre,
@@ -38,6 +39,8 @@ class CongregantsIndexView extends GetView<CongregantsIndexController> {
                     ),
                   const SizedBox(height: 20),
                   const TextTitleWidget('Los 3 de mis 3'),
+                  if (controller.nietos.isEmpty)
+                    const TextSubtitleWidget('No hay congregantes'),
                   for (var congregant in controller.nietos)
                     ButtonWidget(
                       title: '(${congregant.mentor})',

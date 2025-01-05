@@ -11,5 +11,6 @@ class Keys {
   static const String COD_CONGREGANTE_KEY = 'codCongregante';
   static const String COD_CASA_VIDA_KEY = 'codCasaVida';
   static const String COD_HOGAR_KEY = 'codHogar';
+  static const String USER_KEY = 'user';
   static const String ROLES_KEY = 'roles';
 }

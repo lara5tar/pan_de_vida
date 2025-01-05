@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/widgets/button_widget.dart';
-import 'package:pan_de_vida/app/widgets/custom_scaffold.dart';
-import 'package:pan_de_vida/app/widgets/loading_widget.dart';
-import 'package:pan_de_vida/app/widgets/text_title_widget.dart';
 
 import '../../../routes/app_pages.dart';
+import '../../../widgets/button_widget.dart';
+import '../../../widgets/custom_scaffold.dart';
+import '../../../widgets/loading_widget.dart';
+import '../../../widgets/text_subtitle_widget.dart';
+import '../../../widgets/text_title_widget.dart';
 import '../controllers/prospectos_controller.dart';
 
 class ProspectosView extends GetView<ProspectosController> {
@@ -21,13 +22,14 @@ class ProspectosView extends GetView<ProspectosController> {
         icon: Icons.person_add,
       ),
       body: Obx(
-        () => controller.prospectos.isEmpty
+        () => controller.isLoading.value
             ? const LoadingWidget()
             : ListView(
-                padding: const EdgeInsets.all(0),
+                padding: const EdgeInsets.all(20),
                 children: [
-                  const SizedBox(height: 20),
                   const TextTitleWidget('Prospectos'),
+                  if (controller.prospectos.isEmpty)
+                    const TextSubtitleWidget('No hay prospectos'),
                   for (var prospecto in controller.prospectos)
                     ButtonWidget(
                       text: prospecto.nombre,

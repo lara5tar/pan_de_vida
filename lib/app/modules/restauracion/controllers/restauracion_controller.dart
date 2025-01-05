@@ -8,7 +8,7 @@ import '../../../routes/app_pages.dart';
 
 class RestauracionController extends GetxController {
   var congregantes = <Congregant>[].obs;
-
+  var isLoading = true.obs;
   @override
   void onInit() {
     super.onInit();
@@ -21,7 +21,8 @@ class RestauracionController extends GetxController {
     var result = await RestauracionService().getCongregantesRestauracion();
 
     if (!result['error']) {
-      congregantes.addAll(result['data']);
+      congregantes.value = result['data'];
+      isLoading.value = false;
     } else {
       Get.snackbar('Error', result['message']);
     }

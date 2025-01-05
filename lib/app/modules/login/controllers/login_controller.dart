@@ -8,9 +8,49 @@ import '../../../routes/app_pages.dart';
 class LoginController extends GetxController {
   TextEditingController userController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  AuthService authService = AuthService();
+
+  var isLogged = false.obs;
+  String? get user => authService.getUser;
+
+  @override
+  void onInit() {
+    isLogged.value = authService.isLogged;
+    super.onInit();
+  }
+
+  Future<void> logout() async {
+    authService.logout();
+    isLogged.value = false;
+  }
 
   Future<void> login() async {
-    AuthService authService = AuthService();
+    if (authService.isLogged) {
+      var response = await authService.checkPassword(passwordController.text);
+
+      // Get.back();
+
+      if (response['error'] == true) {
+        Get.dialog(
+          AlertDialog(
+            title: const Text('Error'),
+            content: Text('${response['message']}'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: const Text('Aceptar'),
+              ),
+            ],
+          ),
+        );
+      } else {
+        Get.toNamed(Routes.DASHBOARD);
+      }
+
+      return;
+    }
 
     Get.dialog(
       const AlertDialog(

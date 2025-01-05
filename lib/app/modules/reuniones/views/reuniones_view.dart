@@ -20,9 +20,9 @@ class ReunionesView extends GetView<ReunionesController> {
         () => controller.reuniones.isEmpty
             ? const LoadingWidget()
             : SingleChildScrollView(
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    const SizedBox(height: 20),
                     const TextTitleWidget('Reuniones'),
                     for (Reunion reunion in controller.reuniones)
                       ButtonWidget(

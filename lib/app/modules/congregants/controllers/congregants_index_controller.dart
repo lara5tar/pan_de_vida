@@ -7,7 +7,7 @@ class CongregantsIndexController extends GetxController {
   var ovejas = <Congregant>[].obs;
   var nietos = <Congregant>[].obs;
 
-  var isErrored = false.obs;
+  var isLoadning = true.obs;
 
   @override
   void onInit() {
@@ -23,9 +23,10 @@ class CongregantsIndexController extends GetxController {
     if (!result['error']) {
       ovejas.value = result['ovejas'];
       nietos.value = result['nietos'];
+
+      isLoadning.value = false;
     } else {
       Get.snackbar('Error', result['message']);
-      isErrored.value = true;
     }
   }
 }

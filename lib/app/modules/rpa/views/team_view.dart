@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/widgets/button_widget.dart';
-import 'package:pan_de_vida/app/widgets/loading_widget.dart';
-import 'package:pan_de_vida/app/widgets/text_subtitle_widget.dart';
-import 'package:pan_de_vida/app/widgets/text_title_widget.dart';
 
+import '../../../widgets/button_widget.dart';
 import '../../../widgets/custom_scaffold.dart';
+import '../../../widgets/loading_widget.dart';
+import '../../../widgets/text_subtitle_widget.dart';
+import '../../../widgets/text_title_widget.dart';
 import '../controllers/team_controller.dart';
 
 class TeamView extends GetView<TeamController> {
@@ -20,9 +20,8 @@ class TeamView extends GetView<TeamController> {
                 controller.noMarcador.isEmpty
             ? const LoadingWidget()
             : ListView(
-                padding: const EdgeInsets.all(0),
+                padding: const EdgeInsets.all(20),
                 children: [
-                  const SizedBox(height: 20),
                   const TextTitleWidget('Cumbres de mi Equipo'),
                   const TextSubtitleWidget(
                       'No han capturado cumbres esta semana'),

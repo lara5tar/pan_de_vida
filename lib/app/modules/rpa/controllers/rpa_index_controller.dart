@@ -7,6 +7,8 @@ class RpaIndexController extends GetxController {
   var cumbres = <Cumbre>[].obs;
   String? codCongregante = Get.parameters['id'];
 
+  var isLoadning = true.obs;
+
   @override
   void onInit() {
     getCumbres();
@@ -18,6 +20,7 @@ class RpaIndexController extends GetxController {
 
     if (!response['error']) {
       cumbres.value = response['cumbres'];
+      isLoadning.value = false;
     }
   }
 }

@@ -23,7 +23,7 @@ class GruposDeVidaController extends GetxController {
   }
 
   Future<void> callButton() async {
-    await FlutterPhoneDirectCaller.callNumber('8331259913');
+    await FlutterPhoneDirectCaller.callNumber('8332841754');
   }
 
   void webButton() {}

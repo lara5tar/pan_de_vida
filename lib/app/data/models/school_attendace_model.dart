@@ -47,11 +47,13 @@ class AttendanceDetail {
   final String idClase;
   final String fecha;
   final bool asistencia;
+  final bool tarea;
 
   AttendanceDetail({
     required this.idClase,
     required this.fecha,
     required this.asistencia,
+    required this.tarea,
   });
 
   factory AttendanceDetail.fromJson(Map<String, dynamic> json) {
@@ -59,6 +61,7 @@ class AttendanceDetail {
       idClase: json['NUMCLASE'] ?? '',
       fecha: json['FECHAASIS'] ?? '',
       asistencia: json['ASISTENCIA'] == 'ASISTENCIA' ? true : false,
+      tarea: json['TAREA'] == '1' ? true : false,
     );
   }
 
@@ -67,6 +70,7 @@ class AttendanceDetail {
       'NUMCLASE': idClase,
       'FECHAASIS': fecha,
       'ASISTENCIA': asistencia,
+      'TAREA': tarea,
     };
   }
 
@@ -75,11 +79,12 @@ class AttendanceDetail {
       idClase: '',
       fecha: '',
       asistencia: false,
+      tarea: false,
     );
   }
 
   @override
   String toString() {
-    return 'AttendanceDetail(idReunion: $idClase, fecha: $fecha, asistencia: $asistencia)';
+    return 'AttendanceDetail(idReunion: $idClase, fecha: $fecha, asistencia: $asistencia, tarea: $tarea)';
   }
 }

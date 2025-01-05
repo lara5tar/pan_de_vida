@@ -14,88 +14,87 @@ class CumbresView extends GetView<CumbresController> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      body: ListView(
-        padding: const EdgeInsets.symmetric(
-          vertical: 0,
-          horizontal: 0,
-        ),
-        children: [
-          const SizedBox(height: 20),
-          const TextTitleWidget('Nueva Cumbre'),
-          const SizedBox(height: 20),
-          const TextSubtitleWidget('1. ACCIÓN'),
-          Obx(
-            () => CustomDropdown(
-              items: [
-                for (var item in controller.listAcciones)
-                  DropDownItem(
-                    text: item.accion,
-                    value: item,
-                  ),
-              ],
-              selectedItem: controller.accion,
-              hint: 'Seleccione una acción',
-              onChanged: controller.onSelectAccion,
-            ),
-          ),
-          const SizedBox(height: 20),
-          const TextSubtitleWidget('2. MARCADOR'),
-          Obx(() {
-            return CustomDropdown(
-              items: [
-                for (var item in controller.listMarcadores)
-                  DropDownItem(
-                    text: item.movimiento,
-                    value: item,
-                  ),
-              ],
-              selectedItem: controller.marcador,
-              hint: 'Movimiento',
-              onChanged: controller.onSelectMarcador,
-            );
-          }),
-          const SizedBox(height: 20),
-          const TextSubtitleWidget('3. COMPROMISO'),
-          Obx(
-            () {
-              return CustomDropdown(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            const TextTitleWidget('Nueva Cumbre'),
+            const SizedBox(height: 20),
+            const TextSubtitleWidget('1. ACCIÓN'),
+            Obx(
+              () => CustomDropdown(
                 items: [
-                  for (var item in controller.listCompromisosAccion)
+                  for (var item in controller.listAcciones)
                     DropDownItem(
-                      text: item.codcumbre,
+                      text: item.accion,
                       value: item,
                     ),
                 ],
-                selectedItem: controller.comprmisoAccion,
+                selectedItem: controller.accion,
                 hint: 'Seleccione una acción',
-                onChanged: controller.onSelectCompromiso,
-              );
-            },
-          ),
-          Obx(
-            () => CustomDropdown(
-              items: [
-                for (int i = 0;
-                    i < controller.listCompromisosPersona.length;
-                    i++)
-                  DropDownItem(
-                    text: '$i. ${controller.listCompromisosPersona[i].nombre}',
-                    value: controller.listCompromisosPersona[i],
-                  ),
-              ],
-              selectedItem: controller.compromisoPerosna,
-              hint: 'Seleccione una persona',
-              onChanged: controller.onSelectedPersona,
+                onChanged: controller.onSelectAccion,
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          ElevatedButtonWidget(
-            text: 'Enviar',
-            onPressed: () {
-              controller.setCumbre();
-            },
-          ),
-        ],
+            const SizedBox(height: 20),
+            const TextSubtitleWidget('2. MARCADOR'),
+            Obx(() {
+              return CustomDropdown(
+                items: [
+                  for (var item in controller.listMarcadores)
+                    DropDownItem(
+                      text: item.movimiento,
+                      value: item,
+                    ),
+                ],
+                selectedItem: controller.marcador,
+                hint: 'Movimiento',
+                onChanged: controller.onSelectMarcador,
+              );
+            }),
+            const SizedBox(height: 20),
+            const TextSubtitleWidget('3. COMPROMISO'),
+            Obx(
+              () {
+                return CustomDropdown(
+                  items: [
+                    for (var item in controller.listCompromisosAccion)
+                      DropDownItem(
+                        text: item.codcumbre,
+                        value: item,
+                      ),
+                  ],
+                  selectedItem: controller.comprmisoAccion,
+                  hint: 'Seleccione una acción',
+                  onChanged: controller.onSelectCompromiso,
+                );
+              },
+            ),
+            Obx(
+              () => CustomDropdown(
+                items: [
+                  for (int i = 0;
+                      i < controller.listCompromisosPersona.length;
+                      i++)
+                    DropDownItem(
+                      text:
+                          '$i. ${controller.listCompromisosPersona[i].nombre}',
+                      value: controller.listCompromisosPersona[i],
+                    ),
+                ],
+                selectedItem: controller.compromisoPerosna,
+                hint: 'Seleccione una persona',
+                onChanged: controller.onSelectedPersona,
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButtonWidget(
+              text: 'Enviar',
+              onPressed: () {
+                controller.setCumbre();
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

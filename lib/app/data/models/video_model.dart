@@ -7,6 +7,8 @@ class Video {
   final String codaccion;
   final String status;
   final String activo;
+  final bool adjunto;
+  final String numClase;
 
   Video({
     required this.codvideo,
@@ -17,18 +19,22 @@ class Video {
     required this.codaccion,
     required this.status,
     required this.activo,
+    required this.adjunto,
+    required this.numClase,
   });
 
   factory Video.fromJson(Map<String, dynamic> json) {
     return Video(
-      codvideo: json['CODVIDEO'] ?? '' ?? '',
+      codvideo: json['CODVIDEO'] ?? json['codVideo'] ?? '',
       tipo: json['TIPO'] ?? '',
-      numvideo: json['NUMVIDEO'] ?? '',
+      numvideo: json['NUMVIDEO'] ?? json['numVideo'] ?? '',
       predecesor: json['PREDECESOR'] ?? '',
-      url: json['URL'] ?? '',
+      url: json['URL'] ?? json['url'] ?? '',
       codaccion: json['CODACCION'] ?? '',
       status: json['STATUS'] ?? '',
       activo: json['ACTIVO'] ?? '',
+      adjunto: json['ADJUNTO'] != null,
+      numClase: json['numClase'] ?? '',
     );
   }
 
@@ -42,6 +48,8 @@ class Video {
       'CODACCION': codaccion,
       'STATUS': status,
       'ACTIVO': activo,
+      'ADJUNTO': adjunto,
+      'numClase': numClase,
     };
   }
 
@@ -55,11 +63,13 @@ class Video {
       codaccion: '',
       status: '',
       activo: '',
+      adjunto: false,
+      numClase: '',
     );
   }
 
   @override
   String toString() {
-    return 'Video(codvideo: $codvideo, tipo: $tipo, numvideo: $numvideo, predecesor: $predecesor, url: $url, codaccion: $codaccion, status: $status, activo: $activo)';
+    return 'Video(codvideo: $codvideo, tipo: $tipo, numvideo: $numvideo, predecesor: $predecesor, url: $url, codaccion: $codaccion, status: $status, activo: $activo, adjunto: $adjunto, numClase: $numClase)';
   }
 }

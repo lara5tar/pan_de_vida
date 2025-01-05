@@ -37,39 +37,42 @@ class ButtonWidget extends StatelessWidget {
         }
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        child: Container(
-          color: Colors.white.withOpacity(0.8),
-          child: Column(
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 60,
-                    child: Icon(
-                      icon,
-                      size: 20,
-                      color: colorIcon,
-                    ),
+        color: Colors.white.withOpacity(0.8),
+        child: Column(
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 60,
+                  child: Icon(
+                    icon,
+                    size: 20,
+                    color: colorIcon,
                   ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (title == null && subtitle == null)
-                          const SizedBox(height: 10),
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (title == null && subtitle == null)
                         const SizedBox(height: 10),
-                        if (title != null)
-                          Text(
+                      const SizedBox(height: 10),
+                      if (title != null)
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Text(
                             title!,
                             style: TextStyle(
                               fontSize: 12,
                               color: Colors.grey[800],
                             ),
                           ),
-                        Text(
+                        ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Text(
                           text.isEmpty ? 'Sin datos' : text,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -77,74 +80,77 @@ class ButtonWidget extends StatelessWidget {
                           ),
                           overflow: TextOverflow.visible,
                         ),
-                        if (subtitle != null)
-                          Text(
+                      ),
+                      if (subtitle != null)
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Text(
                             subtitle!.isEmpty ? 'Sin datos' : subtitle!,
                             style: TextStyle(
                               fontSize: 12,
                               color: Colors.grey[800],
                             ),
                           ),
-                        // if (options != null)
-                        //   Row(
-                        //     mainAxisSize: MainAxisSize.max,
-                        //     children: [
-                        //       for (var option in options!)
-                        //         Expanded(
-                        //           child: IconButton(
-                        //             onPressed: () {},
-                        //             icon: Icon(
-                        //               option.icon,
-                        //               size: 20,
-                        //               color: Colors.grey[600],
-                        //             ),
-                        //           ),
-                        //         ),
-                        //     ],
-                        //   ),
+                        ),
+                      // if (options != null)
+                      //   Row(
+                      //     mainAxisSize: MainAxisSize.max,
+                      //     children: [
+                      //       for (var option in options!)
+                      //         Expanded(
+                      //           child: IconButton(
+                      //             onPressed: () {},
+                      //             icon: Icon(
+                      //               option.icon,
+                      //               size: 20,
+                      //               color: Colors.grey[600],
+                      //             ),
+                      //           ),
+                      //         ),
+                      //     ],
+                      //   ),
+                      const SizedBox(height: 10),
+                      if (title == null && subtitle == null)
                         const SizedBox(height: 10),
-                        if (title == null && subtitle == null)
-                          const SizedBox(height: 10),
-                      ],
+                    ],
+                  ),
+                ),
+                if (trailingWidget != null) ...[
+                  SizedBox(
+                    width: 60,
+                    child: Center(
+                      child: trailingWidget,
                     ),
                   ),
-                  if (trailingWidget != null) ...[
-                    SizedBox(
-                      width: 60,
-                      child: Center(
-                        child: trailingWidget,
-                      ),
-                    ),
-                    if (trailing == null) const SizedBox(width: 20),
-                  ],
-                  if (trailing != null) ...[
-                    SizedBox(
-                      width: 60,
-                      child: Center(
-                        child: Text(trailing!.substring(0, 6)),
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                  ],
+                  if (trailing == null) const SizedBox(width: 20),
                 ],
-              ),
-              Row(
-                children: [
-                  const SizedBox(width: 60),
-                  Expanded(
-                    child: Container(
-                      height: 2,
-                      decoration: BoxDecoration(
-                        color: isLast ? Colors.transparent : Colors.grey[300],
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+                if (trailing != null) ...[
+                  SizedBox(
+                    width: 60,
+                    child: Center(
+                      child: Text(trailing!.substring(0, 6)),
                     ),
                   ),
                   const SizedBox(width: 20),
                 ],
-              ),
-            ],
-          ),
+              ],
+            ),
+            Row(
+              children: [
+                const SizedBox(width: 60),
+                Expanded(
+                  child: Container(
+                    height: 2,
+                    decoration: BoxDecoration(
+                      color: isLast ? Colors.transparent : Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 20),
+              ],
+            ),
+          ],
         ),
       ),
     );

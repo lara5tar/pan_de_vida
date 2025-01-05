@@ -25,17 +25,18 @@ abstract class Routes {
   static const AFFIRMATION_INDEX = _Paths.AFFIRMATION_INDEX;
   static const AFFIRMATION_VIDEOS = _Paths.AFFIRMATION_VIDEOS;
   static const JOIN_GROUP = _Paths.JOIN_GROUP;
-  // static const ASISTENCIA = _Paths.ASISTENCIA;
-
   static const RESTAURACION = _Paths.RESTAURACION;
   static const RESTAURACION_CONGREGANTES = _Paths.RESTAURACION_CONGREGANTES;
   static const REUNIONES = _Paths.REUNIONES;
   static const REUNION_FORM = _Paths.REUNION_FORM;
   static const REUNION_FORM_EDIT = _Paths.REUNION_FORM_EDIT;
-  // static const ESCUELA = _Paths.ESCUELA;
   static const CAPTURAR_ASISTENCIA = _Paths.CAPTURAR_ASISTENCIA;
   static const CAPTURAR_PAGO = _Paths.CAPTURAR_PAGO;
   static const ALERTAS = _Paths.ALERTAS;
+  static const CLASES = _Paths.CLASES;
+  static const CLASE_VIDEOS = _Paths.CLASE_VIDEOS;
+  static const CLASE_CUESTIONARIO = _Paths.CLASE_CUESTIONARIO;
+  static const CLASE_CUESTIONARIO_VIDEO = _Paths.CLASE_CUESTIONARIO_VIDEO;
 }
 
 abstract class _Paths {
@@ -63,18 +64,22 @@ abstract class _Paths {
   static const AFFIRMATION_VIDEOS = '/affirmation/videos';
 
   static const JOIN_GROUP = '/grupos-de-vida/join';
-  // static const ASISTENCIA = '/asistencia';
-
   static const RESTAURACION = '/list-restauracion';
   static const RESTAURACION_CONGREGANTES = '$RESTAURACION/congregantes';
 
   static const REUNIONES = '/grupoVida-hist-grupo';
   static const REUNION_FORM = '/grupoVida-asistencia-datos';
+
   static const REUNION_FORM_EDIT = '/reunion-form-edit';
-  // static const ESCUELA = '/escuela';
   static const CAPTURAR_ASISTENCIA = '/escuela-asistencia';
   static const CAPTURAR_PAGO = '/escuela-pago';
+
   static const ALERTAS = '/alertas';
+
+  static const CLASES = '/asistencias';
+  static const CLASE_VIDEOS = '$CLASES/CLASE_VIDEOS';
+  static const CLASE_CUESTIONARIO = '$CLASES/CLASE_CUESTIONARIO';
+  static const CLASE_CUESTIONARIO_VIDEO = '$CLASES/CLASE_CUESTIONARIO_VIDEO';
 }
 
 // List<String> opciones = [
