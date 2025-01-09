@@ -8,6 +8,7 @@ import 'app/routes/app_pages.dart';
 import 'core/values/keys.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await GetStorage.init(Keys.LOGIN_KEY);
 

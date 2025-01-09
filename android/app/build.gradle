@@ -7,6 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.pan_de_vida"
+    // namespace = "com.campustd.pandevida"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -30,7 +31,7 @@ android {
 
     defaultConfig {
         // Cambia este applicationId a un ID único para tu aplicación.
-        applicationId = "com.campustd.pandevida"
+        applicationId = "com.campustd.pandevidarenovado"
         // Configuración mínima, objetivo y versiones de SDK.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion

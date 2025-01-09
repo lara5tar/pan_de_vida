@@ -1,4 +1,6 @@
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../data/models/affirmation_model.dart';
 import '../../../data/models/group_attendance_model.dart';
@@ -87,5 +89,17 @@ class CongregantProfileController extends GetxController {
 
   toCongrengatAttendance() {
     Get.toNamed(Routes.CONGREGANT_ATTENDANCE);
+  }
+
+  toWhatsApp() async {
+    String url =
+        "https://wa.me/${congregant.cel}?text=${Uri.encodeComponent('Hola, ${congregant.nombre}')}";
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+    } else {}
+  }
+
+  toCall() async {
+    await FlutterPhoneDirectCaller.callNumber(congregant.cel);
   }
 }

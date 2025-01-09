@@ -20,6 +20,10 @@ class MapGroupsView extends GetView<MapGroupsController> {
               onMapCreated: (GoogleMapController googleMapController) {
                 controller.googleMapController = googleMapController;
               },
+              onTap: (LatLng latLng) {
+                controller.bottomSheetVisible.value = false;
+                controller.isSelectedMarker.value = false;
+              },
               //quita los controles de zoom
               zoomControlsEnabled: false,
               initialCameraPosition: const CameraPosition(
@@ -28,7 +32,8 @@ class MapGroupsView extends GetView<MapGroupsController> {
               ),
               markers: controller.markers,
               //mover las posiciones de los controles
-              padding: const EdgeInsets.only(bottom: 50),
+              // mapToolbarEnabled: false,
+              padding: const EdgeInsets.only(bottom: 100),
             ),
             if (controller.bottomSheetVisible.value)
               Positioned.fill(
@@ -39,6 +44,23 @@ class MapGroupsView extends GetView<MapGroupsController> {
                   },
                 ),
               ),
+            Positioned(
+              bottom: 60,
+              left: 20,
+              right: 20,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.8),
+                  // borderRadius: BorderRadius.circular(20),
+                ),
+                padding: const EdgeInsets.all(10),
+                child: const Text(
+                  'Presiona la ubicación para ver mas información',
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.visible,
+                ),
+              ),
+            ),
             Positioned(
               bottom: 0,
               child: Container(

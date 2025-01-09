@@ -9,6 +9,7 @@ class MapGroupsController extends GetxController {
   var nearbyMarkers = <Marker>[].obs;
   var bottomSheetVisible = false.obs;
   late GoogleMapController googleMapController;
+  var isSelectedMarker = false.obs;
 
   final MapsService apiService = MapsService();
 
@@ -29,6 +30,8 @@ class MapGroupsController extends GetxController {
         ),
       ),
     );
+    bottomSheetVisible.value = false;
+    isSelectedMarker.value = true;
     googleMapController.showMarkerInfoWindow(marker.markerId);
   }
 
@@ -53,6 +56,15 @@ class MapGroupsController extends GetxController {
   Future<void> getNearbyGroups() async {
     GpsService gpsService = GpsService();
     nearbyMarkers.assignAll(await gpsService.getNearbyGroups(markers));
+
+    googleMapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: nearbyMarkers[0].position,
+          zoom: 10,
+        ),
+      ),
+    );
     // print(nearbyMarkers.length);
   }
 

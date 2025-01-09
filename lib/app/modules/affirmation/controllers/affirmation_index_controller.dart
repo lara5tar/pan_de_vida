@@ -5,6 +5,7 @@ import 'package:pan_de_vida/app/routes/app_pages.dart';
 
 class AffirmationIndexController extends GetxController {
   var afirmaciones = <Congregant>[].obs;
+  var isLoading = true.obs;
 
   @override
   void onInit() {
@@ -20,6 +21,7 @@ class AffirmationIndexController extends GetxController {
     if (!result['error']) {
       afirmaciones.value = result['data'];
     }
+    isLoading.value = false;
   }
 
   toAffirmationVideos(String codCongregante) async {

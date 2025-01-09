@@ -25,10 +25,27 @@ class LoginController extends GetxController {
   }
 
   Future<void> login() async {
+    Get.dialog(
+      const AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: 150,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+            Text('Iniciando sesión...'),
+          ],
+        ),
+      ),
+    );
+
     if (authService.isLogged) {
       var response = await authService.checkPassword(passwordController.text);
 
-      // Get.back();
+      Get.back();
 
       if (response['error'] == true) {
         Get.dialog(
@@ -46,28 +63,11 @@ class LoginController extends GetxController {
           ),
         );
       } else {
-        Get.toNamed(Routes.DASHBOARD);
+        Get.offAllNamed(Routes.DASHBOARD);
       }
 
       return;
     }
-
-    Get.dialog(
-      const AlertDialog(
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              height: 150,
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
-            Text('Iniciando sesión...'),
-          ],
-        ),
-      ),
-    );
 
     var response = await authService.login(
       userController.text,

@@ -27,30 +27,32 @@ class CustomScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 170,
+        toolbarHeight: 150,
         backgroundColor: Colors.transparent, // Fondo transparente
         elevation: 0, // Sin sombra
-
-        leading: Column(
-          children: [
-            const SizedBox(height: 80),
-            leading != null || setLeading
-                ? leading ??
-                    CustomLeadingButton(
-                      style: ButtonStyle(
-                        padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-                          const EdgeInsets.only(
-                              left: 6, top: 8, right: 10, bottom: 8),
+        leading: Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              leading != null || setLeading
+                  ? leading ??
+                      CustomLeadingButton(
+                        style: ButtonStyle(
+                          padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+                            const EdgeInsets.only(
+                                left: 6, top: 8, right: 10, bottom: 8),
+                          ),
                         ),
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    )
-                : const SizedBox.shrink(),
-          ],
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                  : const SizedBox.shrink(),
+            ],
+          ),
         ),
-        leadingWidth: 98,
+        leadingWidth: 105,
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
           statusBarIconBrightness:
@@ -86,8 +88,37 @@ class CustomScaffold extends StatelessWidget {
               top: 40,
               left: 20,
               right: 20,
-              child: BannerWidget(),
-            ),
+              child: Stack(
+                children: [
+                  BannerWidget(),
+                  // if (leading != null)
+                  //   Positioned(top: 65, left: 5, child: leading!),
+                  // if (leading == null || setLeading)
+                  //   Positioned(
+                  //     top: 65,
+                  //     left: 5,
+                  //     child: CustomLeadingButton(
+                  //       style: ButtonStyle(
+                  //         padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+                  //           const EdgeInsets.only(
+                  //               left: 6, top: 8, right: 10, bottom: 8),
+                  //         ),
+                  //       ),
+                  //       onPressed: () {
+                  //         Navigator.of(context).pop();
+                  //       },
+                  //     ),
+                  //   ),
+                ],
+              ),
+            )
+          // else if (leading != null && setLeading)
+          //   Positioned(
+          //     top: 40,
+          //     left: 20,
+          //     right: 20,
+          //     child: leading!,
+          //   )
         ],
       ),
       floatingActionButton: floatingActionButton,

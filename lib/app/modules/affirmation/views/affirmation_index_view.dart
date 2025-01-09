@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pan_de_vida/app/widgets/button_widget.dart';
 import 'package:pan_de_vida/app/widgets/loading_widget.dart';
+import 'package:pan_de_vida/app/widgets/text_subtitle_widget.dart';
 
 import '../../../widgets/custom_scaffold.dart';
 import '../../../widgets/text_title_widget.dart';
@@ -13,12 +14,14 @@ class AffirmationIndexView extends GetView<AffirmationIndexController> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       body: Obx(
-        () => controller.afirmaciones.isEmpty
+        () => controller.isLoading.value
             ? const LoadingWidget()
             : ListView(
                 padding: const EdgeInsets.all(20),
                 children: [
                   const TextTitleWidget('Mis Ovejas'),
+                  if (controller.afirmaciones.isEmpty)
+                    const TextSubtitleWidget('No hay afirmados'),
                   for (var congregant in controller.afirmaciones)
                     ButtonWidget(
                       text: congregant.nombre,

@@ -24,44 +24,44 @@ class CongregantProfileView extends GetView<CongregantProfileController> {
                         controller.congregant.nombreF,
                         center: true,
                       ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              color: Colors.white.withOpacity(0.8),
-                              child: Stack(
-                                children: [
-                                  const Positioned(
-                                    top: 0,
-                                    child: CircleAvatar(
-                                      radius: 70,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  ElevatedButton.icon(
-                                    onPressed: () {},
-                                    label: const Text(
-                                      'Tomar Foto',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    icon: const Icon(Icons.camera_alt,
-                                        color: Colors.white),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.blue.shade800,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     Expanded(
+                      //       child: Container(
+                      //         color: Colors.white.withOpacity(0.8),
+                      //         child: Stack(
+                      //           children: [
+                      //             const Positioned(
+                      //               top: 0,
+                      //               child: CircleAvatar(
+                      //                 radius: 70,
+                      //               ),
+                      //             ),
+                      //             const SizedBox(height: 10),
+                      //             ElevatedButton.icon(
+                      //               onPressed: () {},
+                      //               label: const Text(
+                      //                 'Tomar Foto',
+                      //                 style: TextStyle(
+                      //                   color: Colors.white,
+                      //                 ),
+                      //               ),
+                      //               icon: const Icon(Icons.camera_alt,
+                      //                   color: Colors.white),
+                      //               style: ElevatedButton.styleFrom(
+                      //                 backgroundColor: Colors.blue.shade800,
+                      //                 shape: RoundedRectangleBorder(
+                      //                   borderRadius:
+                      //                       BorderRadius.circular(5.0),
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                       Container(
                         // padding: const EdgeInsets.all(10),
                         color: Colors.white.withOpacity(0.8),
@@ -69,7 +69,7 @@ class CongregantProfileView extends GetView<CongregantProfileController> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ElevatedButton.icon(
-                              onPressed: () {},
+                              onPressed: controller.toWhatsApp,
                               label: const Text(
                                 'WhatsApp',
                                 style: TextStyle(
@@ -87,7 +87,7 @@ class CongregantProfileView extends GetView<CongregantProfileController> {
                             ),
                             const SizedBox(width: 10),
                             ElevatedButton.icon(
-                              onPressed: () {},
+                              onPressed: controller.toCall,
                               label: const Text(
                                 'Llamar',
                                 style: TextStyle(

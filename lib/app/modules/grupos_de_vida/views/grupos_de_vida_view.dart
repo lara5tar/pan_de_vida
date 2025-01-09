@@ -35,7 +35,7 @@ class GruposDeVidaView extends GetView<GruposDeVidaController> {
               const Text(
                 'Unete a uno de nuestros grupos en Casa',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
@@ -98,14 +98,14 @@ class CustomIconButton extends StatelessWidget {
             icon: Icon(
               icon,
               color: Colors.white,
-              size: 40,
+              size: 35,
             ),
           ),
           const SizedBox(height: 10),
           Text(
             title,
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
