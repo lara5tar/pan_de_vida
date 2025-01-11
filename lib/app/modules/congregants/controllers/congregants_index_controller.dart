@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:group_button/group_button.dart';
 
 import '../../../data/models/congregant_model.dart';
 import '../../../data/services/congregante_service.dart';
@@ -8,6 +9,8 @@ class CongregantsIndexController extends GetxController {
   var nietos = <Congregant>[].obs;
 
   var isLoadning = true.obs;
+
+  GroupButtonController groupButtonController = GroupButtonController();
 
   @override
   void onInit() {

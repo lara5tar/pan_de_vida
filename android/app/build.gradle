@@ -35,8 +35,8 @@ android {
         // Configuración mínima, objetivo y versiones de SDK.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        versionCode = 3
+        versionName = 1.2
     }
 
     buildTypes {
