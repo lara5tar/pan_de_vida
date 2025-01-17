@@ -14,6 +14,10 @@ class AuthService extends GetxService {
     return GetStorage(Keys.LOGIN_KEY).read(Keys.USER_KEY);
   }
 
+  static String? get getCodCasaVida {
+    return GetStorage(Keys.LOGIN_KEY).read(Keys.COD_CASA_VIDA_KEY);
+  }
+
   bool get isLogged {
     return GetStorage(Keys.LOGIN_KEY).hasData(Keys.COD_CONGREGANTE_KEY);
   }

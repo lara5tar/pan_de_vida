@@ -64,7 +64,7 @@ class CustomTextFieldUnderline extends StatelessWidget {
                   lastDate: DateTime(2100),
                 ).then((value) {
                   if (value != null) {
-                    info.text = DateFormat('dd/MM/yyyy').format(value);
+                    info.text = DateFormat('yyyy-MM-dd').format(value);
                   }
                 });
               }

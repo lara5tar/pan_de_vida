@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/widgets/text_subtitle_widget.dart';
-import 'package:group_button/group_button.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../../widgets/button_widget.dart';
 import '../../../widgets/custom_scaffold.dart';
 import '../../../widgets/loading_widget.dart';
+import '../../../widgets/text_subtitle_widget.dart';
 import '../../../widgets/text_title_widget.dart';
 import '../controllers/congregants_index_controller.dart';
 

@@ -68,6 +68,15 @@ class ReunionFormView extends GetView<ReunionFormController> {
                 controller.guardar();
               },
             ),
+            const SizedBox(height: 20),
+            if (controller.idReunion != null)
+              ElevatedButtonWidget(
+                color: Colors.cyan,
+                text: 'Editar Asistentes',
+                onPressed: () {
+                  controller.editarAsistentes();
+                },
+              ),
           ],
         ),
       ),

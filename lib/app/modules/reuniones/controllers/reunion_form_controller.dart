@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pan_de_vida/app/data/services/reuniones_service.dart';
+import 'package:pan_de_vida/app/routes/app_pages.dart';
 import 'package:pan_de_vida/core/utils/calendar_utils.dart';
 
 class ReunionFormController extends GetxController {
-  String? idReunion;
+  int? idReunion;
   final fecha = TextEditingController();
   final tema = TextEditingController();
   final predicador = TextEditingController();
@@ -18,9 +19,9 @@ class ReunionFormController extends GetxController {
     super.onInit();
     if (Get.arguments != null) {
       var reunion = Get.arguments;
-      idReunion = reunion['IDREUNION'].toString();
+      idReunion = int.parse(reunion['IDREUNION']);
       String fechaReunion =
-          '${reunion['DIA']}/${getMonthInt(reunion['MES'])}/${reunion['ANIO']}';
+          '${reunion['ANIO']}-${getMonthInt(reunion['MES'])}-${reunion['DIA']}';
 
       fecha.text = fechaReunion;
       tema.text = reunion['TEMA'];
@@ -32,24 +33,62 @@ class ReunionFormController extends GetxController {
     }
   }
 
-  guardar() {
+  guardar() async {
+    Get.dialog(
+      const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+    if (fecha.text.isEmpty ||
+        tema.text.isEmpty ||
+        predicador.text.isEmpty ||
+        horaInicio.text.isEmpty ||
+        horaFin.text.isEmpty ||
+        ofrenda.text.isEmpty ||
+        totalCongregantes.text.isEmpty) {
+      Get.back();
+
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Error'),
+          content: const Text('Todos los campos son requeridos'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text('Aceptar'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    var result = {};
+
     if (idReunion == null) {
-      setReunion();
+      result = await ReunionesService().setReunion(
+        fecha.text,
+        tema.text,
+        predicador.text,
+        horaInicio.text,
+        horaFin.text,
+        ofrenda.text,
+        totalCongregantes.text,
+      );
     } else {
-      updateReunion();
+      result = await ReunionesService().updateReunion(
+        idReunion!,
+        fecha.text,
+        tema.text,
+        predicador.text,
+        horaInicio.text,
+        horaFin.text,
+        ofrenda.text,
+        totalCongregantes.text,
+      );
     }
-  }
-
-  setReunion() async {
-    var result = await ReunionesService().setReunion(
-      fecha.text,
-      tema.text,
-      predicador.text,
-      horaInicio.text,
-      horaFin.text,
-      ofrenda.text,
-      totalCongregantes.text,
-    );
 
     if (result['error']) {
       Get.dialog(
@@ -68,38 +107,17 @@ class ReunionFormController extends GetxController {
       );
     } else {
       Get.back();
+      Get.toNamed(Routes.REUNION_ASISTENCIA, arguments: {
+        'idReunion': result['idReunion'] ?? idReunion,
+        'isUpdate': Get.arguments != null,
+      });
     }
   }
 
-  updateReunion() async {
-    var result = await ReunionesService().updateReunion(
-      idReunion!,
-      fecha.text,
-      tema.text,
-      predicador.text,
-      horaInicio.text,
-      horaFin.text,
-      ofrenda.text,
-      totalCongregantes.text,
-    );
-
-    if (result['error']) {
-      Get.dialog(
-        AlertDialog(
-          title: const Text('Error'),
-          content: Text(result['message']),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Get.back();
-              },
-              child: const Text('Aceptar'),
-            ),
-          ],
-        ),
-      );
-    } else {
-      Get.back();
-    }
+  editarAsistentes() {
+    Get.toNamed(Routes.REUNION_ASISTENCIA, arguments: {
+      'idReunion': idReunion,
+      'isUpdate': Get.arguments != null,
+    });
   }
 }

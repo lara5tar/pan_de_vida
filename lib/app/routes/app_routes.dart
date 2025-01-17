@@ -30,6 +30,7 @@ abstract class Routes {
   static const REUNIONES = _Paths.REUNIONES;
   static const REUNION_FORM = _Paths.REUNION_FORM;
   static const REUNION_FORM_EDIT = _Paths.REUNION_FORM_EDIT;
+  static const REUNION_ASISTENCIA = _Paths.REUNION_ASISTENCIA;
   static const CAPTURAR_ASISTENCIA = _Paths.CAPTURAR_ASISTENCIA;
   static const CAPTURAR_PAGO = _Paths.CAPTURAR_PAGO;
   static const ALERTAS = _Paths.ALERTAS;
@@ -69,6 +70,7 @@ abstract class _Paths {
 
   static const REUNIONES = '/grupoVida-hist-grupo';
   static const REUNION_FORM = '/grupoVida-asistencia-datos';
+  static const REUNION_ASISTENCIA = '$REUNION_FORM/personas';
 
   static const REUNION_FORM_EDIT = '/reunion-form-edit';
   static const CAPTURAR_ASISTENCIA = '/escuela-asistencia';
