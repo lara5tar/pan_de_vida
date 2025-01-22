@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../data/models/accion_model.dart';
@@ -84,6 +85,8 @@ class CumbresController extends GetxController {
   }
 
   setCumbre() async {
+    Get.dialog(const Center(child: CircularProgressIndicator()));
+
     var result = await CumbresServices.setCumbre(
       accionObject.idaccion,
       marcadorObject.idmarcador,
@@ -91,10 +94,38 @@ class CumbresController extends GetxController {
       compromisoPerosnaObject.idProspecto,
     );
 
+    Get.back();
+
     if (!result['error']) {
-      Get.snackbar('Éxito', 'Cumbre creada');
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Éxito'),
+          content: const Text('Cumbre registrada con éxito'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text('Aceptar'),
+            )
+          ],
+        ),
+      );
     } else {
-      Get.snackbar('Error', result['message']);
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Error'),
+          content: const Text('Ocurrió un error al registrar la cumbre'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text('Aceptar'),
+            )
+          ],
+        ),
+      );
     }
   }
 }
