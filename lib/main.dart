@@ -22,7 +22,10 @@ Future<void> main() async {
       defaultTransition: Transition.noTransition,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate, // Agregar este delegado
+        GlobalWidgetsLocalizations.delegate,
       ],
+
       supportedLocales: const [
         Locale('es'),
       ],

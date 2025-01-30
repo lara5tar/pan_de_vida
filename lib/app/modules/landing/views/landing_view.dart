@@ -13,62 +13,64 @@ class LandingView extends GetView<LandingController> {
     return CustomScaffold(
       setBanner: false,
       setLeading: false,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          YouTubeCarouselWidget(),
-          const SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Get.toNamed(Routes.GRUPOS_DE_VIDA);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
-                          spreadRadius: 3,
-                          blurRadius: 10,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.asset('assets/grupos_button.jpeg'),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 30),
-                GestureDetector(
-                  onTap: () {
-                    Get.toNamed(Routes.LOGIN);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
-                          spreadRadius: 3,
-                          blurRadius: 10,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.asset('assets/login_button.jpeg'),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            YouTubeCarouselWidget(),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Get.toNamed(Routes.GRUPOS_DE_VIDA);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.5),
+                            spreadRadius: 3,
+                            blurRadius: 10,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset('assets/grupos_button.jpeg'),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 30),
+                  GestureDetector(
+                    onTap: () {
+                      Get.toNamed(Routes.LOGIN);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.5),
+                            spreadRadius: 3,
+                            blurRadius: 10,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset('assets/login_button.jpeg'),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
