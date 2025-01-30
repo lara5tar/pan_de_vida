@@ -21,101 +21,103 @@ class ClasesView extends GetView<ClasesController> {
         child: Obx(
           () => controller.isLoading.value
               ? const LoadingWidget()
-              : Column(
-                  children: [
-                    if (controller.schoolAttendace.clase.isNotEmpty) ...[
-                      ElevatedButtonWidget(
-                        onPressed: () {
-                          Get.toNamed(Routes.CLASE_VIDEOS);
-                        },
-                        text: 'Ver Clase',
-                      ),
-                      const SizedBox(height: 20),
-                    ],
-                    const TextTitleWidget('Escuela'),
-                    ButtonWidget(
-                      title: 'Ciclo',
-                      text: controller.schoolAttendace.ciclo,
-                      icon: Icons.school_rounded,
-                    ),
-                    ButtonWidget(
-                      title: 'Clase',
-                      text: controller.schoolAttendace.clase,
-                      icon: Icons.menu_book_outlined,
-                      isLast: true,
-                    ),
-                    const TextSubtitleWidget('Asistencias y Tareas'),
-                    if (controller.schoolAttendace.asistencias.isEmpty)
-                      const ButtonWidget(
-                        text: '',
-                        icon: Icons.close,
-                        isLast: true,
-                      )
-                    else ...[
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        color: Colors.white.withOpacity(0.8),
-                        child: const Row(
-                          children: [
-                            SizedBox(
-                              width: 50,
-                              child: Text(
-                                'Clase',
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            Expanded(
-                              child: Text('Asistencia',
-                                  textAlign: TextAlign.center),
-                            ),
-                            Expanded(
-                              child: Text('Tarea', textAlign: TextAlign.center),
-                            ),
-                            Expanded(
-                              child: Text('Fecha', textAlign: TextAlign.center),
-                            ),
-                          ],
+              : SingleChildScrollView(
+                child: Column(
+                    children: [
+                      if (controller.schoolAttendace.clase.isNotEmpty) ...[
+                        ElevatedButtonWidget(
+                          onPressed: () {
+                            Get.toNamed(Routes.CLASE_VIDEOS);
+                          },
+                          text: 'Ver Clase',
                         ),
+                        const SizedBox(height: 20),
+                      ],
+                      const TextTitleWidget('Escuela'),
+                      ButtonWidget(
+                        title: 'Ciclo',
+                        text: controller.schoolAttendace.ciclo,
+                        icon: Icons.school_rounded,
                       ),
-                      for (var item in controller.schoolAttendace.asistencias)
+                      ButtonWidget(
+                        title: 'Clase',
+                        text: controller.schoolAttendace.clase,
+                        icon: Icons.menu_book_outlined,
+                        isLast: true,
+                      ),
+                      const TextSubtitleWidget('Asistencias y Tareas'),
+                      if (controller.schoolAttendace.asistencias.isEmpty)
+                        const ButtonWidget(
+                          text: '',
+                          icon: Icons.close,
+                          isLast: true,
+                        )
+                      else ...[
                         Container(
                           padding: const EdgeInsets.all(10),
                           color: Colors.white.withOpacity(0.8),
-                          child: Row(
+                          child: const Row(
                             children: [
                               SizedBox(
                                 width: 50,
                                 child: Text(
-                                  item.idClase,
+                                  'Clase',
                                   textAlign: TextAlign.center,
                                 ),
                               ),
                               Expanded(
-                                child: Icon(
-                                  item.asistencia ? Icons.check : Icons.close,
-                                  color: item.asistencia
-                                      ? Colors.green
-                                      : Colors.red,
-                                ),
+                                child: Text('Asistencia',
+                                    textAlign: TextAlign.center),
                               ),
                               Expanded(
-                                child: Icon(
-                                  item.tarea ? Icons.check : Icons.close,
-                                  color: item.tarea ? Colors.green : Colors.red,
-                                ),
+                                child: Text('Tarea', textAlign: TextAlign.center),
                               ),
                               Expanded(
-                                child: Text(
-                                  item.fecha.isEmpty ? 'Sin fecha' : item.fecha,
-                                  textAlign: TextAlign.center,
-                                ),
+                                child: Text('Fecha', textAlign: TextAlign.center),
                               ),
                             ],
                           ),
                         ),
-                    ]
-                  ],
-                ),
+                        for (var item in controller.schoolAttendace.asistencias)
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            color: Colors.white.withOpacity(0.8),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 50,
+                                  child: Text(
+                                    item.idClase,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Icon(
+                                    item.asistencia ? Icons.check : Icons.close,
+                                    color: item.asistencia
+                                        ? Colors.green
+                                        : Colors.red,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Icon(
+                                    item.tarea ? Icons.check : Icons.close,
+                                    color: item.tarea ? Colors.green : Colors.red,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    item.fecha.isEmpty ? 'Sin fecha' : item.fecha,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                      ]
+                    ],
+                  ),
+              ),
         ),
       ),
     );

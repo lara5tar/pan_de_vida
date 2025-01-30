@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 class CustomScaffold extends StatelessWidget {
   final bool setBrightnessDark;
@@ -10,6 +11,7 @@ class CustomScaffold extends StatelessWidget {
   final bool setLeading;
   final FloatingButtonWidget? floatingActionButton;
   final Widget? bottomSheet;
+  final bool setNotificationBar;
 
   const CustomScaffold({
     super.key,
@@ -21,39 +23,18 @@ class CustomScaffold extends StatelessWidget {
     this.setLeading = true,
     this.floatingActionButton,
     this.bottomSheet,
+    this.setNotificationBar = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 150,
+        //toolbarHeight: 40,
         backgroundColor: Colors.transparent, // Fondo transparente
         elevation: 0, // Sin sombra
         leading: Container(),
-        // leading: Container(
-        //   padding: const EdgeInsets.all(20),
-        //   child: Column(
-        //     mainAxisAlignment: MainAxisAlignment.end,
-        //     children: [
-        //       leading != null || setLeading
-        //           ? leading ??
-        //               CustomLeadingButton(
-        //                 style: ButtonStyle(
-        //                   padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-        //                     const EdgeInsets.only(
-        //                         left: 6, top: 8, right: 10, bottom: 8),
-        //                   ),
-        //                 ),
-        //                 onPressed: () {
-        //                   Navigator.of(context).pop();
-        //                 },
-        //               )
-        //           : const SizedBox.shrink(),
-        //     ],
-        //   ),
-        // ),
-        leadingWidth: 105,
+
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
           statusBarIconBrightness:
@@ -74,68 +55,57 @@ class CustomScaffold extends StatelessWidget {
           // Contenido de la pantalla
           Positioned.fill(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: setBanner
+                  ? CrossAxisAlignment.center
+                  : CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
-                if (setBanner) const SizedBox(height: 160),
+                if (setNotificationBar)
+                  SizedBox(height: MediaQuery.of(Get.context!).padding.top),
+                if (setBanner)
+                  Stack(
+                    children: [
+                      const BannerWidget(),
+                      if (leading != null)
+                        Positioned(bottom: 5, child: leading!)
+                      else if (setLeading)
+                        Positioned(
+                          bottom: 5,
+                          child: CustomLeadingButton(
+                            style: ButtonStyle(
+                              padding:
+                                  WidgetStateProperty.all<EdgeInsetsGeometry>(
+                                const EdgeInsets.only(
+                                    left: 6, top: 8, right: 10, bottom: 8),
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ),
+                    ],
+                  )
+                else if (setLeading && leading != null)
+                  leading!
+                else if (setLeading)
+                  CustomLeadingButton(
+                    style: ButtonStyle(
+                      padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+                        const EdgeInsets.only(
+                            left: 6, top: 8, right: 10, bottom: 8),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
                 Expanded(
                   child: body ?? const SizedBox.shrink(),
                 ),
               ],
             ),
           ),
-          if (setBanner)
-            Positioned(
-              top: 40,
-              left: 20,
-              right: 20,
-              child: Stack(
-                children: [
-                  const BannerWidget(),
-                  if (leading != null)
-                    Positioned(bottom: 5, left: 5, child: leading!)
-                  else if (setLeading)
-                    Positioned(
-                      bottom: 5,
-                      left: 5,
-                      child: CustomLeadingButton(
-                        style: ButtonStyle(
-                          padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-                            const EdgeInsets.only(
-                                left: 6, top: 8, right: 10, bottom: 8),
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ),
-                ],
-              ),
-            )
-          else if (setLeading && leading != null)
-            Positioned(
-              top: 40,
-              left: 20,
-              right: 20,
-              child: leading!,
-            )
-          else if (setLeading)
-            Positioned(
-              top: 100,
-              left: 20,
-              child: CustomLeadingButton(
-                style: ButtonStyle(
-                  padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
-                    const EdgeInsets.only(
-                        left: 6, top: 8, right: 10, bottom: 8),
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ),
         ],
       ),
       floatingActionButton: floatingActionButton,
@@ -157,34 +127,37 @@ class CustomLeadingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      style: style != null
-          ? style?.copyWith(
-              shape: WidgetStateProperty.all<CircleBorder>(
-                const CircleBorder(
-                  side: BorderSide(color: Colors.white, width: 3),
+    return Padding(
+      padding: const EdgeInsets.only(left: 25),
+      child: IconButton(
+        style: style != null
+            ? style?.copyWith(
+                shape: WidgetStateProperty.all<CircleBorder>(
+                  const CircleBorder(
+                    side: BorderSide(color: Colors.white, width: 3),
+                  ),
+                ),
+                backgroundColor: WidgetStateProperty.all<Color>(
+                  Colors.blue.shade800.withOpacity(0.5),
+                ),
+              )
+            : ButtonStyle(
+                shape: WidgetStateProperty.all<CircleBorder>(
+                  const CircleBorder(
+                    side: BorderSide(color: Colors.white, width: 3),
+                  ),
+                ),
+                backgroundColor: WidgetStateProperty.all<Color>(
+                  Colors.blue.shade800.withOpacity(0.5),
                 ),
               ),
-              backgroundColor: WidgetStateProperty.all<Color>(
-                Colors.blue.shade800.withOpacity(0.5),
-              ),
-            )
-          : ButtonStyle(
-              shape: WidgetStateProperty.all<CircleBorder>(
-                const CircleBorder(
-                  side: BorderSide(color: Colors.white, width: 3),
-                ),
-              ),
-              backgroundColor: WidgetStateProperty.all<Color>(
-                Colors.blue.shade800.withOpacity(0.5),
-              ),
-            ),
-      icon: Icon(
-        icon,
-        color: Colors.white,
-        size: 35,
+        icon: Icon(
+          icon,
+          color: Colors.white,
+          size: 35,
+        ),
+        onPressed: onPressed,
       ),
-      onPressed: onPressed,
     );
   }
 }
@@ -219,9 +192,12 @@ class BannerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: Image.asset('assets/banner.jpg'),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Image.asset('assets/banner.jpg'),
+      ),
     );
   }
 }

@@ -47,12 +47,6 @@ class AlertasView extends GetView<AlertasController> {
                 ],
               ),
       ),
-      floatingActionButton: FloatingButtonWidget(
-        onPressed: () {
-          controller.getAlertas();
-        },
-        icon: Icons.add,
-      ),
     );
   }
 }

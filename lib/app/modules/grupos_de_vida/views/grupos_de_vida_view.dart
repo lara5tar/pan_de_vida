@@ -7,69 +7,83 @@ import '../controllers/grupos_de_vida_controller.dart';
 
 class GruposDeVidaView extends GetView<GruposDeVidaController> {
   const GruposDeVidaView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
       backgroundImage: 'assets/background_login.jpg',
       setBanner: false,
       setBrightnessDark: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 40),
-              Image.asset(
-                'assets/pandevida_logo.png',
-                height: 200,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight,
               ),
-              const SizedBox(height: 20),
-              SizedBox(
-                height: 150, // Ajusta el tamaño del contenedor para el video
-                child: WebViewWidget(
-                  controller: controller.webViewController,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/pandevida_logo.png',
+                        height: 200,
+                      ),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        height:
+                            150, // Ajusta el tamaño del contenedor para el video
+                        child: WebViewWidget(
+                          controller: controller.webViewController,
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      const Text(
+                        'Unete a uno de nuestros grupos en Casa',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      Wrap(
+                        spacing: 20,
+                        runSpacing: 40,
+                        children: [
+                          CustomIconButton(
+                            title: 'LLamar',
+                            icon: Icons.phone,
+                            onPressed: controller.callButton,
+                          ),
+                          CustomIconButton(
+                            title: 'WWW',
+                            icon: Icons.public,
+                            onPressed: controller.webButton,
+                          ),
+                          CustomIconButton(
+                            title: 'Desea asistir a uno',
+                            icon: Icons.back_hand_rounded,
+                            onPressed: controller.joinButton,
+                          ),
+                          CustomIconButton(
+                            title: 'Ubicaciones',
+                            icon: Icons.location_on,
+                            onPressed: controller.mapsButton,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                          height: 50 + MediaQuery.of(Get.context!).padding.top)
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: 30),
-              const Text(
-                'Unete a uno de nuestros grupos en Casa',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 30),
-              Wrap(
-                spacing: 20,
-                runSpacing: 40,
-                children: [
-                  CustomIconButton(
-                    title: 'LLamar',
-                    icon: Icons.phone,
-                    onPressed: controller.callButton,
-                  ),
-                  CustomIconButton(
-                    title: 'WWW',
-                    icon: Icons.public,
-                    onPressed: controller.webButton,
-                  ),
-                  CustomIconButton(
-                    title: 'Desea asistir a uno',
-                    icon: Icons.back_hand_rounded,
-                    onPressed: controller.joinButton,
-                  ),
-                  CustomIconButton(
-                    title: 'Ubicaciones',
-                    icon: Icons.location_on,
-                    onPressed: controller.mapsButton,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
