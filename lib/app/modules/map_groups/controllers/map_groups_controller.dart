@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pan_de_vida/app/data/services/gps_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../data/services/maps_service.dart';
 
@@ -16,6 +17,7 @@ class MapGroupsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
     loadMarkers().then((_) {
       getNearbyGroups();
     });
@@ -35,6 +37,26 @@ class MapGroupsController extends GetxController {
     googleMapController.showMarkerInfoWindow(marker.markerId);
   }
 
+  Future<void> navigateToLocation(double lat, double lng) async {
+    final Uri navigationUri = Uri.parse('google.navigation:q=$lat,$lng&mode=d');
+    final Uri fallbackUri = Uri.parse(
+        'https://www.google.com/maps/dir/?api=1&destination=$lat,$lng&travelmode=driving');
+
+    try {
+      if (await canLaunchUrl(navigationUri)) {
+        await launchUrl(navigationUri);
+      } else {
+        await launchUrl(fallbackUri, mode: LaunchMode.externalApplication);
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'No se pudo abrir la navegación',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
   Future<void> loadMarkers() async {
     List<Group> groups = await apiService.getPoints();
     Set<Marker> newMarkers = {};
@@ -44,7 +66,16 @@ class MapGroupsController extends GetxController {
         Marker(
           markerId: MarkerId(group.name),
           position: LatLng(group.position.latitude, group.position.longitude),
-          infoWindow: InfoWindow(title: group.name, snippet: group.schedule),
+          infoWindow: InfoWindow(
+            title: group.name,
+            snippet: group.schedule,
+            onTap: () {
+              navigateToLocation(
+                group.position.latitude,
+                group.position.longitude,
+              );
+            },
+          ),
           icon: getColorIcon(group.color),
         ),
       );
@@ -65,7 +96,7 @@ class MapGroupsController extends GetxController {
         ),
       ),
     );
-    // print(nearbyMarkers.length);
+    // print(nearbyMarkers.length);y
   }
 
   BitmapDescriptor getColorIcon(String color) {

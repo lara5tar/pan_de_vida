@@ -2,6 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+<key>GMSApiKey</key>
+<string>AIzaSyCq8891GTKoNIqEH-NNMxRgiidHpEYjGZk</string>
+
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>Esta aplicación utiliza tu ubicación para mostrarte grupos cercanos.</string>
 <key>NSCameraUsageDescription</key>
 <string>Necesitamos acceso a la cámara para escanear códigos de barras.</string>
 
