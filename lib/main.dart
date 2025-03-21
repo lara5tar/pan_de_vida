@@ -25,7 +25,6 @@ Future<void> main() async {
         GlobalCupertinoLocalizations.delegate, // Agregar este delegado
         GlobalWidgetsLocalizations.delegate,
       ],
-
       supportedLocales: const [
         Locale('es'),
       ],

@@ -5,7 +5,7 @@ A new Flutter project.
 - Error de namespace
 com.yanisalfian.flutterphonedirectcaller
 
-~/.pub-cache/hosted/pub.dev/flut ter_phone_direct_caller-2.1.1/android
+~/.pub-cache/hosted/pub.dev/flutter_phone_direct_caller-2.1.1/android
 
 Ejemplo:
 - C:\Users\Ana\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_phone_direct_caller-2.1.1\android
@@ -32,3 +32,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 }
+
+<!> IMPORTANT <!>
+SET JAVA VERSION 17
+flutter config --jdk-dir /usr/lib/jvm/java-17-openjdk/bin/java

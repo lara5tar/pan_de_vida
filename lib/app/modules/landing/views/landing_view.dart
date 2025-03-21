@@ -1,8 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pan_de_vida/app/data/models/event_model.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../../widgets/custom_scaffold.dart';
+import '../widgets/event_widget.dart';
 import '../controllers/landing_controller.dart';
 import '../widgets/youtube_carrusel_view.dart';
 
@@ -26,6 +29,8 @@ class LandingView extends GetView<LandingController> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    const EventWidget(),
+                    const SizedBox(height: 10),
                     YouTubeCarouselWidget(),
                     const SizedBox(height: 10),
                     Padding(
@@ -85,6 +90,14 @@ class LandingView extends GetView<LandingController> {
           );
         },
       ),
+      floatingActionButton: kDebugMode
+          ? FloatingButtonWidget(
+              onPressed: () async {
+                controller.test();
+              },
+              icon: Icons.bug_report,
+            )
+          : null,
     );
   }
 }

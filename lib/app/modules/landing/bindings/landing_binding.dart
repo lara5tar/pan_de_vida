@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../controllers/event_widget_controller.dart';
 import '../controllers/landing_controller.dart';
 import '../controllers/youtube_carrusel_controller.dart';
 
@@ -11,6 +12,9 @@ class LandingBinding extends Bindings {
     );
     Get.lazyPut<YoutubeCarruselController>(
       () => YoutubeCarruselController(),
+    );
+    Get.lazyPut<EventWidgetController>(
+      () => EventWidgetController(),
     );
   }
 }

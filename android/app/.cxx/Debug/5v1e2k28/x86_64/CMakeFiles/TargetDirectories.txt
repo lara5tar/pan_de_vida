@@ -1,0 +1,2 @@
+/home/lara5tar/Escritorio/pan_de_vida/android/app/.cxx/Debug/5v1e2k28/x86_64/CMakeFiles/edit_cache.dir
+/home/lara5tar/Escritorio/pan_de_vida/android/app/.cxx/Debug/5v1e2k28/x86_64/CMakeFiles/rebuild_cache.dir

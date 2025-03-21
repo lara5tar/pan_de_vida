@@ -44,7 +44,6 @@ class ReunionFormController extends GetxController {
         predicador.text.isEmpty ||
         horaInicio.text.isEmpty ||
         horaFin.text.isEmpty ||
-        ofrenda.text.isEmpty ||
         totalCongregantes.text.isEmpty) {
       Get.back();
 
