@@ -6,7 +6,7 @@ class CustomDropdown extends StatelessWidget {
   final RxString selectedItem;
   final String hint;
   final Function(dynamic)? onChanged;
-  final Function()? onTap;
+  // final Function()? onTap;
 
   const CustomDropdown({
     super.key,
@@ -14,7 +14,7 @@ class CustomDropdown extends StatelessWidget {
     required this.selectedItem,
     required this.hint,
     this.onChanged,
-    this.onTap,
+    // this.onTap,
   });
 
   @override
@@ -62,21 +62,9 @@ class CustomDropdown extends StatelessWidget {
                   },
                 ),
             ],
-            // items
-            //     .map(
-            //       (item) => DropdownMenuItem(
-            //         value: item.text,
-            //         child: Text('${item.text}'),
-            //         onTap: () {
-            //           if (onChanged != null) {
-            //             onChanged!(item.value);
-            //           }
-            //         },
-            //       ),
-            //     )
-            //     .toList(),
             onChanged: (value) {
               selectedItem.value = value.toString();
+              print('selectedItem: ${selectedItem.value}');
             },
           ),
         ),

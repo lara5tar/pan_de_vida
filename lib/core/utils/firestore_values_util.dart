@@ -59,6 +59,20 @@ Map<String, dynamic> toFirestoreValues(Map<String, dynamic>? data) {
   };
 }
 
+Map<String, dynamic> toFirestoreDocument(
+  Map<String, dynamic>? data, {
+  String? documentId,
+}) {
+  Map<String, dynamic> document = toFirestoreValues(data);
+
+  if (documentId != null && documentId.isNotEmpty) {
+    // Add the document ID to the result
+    document['name'] = documentId;
+  }
+
+  return document;
+}
+
 /// Converts Firestore's document format to standard Dart maps.
 ///
 /// Takes Firestore's REST API response and converts it to a more
@@ -74,11 +88,14 @@ Map<String, dynamic> fromFirestoreValues(Map<String, dynamic> data) {
     if (data.containsKey('documents')) {
       for (var document in data['documents']) {
         String docId = document['name'].toString().split('/').last;
-        values[docId] = _extractFieldValues(document['fields'] ?? {});
+        values[docId] =
+            _extractFieldValues(document['fields'] ?? {}, id: docId);
       }
     } else if (data.containsKey('fields')) {
       values = _extractFieldValues(data['fields']);
     }
+
+    print('Firestore values: $values');
 
     return values;
   } catch (e) {
@@ -93,7 +110,8 @@ Map<String, dynamic> getFirestoreValues(Map<String, dynamic> data) {
 }
 
 /// Helper function to extract values from Firestore field formats
-Map<String, dynamic> _extractFieldValues(Map<String, dynamic> fields) {
+Map<String, dynamic> _extractFieldValues(Map<String, dynamic> fields,
+    {String? id}) {
   Map<String, dynamic> values = {};
 
   fields.forEach((key, value) {
@@ -131,6 +149,9 @@ Map<String, dynamic> _extractFieldValues(Map<String, dynamic> fields) {
       }
     }
   });
+
+  //id
+  if (id != null) values['id'] = id;
 
   return values;
 }

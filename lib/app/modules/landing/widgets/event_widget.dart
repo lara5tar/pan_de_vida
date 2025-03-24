@@ -68,7 +68,7 @@ class EventWidget extends GetView<EventWidgetController> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 image: DecorationImage(
-                                  image: NetworkImage(event.image),
+                                  image: NetworkImage(event.urlImage),
                                   fit: BoxFit.cover,
                                 ),
                               ),

@@ -34,6 +34,15 @@ class FirebaseApiProvider {
         data: data, headers: headers);
   }
 
+  Future<Map<String, dynamic>> addDocument(
+    String id,
+    Map<String, dynamic> data, {
+    Map<String, String>? headers,
+  }) async {
+    return await sendRequest(Method.POST, '$urlBase/$id',
+        data: data, headers: headers);
+  }
+
   Future<Map<String, dynamic>> update(
     String id,
     Map<String, dynamic> data, {

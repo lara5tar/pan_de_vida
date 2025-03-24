@@ -32,7 +32,7 @@ class CustomTextFieldUnderline extends StatelessWidget {
         horizontal: 15,
         vertical: 5,
       ),
-      color: Colors.white,
+      color: Colors.white.withOpacity(0.8),
       child: TextField(
         controller: info,
         inputFormatters: [
@@ -171,7 +171,7 @@ class CustomTextFieldUnderline extends StatelessWidget {
                     );
                   }
                 : null,
-        readOnly: typefield == TypeField.DATE,
+        readOnly: typefield == TypeField.DATE || typefield == TypeField.TIME,
         keyboardType:
             typefield == TypeField.MONEY || typefield == TypeField.NUMBER
                 ? TextInputType.number
@@ -193,7 +193,11 @@ class CustomTextFieldUnderline extends StatelessWidget {
               ? const Icon(
                   Icons.calendar_today,
                 )
-              : null,
+              : typefield == TypeField.TIME
+                  ? const Icon(
+                      Icons.access_time,
+                    )
+                  : null,
           suffixIconConstraints: const BoxConstraints(
             minWidth: 50,
           ),

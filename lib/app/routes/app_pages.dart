@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:pan_de_vida/app/modules/event/controllers/event_form_controller.dart';
+import 'package:pan_de_vida/app/modules/event/views/event_form_view.dart';
 
 import '../modules/affirmation/bindings/affirmation_binding.dart';
 import '../modules/affirmation/views/affirmation_index_view.dart';
@@ -22,6 +24,9 @@ import '../modules/dashboard/views/dashboard_view.dart';
 import '../modules/escuela/bindings/escuela_binding.dart';
 import '../modules/escuela/views/capturar_asistencia_view.dart';
 import '../modules/escuela/views/capturar_pago_view.dart';
+import '../modules/event/bindings/event_binding.dart';
+import '../modules/event/views/event_view.dart';
+import '../modules/event/views/events_view.dart';
 import '../modules/grupos_de_vida/bindings/grupos_de_vida_binding.dart';
 import '../modules/grupos_de_vida/bindings/quiero_asistir_binding.dart';
 import '../modules/grupos_de_vida/views/grupos_de_vida_view.dart';
@@ -216,6 +221,21 @@ class AppPages {
       name: _Paths.CLASE_CUESTIONARIO_VIDEO,
       page: () => const ClaseCuestionarioVideoView(),
       binding: ClasesBinding(),
+    ),
+    GetPage(
+      name: _Paths.EVENTS,
+      page: () => const EventsView(),
+      binding: EventBinding(),
+    ),
+    GetPage(
+      name: _Paths.EVENT_FORM,
+      page: () => const EventFormView(),
+      binding: EventBinding(),
+    ),
+    GetPage(
+      name: _Paths.EVENT,
+      page: () => const EventView(),
+      binding: EventBinding(),
     ),
   ];
 }
