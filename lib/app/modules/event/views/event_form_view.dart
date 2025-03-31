@@ -7,6 +7,7 @@ import 'package:pan_de_vida/app/widgets/elevated_button_widget.dart';
 import 'package:pan_de_vida/app/widgets/text_title_widget.dart';
 import 'package:pan_de_vida/app/widgets/weekday_selector_widget.dart';
 
+import '../../../widgets/button_widget.dart';
 import '../../../widgets/custom_scaffold.dart';
 import '../controllers/event_form_controller.dart';
 
@@ -33,7 +34,7 @@ class EventFormView extends GetView<EventFormController> {
               label: 'Descripcion',
               hintText: 'Escribe la descripcion del evento',
               info: controller.description,
-              typefield: TypeField.TEXT,
+              typefield: TypeField.DESCRIPTION,
             ),
             CustomTextFieldUnderline(
               label: 'Lugar ',
@@ -54,12 +55,12 @@ class EventFormView extends GetView<EventFormController> {
                           selectedDays: controller.selectedWeekdays,
                           onDaySelected: controller.toggleWeekday,
                         ),
-                        CustomTextFieldUnderline(
-                          label: 'Fecha de fin (Opcional)',
-                          hintText: 'Ej. 2025-12-31',
-                          info: controller.endDateRecurrence,
-                          typefield: TypeField.DATE,
-                        ),
+                        // CustomTextFieldUnderline(
+                        //   label: 'Fecha de fin (Opcional)',
+                        //   hintText: 'Ej. 2025-12-31',
+                        //   info: controller.endDateRecurrence,
+                        //   typefield: TypeField.DATE,
+                        // ),
                       ],
                     )
                   : Column(
@@ -103,11 +104,33 @@ class EventFormView extends GetView<EventFormController> {
                       ],
                     ),
             ),
-            CustomTextFieldUnderline(
-              label: 'URL de la imagen',
-              hintText: 'Escribe la URL de la imagen',
-              info: controller.urlImage,
-              typefield: TypeField.TEXT,
+            // CustomTextFieldUnderline(
+            //   label: 'URL de la imagen',
+            //   hintText: 'Escribe la URL de la imagen',
+            //   info: controller.urlImage,
+            //   typefield: TypeField.TEXT,
+            // ),
+            Obx(
+              () => ButtonWidget(
+                text: controller.selectedImage.value != null
+                    ? 'Imagen seleccionada'
+                    : 'Seleccionar imagen',
+                subtitle: controller.urlImage.text,
+                icon: Icons.image,
+                onTap: () {
+                  controller.seleccionarImagen();
+                },
+                trailingWidget: controller.selectedImage.value != null
+                    ? IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () {
+                          controller.selectedImage.value = null;
+                          controller.urlImage.text = '';
+                        },
+                      )
+                    : null,
+                isLast: true,
+              ),
             ),
             const SizedBox(height: 20),
             ElevatedButtonWidget(

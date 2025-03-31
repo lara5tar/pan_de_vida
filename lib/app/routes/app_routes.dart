@@ -41,6 +41,7 @@ abstract class Routes {
   static const EVENTS = _Paths.EVENTS;
   static const EVENT_FORM = _Paths.EVENT_FORM;
   static const EVENT = _Paths.EVENT;
+  static const EVENT_CALENDAR = _Paths.EVENT_CALENDAR;
 }
 
 abstract class _Paths {
@@ -88,6 +89,7 @@ abstract class _Paths {
   static const EVENTS = '/events';
   static const EVENT_FORM = '$EVENTS/form';
   static const EVENT = '$EVENTS/event';
+  static const EVENT_CALENDAR = '$EVENTS/calendar';
 }
 
 // List<String> opciones = [

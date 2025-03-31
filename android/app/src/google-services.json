@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "58941943935",
+    "project_id": "pandevida-td",
+    "storage_bucket": "pandevida-td.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:58941943935:android:830241ab48bef8002ecf4a",
+        "android_client_info": {
+          "package_name": "com.campustd.pandevidarenovado"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3QyoKbeUkGbs0iqkejtha0OUnifAfQ2I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

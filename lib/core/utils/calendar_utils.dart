@@ -28,3 +28,84 @@ String getMonthInt(String month) {
       return '01';
   }
 }
+
+String getMonthString(int month) {
+  switch (month) {
+    case 1:
+      return 'Enero';
+    case 2:
+      return 'Febrero';
+    case 3:
+      return 'Marzo';
+    case 4:
+      return 'Abril';
+    case 5:
+      return 'Mayo';
+    case 6:
+      return 'Junio';
+    case 7:
+      return 'Julio';
+    case 8:
+      return 'Agosto';
+    case 9:
+      return 'Septiembre';
+    case 10:
+      return 'Octubre';
+    case 11:
+      return 'Noviembre';
+    case 12:
+      return 'Diciembre';
+    default:
+      return 'Mes invalido';
+  }
+}
+
+String formatDateHeader(String dateString) {
+  DateTime today = DateTime.now();
+  if (dateString.startsWith("Recurrente")) {
+    return dateString;
+  } else if (dateString == "Sin fecha") {
+    return "Sin fecha específica";
+  } else {
+    try {
+      final date = DateTime.parse(dateString);
+      final todayDate = DateTime(today.year, today.month, today.day);
+      final eventDate = DateTime(date.year, date.month, date.day);
+
+      // Obtener el nombre del día de la semana
+      final diaSemana = obtenerNombreDiaSemana(date.weekday);
+
+      if (eventDate.isAtSameMomentAs(todayDate)) {
+        return "Hoy, $diaSemana ${date.day}/${date.month}/${date.year}";
+      } else if (eventDate
+          .isAtSameMomentAs(todayDate.add(const Duration(days: 1)))) {
+        return "Mañana, $diaSemana ${date.day}/${date.month}/${date.year}";
+      } else {
+        return "$diaSemana ${date.day}/${date.month}/${date.year}";
+      }
+    } catch (e) {
+      return dateString;
+    }
+  }
+}
+
+String obtenerNombreDiaSemana(int diaSemana) {
+  switch (diaSemana) {
+    case DateTime.monday:
+      return "Lunes";
+    case DateTime.tuesday:
+      return "Martes";
+    case DateTime.wednesday:
+      return "Miércoles";
+    case DateTime.thursday:
+      return "Jueves";
+    case DateTime.friday:
+      return "Viernes";
+    case DateTime.saturday:
+      return "Sábado";
+    case DateTime.sunday:
+      return "Domingo";
+    default:
+      return "";
+  }
+}

@@ -54,6 +54,11 @@ class CustomTextFieldUnderline extends StatelessWidget {
         // and the Obx is used to update the value of the textfield
         // when the value of the variable changes
         //
+        onEditingComplete: () {
+          if (typefield == TypeField.DESCRIPTION) {
+            info.text += '\n';
+          }
+        },
         onTap: typefield == TypeField.DATE
             ? () {
                 showDatePicker(
@@ -172,10 +177,19 @@ class CustomTextFieldUnderline extends StatelessWidget {
                   }
                 : null,
         readOnly: typefield == TypeField.DATE || typefield == TypeField.TIME,
-        keyboardType:
-            typefield == TypeField.MONEY || typefield == TypeField.NUMBER
+        keyboardType: typefield == TypeField.DESCRIPTION
+            ? TextInputType.multiline
+            : typefield == TypeField.MONEY || typefield == TypeField.NUMBER
                 ? TextInputType.number
                 : TextInputType.text,
+        maxLines:
+            typefield == TypeField.DESCRIPTION ? null : 1, // Permite expansión
+        minLines:
+            typefield == TypeField.DESCRIPTION ? 3 : 1, // Mínimo de 3 líneas
+
+        textInputAction: typefield == TypeField.DESCRIPTION
+            ? TextInputAction.newline
+            : TextInputAction.done,
 
         decoration: InputDecoration(
           prefixIcon: Text(
@@ -188,7 +202,9 @@ class CustomTextFieldUnderline extends StatelessWidget {
           prefixIconConstraints: const BoxConstraints(
             minWidth: 80,
           ),
-          contentPadding: const EdgeInsets.all(0),
+          contentPadding: typefield == TypeField.DESCRIPTION
+              ? const EdgeInsets.symmetric(vertical: 10.0)
+              : const EdgeInsets.all(0),
           suffixIcon: typefield == TypeField.DATE
               ? const Icon(
                   Icons.calendar_today,
@@ -213,4 +229,5 @@ enum TypeField {
   TIME,
   MONEY,
   NUMBER,
+  DESCRIPTION,
 }

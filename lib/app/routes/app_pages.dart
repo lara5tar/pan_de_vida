@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/modules/event/controllers/event_form_controller.dart';
 import 'package:pan_de_vida/app/modules/event/views/event_form_view.dart';
+import 'package:pan_de_vida/app/modules/event/views/events_calendar_view.dart';
 
 import '../modules/affirmation/bindings/affirmation_binding.dart';
 import '../modules/affirmation/views/affirmation_index_view.dart';
@@ -235,6 +235,11 @@ class AppPages {
     GetPage(
       name: _Paths.EVENT,
       page: () => const EventView(),
+      binding: EventBinding(),
+    ),
+    GetPage(
+      name: _Paths.EVENT_CALENDAR,
+      page: () => const EventsCalendarView(),
       binding: EventBinding(),
     ),
   ];

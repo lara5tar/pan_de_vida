@@ -82,20 +82,30 @@ Future<Map<String, dynamic>> sendRequest(
   final requestHeaders = {"Content-Type": "application/json", ...?headers};
   final body = data != null ? json.encode(toFirestoreValues(data)) : null;
 
-  http.Response response;
-  switch (method) {
-    case Method.GET:
-      response = await http.get(uri, headers: requestHeaders);
-      break;
-    case Method.POST:
-      response = await http.post(uri, headers: requestHeaders, body: body);
-      break;
-    case Method.PATCH:
-      response = await http.patch(uri, headers: requestHeaders, body: body);
-      break;
-    case Method.DELETE:
-      response = await http.delete(uri, headers: requestHeaders);
-      break;
+  try {
+    http.Response response;
+    switch (method) {
+      case Method.GET:
+        response = await http.get(uri, headers: requestHeaders);
+        break;
+      case Method.POST:
+        response = await http.post(uri, headers: requestHeaders, body: body);
+        break;
+      case Method.PATCH:
+        response = await http.patch(uri, headers: requestHeaders, body: body);
+        break;
+      case Method.DELETE:
+        response = await http.delete(uri, headers: requestHeaders);
+        break;
+    }
+    return handleResponse(response);
+  } catch (e) {
+    // Handle network exceptions gracefully
+    return Response(
+      error: true,
+      statusCode: -1,
+      message: 'Sin acceso a internet',
+      data: null,
+    ).toMap();
   }
-  return handleResponse(response);
 }

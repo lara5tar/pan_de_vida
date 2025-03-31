@@ -19,7 +19,7 @@ Future<void> main() async {
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       color: Colors.blue,
-      defaultTransition: Transition.noTransition,
+      // defaultTransition: Transition.,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate, // Agregar este delegado

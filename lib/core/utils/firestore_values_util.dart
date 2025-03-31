@@ -95,8 +95,6 @@ Map<String, dynamic> fromFirestoreValues(Map<String, dynamic> data) {
       values = _extractFieldValues(data['fields']);
     }
 
-    print('Firestore values: $values');
-
     return values;
   } catch (e) {
     print('Error parsing Firestore values: $e');

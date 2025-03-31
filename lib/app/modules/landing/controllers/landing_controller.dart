@@ -1,10 +1,25 @@
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../routes/app_pages.dart';
 
 class LandingController extends GetxController {
   test() {
     Get.toNamed(Routes.EVENTS);
+    // getImage();
+  }
+
+  var selectedImagePath = ''.obs;
+
+  Future<void> getImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      selectedImagePath.value = pickedFile.path;
+      print(selectedImagePath.value);
+    } else {
+      Get.snackbar('Error', 'No se seleccionó ninguna imagen');
+    }
   }
   // test() {
   //   EventService e = EventService();

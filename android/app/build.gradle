@@ -3,12 +3,13 @@ plugins {
     id "kotlin-android"
     // El plugin de Flutter debe ser aplicado después de los plugins de Android y Kotlin.
     id "dev.flutter.flutter-gradle-plugin"
+    id 'com.google.gms.google-services'
 }
 
 android {
     namespace = "com.example.pan_de_vida"
     // namespace = "com.campustd.pandevida"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -51,6 +52,11 @@ android {
             // ProGuard
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    
+    dependencies {
+        implementation platform('com.google.firebase:firebase-bom:33.12.0')
+        implementation 'com.google.firebase:firebase-analytics'
     }
 
 }

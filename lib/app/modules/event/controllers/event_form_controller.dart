@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pan_de_vida/app/data/models/event_model.dart';
 import 'package:pan_de_vida/app/data/services/event_service.dart';
 
@@ -30,6 +35,10 @@ class EventFormController extends GetxController {
   EventService eventService = EventService();
 
   Event? event;
+
+  // Variables reactivas para la gestión de imágenes
+  final picker = ImagePicker();
+  Rx<File?> selectedImage = Rx<File?>(null);
 
   @override
   void onInit() {
@@ -120,6 +129,13 @@ class EventFormController extends GetxController {
       ),
       barrierDismissible: false,
     );
+    String url = '';
+
+    if (selectedImage.value != null) {
+      url = await uploadImage();
+    }
+
+    print('URL: $url');
 
     Event eventData = Event(
       id: isEditMode.value
@@ -128,7 +144,7 @@ class EventFormController extends GetxController {
       title: title.text,
       description: description.text,
       location: location.text,
-      urlImage: urlImage.text,
+      urlImage: url.isNotEmpty ? url : urlImage.text,
       startDate: isRecurrent.value ? '' : startDate.text,
       endDate: isRecurrent.value ? '' : endDate.text,
       startTime: isAllDay.value ? '00:00' : startTime.text,
@@ -142,10 +158,8 @@ class EventFormController extends GetxController {
     Map<String, dynamic> result;
 
     if (isEditMode.value) {
-      // Update existing event
       result = await eventService.update(eventData);
     } else {
-      // Create new event
       result = await eventService.add(eventData);
     }
 
@@ -265,5 +279,94 @@ class EventFormController extends GetxController {
         ],
       ),
     );
+  }
+
+  void seleccionarImagen() async {
+    await pickImage();
+
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Seleccionar imagen'),
+        content: Obx(
+          () => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (selectedImage.value != null)
+                Image.file(
+                  selectedImage.value!,
+                  width: 200,
+                  height: 200,
+                ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              selectedImage.value = null;
+              urlImage.text = '';
+
+              Get.back();
+            },
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Get.back();
+            },
+            child: const Text('Aceptar'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      selectedImage.value = File(pickedFile.path);
+      urlImage.text = pickedFile.path.split('/').last;
+    } else {
+      Get.snackbar('Error', 'No se seleccionó ninguna imagen');
+    }
+  }
+
+  Future<String> uploadImage() async {
+    if (selectedImage.value == null) {
+      Get.snackbar('Error', 'No se ha seleccionado ninguna imagen');
+      return '';
+    }
+
+    try {
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse('https://sistemasdevida.com/app_pan/upload_image.php'),
+      );
+
+      String nameImage = '${DateTime.now().millisecondsSinceEpoch}.jpg';
+
+      request.files.add(
+        await http.MultipartFile.fromPath('image', selectedImage.value!.path,
+            filename: isEditMode.value ? urlImage.text : nameImage),
+      );
+
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        String imageUrl = await response.stream.bytesToString();
+        print(imageUrl);
+
+        Get.snackbar('Éxito', 'Imagen subida correctamente');
+        return 'https://sistemasdevida.com/app_pan/uploads/${isEditMode.value ? urlImage.text : nameImage}';
+      } else {
+        Get.snackbar('Error', 'No se pudo subir la imagen');
+        return '';
+      }
+    } catch (e) {
+      Get.back(); // Close loading dialog
+      Get.snackbar('Error', 'Error al subir la imagen: $e');
+      return '';
+    }
   }
 }

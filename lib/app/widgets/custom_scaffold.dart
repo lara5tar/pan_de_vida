@@ -60,8 +60,8 @@ class CustomScaffold extends StatelessWidget {
                   : CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: [
-                if (setNotificationBar)
-                  SizedBox(height: MediaQuery.of(Get.context!).padding.top),
+                // if (setNotificationBar)
+                SizedBox(height: MediaQuery.of(Get.context!).padding.top),
                 if (setBanner)
                   Stack(
                     children: [

@@ -89,14 +89,21 @@ class LandingView extends GetView<LandingController> {
           );
         },
       ),
-      floatingActionButton: kDebugMode
-          ? FloatingButtonWidget(
-              onPressed: () async {
-                controller.test();
-              },
-              icon: Icons.bug_report,
-            )
-          : null,
+      // floatingActionButton: kDebugMode
+      //     ? FloatingButtonWidget(
+      //         onPressed: () async {
+      //           controller.test();
+      //         },
+      //         icon: Icons.bug_report,
+      //       )
+      //     : null,
+
+      floatingActionButton: FloatingButtonWidget(
+        onPressed: () async {
+          controller.test();
+        },
+        icon: Icons.bug_report,
+      ),
     );
   }
 }
