@@ -1,0 +1,2 @@
+/home/lara5tar/Escritorio/pan_de_vida/android/app/.cxx/Debug/6r502a4n/armeabi-v7a/CMakeFiles/edit_cache.dir
+/home/lara5tar/Escritorio/pan_de_vida/android/app/.cxx/Debug/6r502a4n/armeabi-v7a/CMakeFiles/rebuild_cache.dir

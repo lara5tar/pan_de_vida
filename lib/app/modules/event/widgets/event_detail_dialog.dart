@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pan_de_vida/core/utils/calendar_utils.dart';
 
 import '../../../data/models/event_model.dart';
 
@@ -123,7 +124,7 @@ void showEventDetailDialog(
                     if (event.isRecurrent && event.daysOfWeek.isNotEmpty)
                       _buildInfoRow(
                         Icons.repeat,
-                        'Evento recurrente: ${event.daysOfWeek}',
+                        'Todos los ${obtenerDiasSemanas(event.daysOfWeek)}',
                       ),
 
                     const SizedBox(height: 16),
@@ -192,4 +193,17 @@ Widget _buildInfoRow(IconData icon, String text) {
       ],
     ),
   );
+}
+
+String obtenerDiasSemanas(String daysOfWeek) {
+  if (daysOfWeek.contains(',')) {
+    List<String> days = daysOfWeek.split(',');
+    String dias = '';
+    for (var day in days) {
+      dias += '${obtenerNombre(day.trim())}, ';
+    }
+    return dias.substring(0, dias.length - 2);
+  } else {
+    return obtenerNombre(daysOfWeek.trim());
+  }
 }

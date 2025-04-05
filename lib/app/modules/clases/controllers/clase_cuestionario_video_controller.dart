@@ -12,6 +12,7 @@ class ClaseCuestionarioVideoController extends GetxController {
   Video video = Video.empty();
   List<Pregunta> preguntas = [];
   var opcionesElegidas = <Respuesta>[].obs;
+  String idInscripcion = '';
 
   late final WebViewController webViewController;
 
@@ -38,7 +39,7 @@ class ClaseCuestionarioVideoController extends GetxController {
       Get.snackbar('Error', result['message']);
     } else {
       video = result['data'];
-
+      idInscripcion = arguments['idInscripcion'];
       initWebViewController(video.url);
 
       result = await EscuelaService.getPregunta(video.codvideo);
@@ -66,6 +67,7 @@ class ClaseCuestionarioVideoController extends GetxController {
       if (respuesta.iscorrecta) {
         correctas++;
       }
+      print(respuesta.iscorrecta);
     }
 
     if (correctas == preguntas.length) {
@@ -75,14 +77,17 @@ class ClaseCuestionarioVideoController extends GetxController {
           content: const Text('Todas las respuestas son correctas'),
           actions: [
             TextButton(
-              onPressed: () {
-                EscuelaService.setVideo(
+              onPressed: () async {
+                var result = await EscuelaService.setVideo(
                   video.codvideo,
-                  Get.arguments['idInscripcion'],
+                  idInscripcion,
                   video.numClase,
                 );
+                print(result);
                 Get.back();
-                Get.back();
+                Get.back(
+                    result:
+                        true); // Enviamos un resultado para indicar que debe actualizarse
               },
               child: const Text('Aceptar'),
             ),

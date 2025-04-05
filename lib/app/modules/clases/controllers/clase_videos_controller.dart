@@ -27,12 +27,19 @@ class ClaseVideosController extends GetxController {
     isLoading.value = false;
   }
 
-  toCuestionarioVideo(url, codVideo) {
-    Get.toNamed(Routes.CLASE_CUESTIONARIO_VIDEO, arguments: {
+  toCuestionarioVideo(url, codVideo) async {
+    final result =
+        await Get.toNamed(Routes.CLASE_CUESTIONARIO_VIDEO, arguments: {
       'codVideo': codVideo,
       'url': url,
       'idInscripcion': cuestionario.idInscripcion,
     });
+
+    // Si recibimos un resultado true, significa que debemos recargar la página
+    if (result == true) {
+      isLoading.value = true;
+      await getVideos();
+    }
   }
 
   toCuestionario() {

@@ -157,6 +157,21 @@ class EventWidgetController extends GetxController {
     return inicioSemana.add(Duration(days: diaSemana - DateTime.monday));
   }
 
+  String obtenerDiaDeFecha(String date) {
+    DateTime fecha = DateTime.parse(date);
+    final Map<int, String> diasSemana = {
+      DateTime.monday: 'LUN',
+      DateTime.tuesday: 'MAR',
+      DateTime.wednesday: 'MIE',
+      DateTime.thursday: 'JUE',
+      DateTime.friday: 'VIE',
+      DateTime.saturday: 'SAB',
+      DateTime.sunday: 'DOM',
+    };
+
+    return diasSemana[fecha.weekday]!;
+  }
+
   Future<void> precacheEventImage() async {
     // Solo precargar la primera imagen si hay eventos disponibles
     if (events.isNotEmpty && events[0].urlImage.isNotEmpty) {
@@ -170,21 +185,21 @@ class EventWidgetController extends GetxController {
 
   String getEventDate(Event event) {
     String date = '';
-    DateTime? startDate;
-    DateTime? endDate;
-    if (event.startDate.isNotEmpty) {
-      startDate = DateTime.parse(event.startDate);
-      if (event.endDate.isNotEmpty) {
-        endDate = DateTime.parse(event.endDate);
-        date = '${startDate.day} - ${endDate.day}';
-      } else {
-        date = startDate.day.toString();
-      }
-    } else {
-      date = event.daysOfWeek;
-    }
+    DateTime startDate = DateTime.parse(event.startDate);
+    // DateTime? endDate;
+    // if (event.startDate.isNotEmpty) {
+    //   startDate = DateTime.parse(event.startDate);
+    //   if (event.endDate.isNotEmpty) {
+    //     endDate = DateTime.parse(event.endDate);
+    //     date = '${startDate.day} - ${endDate.day}';
+    //   } else {
+    //     date = startDate.day.toString();
+    //   }
+    // } else {
+    //   date = event.daysOfWeek;
+    // }
 
-    return date;
+    return startDate.day.toString();
   }
 
   String getMonth(Event event) {

@@ -109,3 +109,24 @@ String obtenerNombreDiaSemana(int diaSemana) {
       return "";
   }
 }
+
+String obtenerNombre(String diaSemana) {
+  switch (diaSemana) {
+    case 'L':
+      return 'Lunes';
+    case 'M':
+      return 'Martes';
+    case 'Mi':
+      return 'Miércoles';
+    case 'J':
+      return 'Jueves';
+    case 'V':
+      return 'Viernes';
+    case 'S':
+      return 'Sábados';
+    case 'D':
+      return 'Domingos';
+    default:
+      return '';
+  }
+}

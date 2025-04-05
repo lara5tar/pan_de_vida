@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pan_de_vida/app/modules/event/widgets/event_detail_dialog.dart';
@@ -52,11 +50,6 @@ class EventWidget extends GetView<EventWidgetController> {
                           // padding: const EdgeInsets.only(left: 15),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            // gradient: const LinearGradient(
-                            //   colors: [Color(0xFF072F49), Color(0xff3282b8)],
-                            //   begin: Alignment.topLeft,
-                            //   end: Alignment.bottomRight,
-                            // ),
                             boxShadow: const [
                               BoxShadow(
                                 color: Colors.black26,
@@ -150,16 +143,30 @@ class EventWidget extends GetView<EventWidgetController> {
                                           bottomRight: Radius.circular(10),
                                         ),
                                       ),
-                                      child: Center(
-                                        child: Text(
-                                          controller.getEventDate(event),
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            controller.getEventDate(event),
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
+                                          Text(
+                                            controller.obtenerDiaDeFecha(
+                                              event.startDate,
+                                            ),
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
