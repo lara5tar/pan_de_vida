@@ -28,8 +28,8 @@ class LandingView extends GetView<LandingController> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // const EventWidget(),
-                    // const SizedBox(height: 10),
+                    const EventWidget(),
+                    const SizedBox(height: 10),
                     YouTubeCarouselWidget(),
                     const SizedBox(height: 10),
                     Padding(
@@ -82,6 +82,7 @@ class LandingView extends GetView<LandingController> {
                         ],
                       ),
                     ),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),

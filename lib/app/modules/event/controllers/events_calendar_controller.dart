@@ -66,6 +66,11 @@ class EventsCalendarController extends GetxController {
     final DateTime todayDate = DateTime(today.year, today.month, today.day);
 
     return events.where((event) {
+      // No mostrar eventos desactivados
+      if (event.isDesactivated) {
+        return false;
+      }
+
       // Para eventos con fecha específica
       if (event.startDate.isNotEmpty) {
         final DateTime eventDate = DateTime.parse(event.startDate);
@@ -139,6 +144,11 @@ class EventsCalendarController extends GetxController {
   List<Event> getEventCalendar(List<Event> eventsAux) {
     List<Event> eventsList = [];
     for (var event in eventsAux) {
+      // No incluir eventos desactivados
+      if (event.isDesactivated) {
+        continue;
+      }
+
       if (event.isRecurrent) {
         //L, M ó V ó L, Mi, V
         if (event.daysOfWeek.contains(',')) {
@@ -214,6 +224,11 @@ class EventsCalendarController extends GetxController {
     List<CalendarEventData<Event>> eventsList = [];
 
     for (var event in eventsAux) {
+      // No incluir eventos desactivados
+      if (event.isDesactivated) {
+        continue;
+      }
+
       eventsList.add(
         CalendarEventData(
           event: event,

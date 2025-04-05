@@ -44,8 +44,13 @@ class EventWidgetController extends GetxController {
   List<Event> filterAndSortEvents(List<Event> allEvents) {
     final DateTime todayDate = DateTime(today.year, today.month, today.day);
 
-    // Filtrar eventos pasados
+    // Filtrar eventos pasados y desactivados
     List<Event> futureEvents = allEvents.where((event) {
+      // No mostrar eventos desactivados
+      if (event.isDesactivated) {
+        return false;
+      }
+
       if (event.startDate.isNotEmpty) {
         final DateTime eventDate = DateTime.parse(event.startDate);
         // Mantener el evento si su fecha es hoy o futura
