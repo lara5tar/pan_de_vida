@@ -138,6 +138,12 @@ class LandingView extends GetView<LandingController> {
           );
         },
       ),
+      floatingActionButton: FloatingButtonWidget(
+        onPressed: () {
+          Get.toNamed(Routes.PUNTODEVENTA);
+        },
+        icon: Icons.shopping_cart,
+      ),
     );
   }
 }

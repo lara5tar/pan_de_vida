@@ -1,6 +1,4 @@
 import 'package:get/get.dart';
-import 'package:pan_de_vida/app/modules/event/views/event_form_view.dart';
-import 'package:pan_de_vida/app/modules/event/views/events_calendar_view.dart';
 
 import '../modules/affirmation/bindings/affirmation_binding.dart';
 import '../modules/affirmation/views/affirmation_index_view.dart';
@@ -25,7 +23,9 @@ import '../modules/escuela/bindings/escuela_binding.dart';
 import '../modules/escuela/views/capturar_asistencia_view.dart';
 import '../modules/escuela/views/capturar_pago_view.dart';
 import '../modules/event/bindings/event_binding.dart';
+import '../modules/event/views/event_form_view.dart';
 import '../modules/event/views/event_view.dart';
+import '../modules/event/views/events_calendar_view.dart';
 import '../modules/event/views/events_view.dart';
 import '../modules/grupos_de_vida/bindings/grupos_de_vida_binding.dart';
 import '../modules/grupos_de_vida/bindings/quiero_asistir_binding.dart';
@@ -37,6 +37,8 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/map_groups/bindings/map_groups_binding.dart';
 import '../modules/map_groups/views/map_groups_view.dart';
+import '../modules/mycart/bindings/mycart_binding.dart';
+import '../modules/mycart/views/mycart_view.dart';
 import '../modules/restauracion/bindings/restauracion_binding.dart';
 import '../modules/restauracion/views/restauracion_congregante_view.dart';
 import '../modules/restauracion/views/restauracion_view.dart';
@@ -242,5 +244,9 @@ class AppPages {
       page: () => const EventsCalendarView(),
       binding: EventBinding(),
     ),
+    GetPage(
+        name: _Paths.PUNTODEVENTA,
+        page: () => const MycartView(),
+        binding: MycartBinding()),
   ];
 }
