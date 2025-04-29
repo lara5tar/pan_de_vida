@@ -15,11 +15,13 @@ class RestauracionCongreganteView
       body: Obx(
         () => controller.isLoading.value
             ? const Center(child: CircularProgressIndicator())
-            : Column(
-                children: [
-                  const SizedBox(height: 20),
-                  ...buildSchoolAttendance(controller.schoolAttendance.value),
-                ],
+            : SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    ...buildSchoolAttendance(controller.schoolAttendance.value),
+                  ],
+                ),
               ),
       ),
     );

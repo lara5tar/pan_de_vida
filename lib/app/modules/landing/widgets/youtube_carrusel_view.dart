@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../controllers/youtube_carrusel_controller.dart';
 
 class YouTubeCarouselWidget extends GetView<YoutubeCarruselController> {
@@ -9,145 +10,340 @@ class YouTubeCarouselWidget extends GetView<YoutubeCarruselController> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 240,
-      child: Obx(
-        () {
-          if (controller.videos.isEmpty) {
-            return _buildLoadingIndicator();
-          }
-          return Column(
-            children: [
-              Expanded(
-                child: PageView.builder(
-                  controller: _pageController,
-                  itemCount: controller.videos.length + 1,
-                  onPageChanged: (index) {
-                    controller.currentIndex.value = index;
+    return Obx(() {
+      // Mostrar indicador de carga mientras se obtienen los videos
+      if (controller.isLoading.value) {
+        return _buildLoadingIndicator();
+      }
 
-                    if (index == controller.videos.length) {
-                      Future.delayed(const Duration(milliseconds: 300), () {
-                        _pageController.animateToPage(
-                          0,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeInOut,
-                        );
-                      });
-                    }
-                  },
-                  itemBuilder: (context, index) {
-                    if (index == controller.videos.length) {
-                      return const SizedBox.shrink();
-                    }
-                    final video = controller.videos[index];
-                    return GestureDetector(
-                      onTap: () => controller.openVideo(video['videoId']),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: _buildVideoCard(video),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 10),
-              _buildPageIndicator(controller.videos.length),
-              const SizedBox(height: 10),
-            ],
-          );
-        },
-      ),
-    );
+      // Mostrar mensaje de error si hay un problema
+      if (controller.hasError.value) {
+        return _buildErrorWidget();
+      }
+
+      // Mostrar mensaje si no hay videos
+      if (controller.videos.isEmpty) {
+        return _buildEmptyWidget();
+      }
+
+      // Mostrar carrusel de videos con diseño similar a EventWidget
+      return Column(
+        children: [
+          _buildTitleBar(),
+          Expanded(
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: controller.videos.length,
+              onPageChanged: (index) {
+                controller.currentIndex.value = index;
+              },
+              itemBuilder: (context, index) {
+                final video = controller.videos[index];
+                return _buildVideoCard(video);
+              },
+            ),
+          ),
+          // Indicador de página
+          if (controller.videos.length > 1)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: _buildPageIndicator(),
+            ),
+        ],
+      );
+    });
   }
 
-  Widget _buildVideoCard(Map<String, String?> video) {
+  Widget _buildTitleBar() {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10), // Espacio para sombra
-      decoration: BoxDecoration(
-        color: const Color(0xff08244c),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Stack(
+      padding: const EdgeInsets.only(left: 25, right: 20, bottom: 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildThumbnail(video['thumbnailUrl']),
-          _buildVideoTitleOverlay(video['title']),
+          const Text(
+            'Videos',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(
+            height: 30,
+            child: TextButton(
+              onPressed: () {
+                // Aquí podrías navegar a una página con más videos
+                controller.openYouTubeChannel();
+              },
+              child: const Text(
+                'Ver más',
+                style: TextStyle(
+                  color: Colors.blue,
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildThumbnail(String? thumbnailUrl) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: Image.network(
-        thumbnailUrl ?? '',
-        height: 200,
-        width: double.infinity,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) => const Icon(
-          Icons.broken_image,
-          size: 100,
-          color: Colors.grey,
+  Widget _buildVideoCard(Map<String, String?> video) {
+    return GestureDetector(
+      onTap: () => controller.openVideo(video['videoId']),
+      child: Container(
+        clipBehavior: Clip.antiAlias,
+        margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 10,
+              spreadRadius: 1,
+              offset: Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            // Imagen del video
+            _buildThumbnail(video['thumbnailUrl']),
+
+            // Gradient overlay for better text readability
+            Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF072F49),
+                    Colors.transparent,
+                  ],
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topCenter,
+                ),
+              ),
+            ),
+
+            // Video title and play button
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    // Título del video
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            video['title'] ?? '',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              // fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Botón de reproducción estilo YouTube
+                    Container(
+                      height: 50,
+                      width: 70,
+                      margin: const EdgeInsets.only(left: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.red.shade700,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons.play_arrow_rounded,
+                          color: Colors.white,
+                          size: 36,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildVideoTitleOverlay(String? title) {
-    return Positioned(
-      bottom: 0,
-      left: 0,
-      right: 0,
-      child: Container(
-        decoration: BoxDecoration(
-          color: const Color(0xff08244c).withOpacity(0.7),
-          borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10),
+  Widget _buildThumbnail(String? thumbnailUrl) {
+    return CachedNetworkImage(
+      imageUrl: thumbnailUrl ?? '',
+      height: double.infinity,
+      width: double.infinity,
+      fit: BoxFit.cover,
+      placeholder: (context, url) => Container(
+        color: Colors.grey[800],
+        child: const Center(
+          child: SizedBox(
+            width: 30,
+            height: 30,
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              strokeWidth: 2,
+            ),
           ),
         ),
-        padding: const EdgeInsets.all(8),
-        child: Text(
-          title ?? '',
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 16, color: Colors.white),
-          overflow: TextOverflow.ellipsis,
-          maxLines: 2,
+      ),
+      errorWidget: (context, url, error) => Container(
+        color: Colors.grey[800],
+        child: const Center(
+          child: Icon(
+            Icons.error_outline,
+            color: Colors.white,
+            size: 48,
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildPageIndicator(int itemCount) {
+  Widget _buildPageIndicator() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(itemCount, (index) {
-        return Obx(() {
-          return Container(
+      children: List.generate(
+        controller.videos.length,
+        (index) => Obx(() {
+          bool isActive = controller.currentIndex.value == index;
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 150),
             margin: const EdgeInsets.symmetric(horizontal: 3),
-            width: 8,
             height: 8,
+            width: isActive ? 16 : 8,
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: controller.currentIndex.value == index
-                  ? const Color(0xff0f4c75)
-                  : Colors.grey,
+              color: isActive ? Colors.blue[700] : Colors.grey,
+              borderRadius: BorderRadius.circular(4),
             ),
           );
-        });
-      }),
+        }),
+      ),
     );
   }
 
   Widget _buildLoadingIndicator() {
     return Container(
-      decoration: const BoxDecoration(
-        color: Color(0xff08244c),
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
+      height: 200,
       margin: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            spreadRadius: 1,
+          ),
+        ],
+      ),
       child: const Center(
         child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  Widget _buildErrorWidget() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            spreadRadius: 1,
+          ),
+        ],
+      ),
+      margin: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.error_outline,
+              color: Colors.red,
+              size: 48,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              controller.errorMessage.value,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.black87,
+                fontSize: 14,
+              ),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              onPressed: controller.refreshVideos,
+              icon: const Icon(Icons.refresh),
+              label: const Text('Reintentar'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue[700],
+                foregroundColor: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyWidget() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            spreadRadius: 1,
+          ),
+        ],
+      ),
+      margin: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
+      child: const Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.videocam_off,
+              color: Colors.grey,
+              size: 48,
+            ),
+            SizedBox(height: 16),
+            Text(
+              'No hay videos disponibles',
+              style: TextStyle(
+                color: Colors.black87,
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

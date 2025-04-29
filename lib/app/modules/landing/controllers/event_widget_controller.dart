@@ -7,6 +7,8 @@ import '../../../data/models/event_model.dart';
 
 class EventWidgetController extends GetxController {
   var isLoading = true.obs;
+  var hasError = false.obs; // Agregando propiedad hasError
+  var errorMessage = ''.obs; // Mensaje de error
   var events = <Event>[].obs;
   final currentIndex = 0.obs;
 
@@ -19,25 +21,44 @@ class EventWidgetController extends GetxController {
     super.onInit();
   }
 
-  void getEvents() async {
+  // Método para refrescar los eventos (usado por el botón reintentar)
+  Future<void> refreshEvents() async {
+    if (!isLoading.value) {
+      await getEvents();
+    }
+  }
+
+  Future<void> getEvents() async {
     EventService eventService = EventService();
 
     isLoading(true);
-    var data = await eventService.getAll();
-    if (!data['error']) {
-      events.clear();
+    hasError(false); // Resetear el estado de error
 
-      // Procesa los eventos recurrentes para obtener sus fechas actuales
-      List<Event> processedEvents = getEventCalendar(data['data']);
+    try {
+      var data = await eventService.getAll();
+      if (!data['error']) {
+        events.clear();
 
-      // Filtrar eventos por fecha y limitar a 10
-      List<Event> filteredEvents = filterAndSortEvents(processedEvents);
-      events.addAll(filteredEvents);
+        // Procesa los eventos recurrentes para obtener sus fechas actuales
+        List<Event> processedEvents = getEventCalendar(data['data']);
 
-      // Precargar imágenes antes de finalizar la carga
-      await precacheEventImage();
+        // Filtrar eventos por fecha y limitar a 10
+        List<Event> filteredEvents = filterAndSortEvents(processedEvents);
+        events.addAll(filteredEvents);
+
+        // Precargar imágenes antes de finalizar la carga
+        await precacheEventImage();
+      } else {
+        hasError(true);
+        errorMessage.value = 'No se pudieron cargar los eventos';
+      }
+    } catch (e) {
+      hasError(true);
+      errorMessage.value = 'Error al cargar eventos: $e';
+      debugPrint('Error al cargar eventos: $e');
+    } finally {
+      isLoading(false);
     }
-    isLoading(false);
   }
 
   // Método para filtrar eventos por fecha y limitar a 10
