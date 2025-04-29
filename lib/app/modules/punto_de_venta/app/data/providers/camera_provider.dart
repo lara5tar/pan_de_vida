@@ -1,0 +1,3 @@
+class CameraProvider {
+  void takePicture() {}
+}

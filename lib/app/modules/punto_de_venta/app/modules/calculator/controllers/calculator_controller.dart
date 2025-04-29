@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-class PuntodeventaController extends GetxController {
-  //TODO: Implement PuntodeventaController
+class CalculatorController extends GetxController {
+  //TODO: Implement CalculatorController
 
   final count = 0.obs;
   @override

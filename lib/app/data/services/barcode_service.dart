@@ -1,3 +1,3 @@
-import 'package:mobile_scanner/mobile_scanner.dart';
+// import 'package:mobile_scanner/mobile_scanner.dart';
 
-class BarcodeService {}
+// class BarcodeService {}

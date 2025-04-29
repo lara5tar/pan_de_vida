@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import '../controllers/puntodeventa_controller.dart';
+import '../controllers/calculator_controller.dart';
 
-class PuntodeventaView extends GetView<PuntodeventaController> {
-  const PuntodeventaView({super.key});
+class CalculatorView extends GetView<CalculatorController> {
+  const CalculatorView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PuntodeventaView'),
+        title: const Text('CalculatorView'),
         centerTitle: true,
       ),
       body: const Center(
         child: Text(
-          'PuntodeventaView is working',
+          'CalculatorView is working',
           style: TextStyle(fontSize: 20),
         ),
       ),

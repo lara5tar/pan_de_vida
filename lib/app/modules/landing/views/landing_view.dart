@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../../widgets/custom_scaffold.dart';

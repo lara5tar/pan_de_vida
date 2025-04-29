@@ -210,7 +210,6 @@ class EventWidgetController extends GetxController {
   }
 
   String getEventDate(Event event) {
-    String date = '';
     DateTime startDate = DateTime.parse(event.startDate);
     // DateTime? endDate;
     // if (event.startDate.isNotEmpty) {
