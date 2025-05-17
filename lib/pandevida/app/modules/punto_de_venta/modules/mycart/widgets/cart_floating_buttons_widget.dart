@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../data/models/book_model.dart';
 import '../controllers/mycart_controller.dart';
 import 'price_change_dialog.dart';
 import 'search_book_dialog.dart';
@@ -77,11 +78,8 @@ class CartFloatingButtonsWidget extends GetView<MycartController> {
                     color: Colors.indigo[400],
                     onPressed: () async {
                       // Abre el diálogo de búsqueda y espera el resultado
-                      String? code = await searchBookDialog();
-                      if (code != null && code.isNotEmpty) {
-                        // Busca el libro por el código ingresado
-                        await controller.findBookByBarcode(code);
-                      }
+                      // Ahora directamente llamamos al método del controlador que maneja el diálogo
+                      await controller.showSearchBookDialog();
                     },
                   ),
                   Obx(

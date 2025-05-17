@@ -4,6 +4,7 @@ import '../../../data/models/book_model.dart';
 import '../../../data/services/books_service.dart';
 import '../../../data/services/camera_service.dart';
 import '../../../widgets/confirm_dialog.dart';
+import '../widgets/search_book_dialog.dart';
 
 class MycartController extends GetxController {
   var cameraService = Get.find<CameraService>();
@@ -15,6 +16,16 @@ class MycartController extends GetxController {
   var barcodeBuffer = '';
   var isLoading = false.obs;
   var inDialog = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    // Configurar el callback para el escaneo de códigos de barras
+    cameraService.setBarcodeCallback((code) {
+      addBookByCode(code);
+    });
+  }
 
   void updateQuantityByInput(int newQuantity) {
     if (selectedCartItem.value == null) {
@@ -94,6 +105,14 @@ class MycartController extends GetxController {
     }
   }
 
+  // Nuevo método que utiliza el diálogo de búsqueda mejorado
+  Future<void> showSearchBookDialog() async {
+    Book? foundBook = await searchBookDialog();
+    if (foundBook != null) {
+      addBook(foundBook);
+    }
+  }
+
   void addBook(Book book) {
     CartItem? existingItem = findBookInCart(book);
 
@@ -106,7 +125,7 @@ class MycartController extends GetxController {
       totalAmount.value += book.precio;
     }
 
-    selectedCartItem.value = existingItem;
+    selectedCartItem.value = existingItem ?? cartItems[0];
     setCartItemInTop();
   }
 
@@ -118,7 +137,7 @@ class MycartController extends GetxController {
   }
 
   CartItem? findBookInCart(Book book) => cartItems.firstWhereOrNull(
-        (element) => element.book.codigoBarras == book.codigoBarras,
+        (element) => element.book.id == book.id,
       );
 
   void checkout() {
@@ -193,8 +212,15 @@ class MycartController extends GetxController {
     selectedCartItem.value = null;
   }
 
+  // Método actualizado para usar el nuevo diálogo de búsqueda
   Future<void> addBookByCode(String code) async {
-    await findBookByBarcode(code);
+    // Si el código está vacío, mostrar el diálogo de búsqueda
+    if (code.isEmpty) {
+      await showSearchBookDialog();
+    } else {
+      // Si hay un código, buscar directamente por código de barras
+      await findBookByBarcode(code);
+    }
   }
 }
 

@@ -4,7 +4,7 @@ import '../controllers/books_controller.dart';
 import '../../../../../widgets/custom_scaffold.dart';
 import '../../../../../widgets/button_widget.dart';
 import '../../../../../widgets/text_title_widget.dart';
-import '../../../../../widgets/search_field_widget.dart';
+import '../../../../../widgets/barcode_scanner_field_widget.dart';
 
 class BooksView extends GetView<BooksController> {
   const BooksView({super.key});
@@ -25,12 +25,22 @@ class BooksView extends GetView<BooksController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const TextTitleWidget('Catálogo de Libros'),
-            SearchFieldWidget(
-              hintText: 'Buscar por nombre o ID',
+            BarcodeScannerFieldWidget(
+              hintText: 'Buscar por nombre, ID o escanear código',
+              autofocus: true,
               onChanged: (value) {
                 controller.searchQuery.value = value;
                 controller.currentPage.value =
                     0; // Reset a la primera página al buscar
+              },
+              onBarcodeDetected: (barcode) {
+                // Cuando se detecta un código desde un escáner físico o la cámara
+                // realizamos la búsqueda inmediatamente
+                controller.searchQuery.value = barcode;
+                controller.currentPage.value = 0;
+                // También podríamos hacer algo específico para códigos de barras aquí
+                // por ejemplo, buscar el libro exacto y mostrarlo automáticamente
+                controller.findBookByExactCode(barcode);
               },
             ),
             Expanded(

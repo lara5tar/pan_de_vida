@@ -1,15 +1,19 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:flutter/material.dart';
-import 'package:delayed_display/delayed_display.dart';
 import 'package:audioplayers/audioplayers.dart';
 
-import '../../modules/mycart/controllers/mycart_controller.dart';
+// Función callback para procesar códigos detectados
+typedef BarcodeDetectionCallback = void Function(String barcode);
 
 class CameraService extends GetxService {
   final isProcessing = false.obs;
   final AudioPlayer _audioPlayer = AudioPlayer();
+
+  // Guardamos la función callback para procesamiento de códigos
+  BarcodeDetectionCallback? _barcodeCallback;
 
   @override
   void onInit() {
@@ -24,28 +28,28 @@ class CameraService extends GetxService {
     super.onClose();
   }
 
+  // Método para registrar el callback
+  void setBarcodeCallback(BarcodeDetectionCallback callback) {
+    _barcodeCallback = callback;
+  }
+
   Widget openScanner() {
-    // final completer = Completer<String>();
-    final controller = MobileScannerController(
-      detectionSpeed: DetectionSpeed.unrestricted,
-      facing: CameraFacing.front,
-      formats: [
-        BarcodeFormat.ean8,
-        BarcodeFormat.ean13,
-        BarcodeFormat.upcA,
-        BarcodeFormat.upcE,
-        BarcodeFormat.code39,
-        BarcodeFormat.code93,
-        BarcodeFormat.code128,
-        BarcodeFormat.dataMatrix,
-        BarcodeFormat.qrCode,
-
-        // BarcodeFormat.all,
-      ],
-    );
-
     return MobileScanner(
-      controller: controller,
+      controller: MobileScannerController(
+        detectionSpeed: DetectionSpeed.normal,
+        facing: CameraFacing.back,
+        formats: [
+          BarcodeFormat.ean8,
+          BarcodeFormat.ean13,
+          BarcodeFormat.upcA,
+          BarcodeFormat.upcE,
+          BarcodeFormat.code39,
+          BarcodeFormat.code93,
+          BarcodeFormat.code128,
+          BarcodeFormat.dataMatrix,
+          BarcodeFormat.qrCode,
+        ],
+      ),
       onDetect: (capture) {
         final List<Barcode> barcodes = capture.barcodes;
         if (barcodes.isNotEmpty && !isProcessing.value) {
@@ -66,7 +70,13 @@ class CameraService extends GetxService {
       _audioPlayer.play(AssetSource('sonido.wav'));
     });
 
-    Get.find<MycartController>().addBookByCode(code);
+    // En lugar de buscar directamente MycartController, usamos el callback registrado
+    if (_barcodeCallback != null) {
+      _barcodeCallback!(code);
+    } else {
+      debugPrint(
+          'No barcode callback registered. Please call setBarcodeCallback() first.');
+    }
 
     Future.delayed(const Duration(seconds: 2), () {
       isProcessing.value = false;

@@ -12,6 +12,8 @@ class BooksController extends GetxController {
   var errorMessage = ''.obs;
   var books = <Book>[].obs;
   var searchQuery = ''.obs;
+  var exactMatchFound =
+      false.obs; // Tracking de si se encontró una coincidencia exacta
 
   // Variables para paginación
   var currentPage = 0.obs;
@@ -23,7 +25,7 @@ class BooksController extends GetxController {
     super.onInit();
   }
 
-  // Buscar libros por nombre
+  // Buscar libros por nombre o código
   List<Book> get filteredBooks {
     final query = searchQuery.value.toLowerCase();
     if (query.isEmpty) {
@@ -34,6 +36,50 @@ class BooksController extends GetxController {
             book.nombre.toLowerCase().contains(query) ||
             book.id.toLowerCase().contains(query))
         .toList();
+  }
+
+  // Busca un libro por código exacto (útil para escaneos de códigos de barras)
+  void findBookByExactCode(String code) {
+    exactMatchFound.value = false;
+
+    if (code.isEmpty) return;
+
+    // Primero buscamos coincidencia exacta con el ID
+    final exactMatch = books.firstWhereOrNull(
+        (book) => book.id.toLowerCase() == code.toLowerCase());
+
+    // Si encontramos una coincidencia exacta
+    if (exactMatch != null) {
+      exactMatchFound.value = true;
+
+      // Mostrar un mensaje de éxito
+      Get.snackbar(
+        'Libro encontrado',
+        'Se encontró el libro: ${exactMatch.nombre}',
+        backgroundColor: Colors.green.shade700,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 2),
+      );
+
+      // Navegar directamente a los detalles del libro
+      // Usar un breve delay para permitir ver la notificación
+      Future.delayed(const Duration(milliseconds: 500), () {
+        goToBookDetail(exactMatch);
+      });
+    } else {
+      // Si no hay coincidencia exacta, continuamos con la búsqueda normal
+      // La vista ya se actualizará con filteredBooks
+
+      // Si no hay resultados en la búsqueda filtrada
+      if (filteredBooks.isEmpty) {
+        Get.snackbar(
+          'Sin resultados',
+          'No se encontró ningún libro con el código: $code',
+          backgroundColor: Colors.orange.shade700,
+          colorText: Colors.white,
+        );
+      }
+    }
   }
 
   // Libros de la página actual

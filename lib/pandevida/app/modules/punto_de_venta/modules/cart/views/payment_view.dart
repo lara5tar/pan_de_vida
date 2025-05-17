@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import '../controllers/cart_controller.dart';
 
 class PaymentView extends GetView<CartController> {
@@ -43,16 +42,19 @@ class PaymentView extends GetView<CartController> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('Cantidad de libros:'),
+                        // Usamos el map de quantities para suma de cantidades
                         Text(
-                            '${controller.items.fold(0, (sum, item) => sum + item.quantity)}'),
+                          '${controller.quantities.values.fold(0, (sum, qty) => sum + qty)}',
+                        ),
                       ],
                     ),
                     const Divider(),
                     _buildSummaryRow('Subtotal:',
                         '\$${controller.subtotal.toStringAsFixed(2)}'),
                     Obx(() {
-                      if (!controller.isSupplier.value)
+                      if (!controller.isSupplier.value) {
                         return const SizedBox.shrink();
+                      }
                       return _buildSummaryRow(
                         'Descuento (${controller.supplierDiscountPercentage.value.toStringAsFixed(0)}%):',
                         '-\$${controller.discountAmount.toStringAsFixed(2)}',
@@ -415,7 +417,8 @@ class PaymentView extends GetView<CartController> {
     );
   }
 
-  // Función para mostrar selector de fecha
+  // Función para mostrar selector de fecha - Mantenida para posible uso futuro
+  /*
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -429,113 +432,7 @@ class PaymentView extends GetView<CartController> {
       controller.updateStartDate(picked);
     }
   }
-
-  // Función para mostrar el resumen del plan de pagos
-  void _showPaymentPlan(BuildContext context) {
-    controller.createInstallmentPlan();
-
-    if (controller.installmentPlan.value == null) {
-      return; // Si no se pudo crear el plan, no mostrar nada
-    }
-
-    Get.dialog(Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      elevation: 6,
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Título con icono
-            Container(
-              padding: const EdgeInsets.only(bottom: 16),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.grey.shade200,
-                    width: 1.0,
-                  ),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.blue[700],
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.calendar_month_outlined,
-                      color: Colors.white,
-                      size: 24,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  // const Text(
-                  //   'Plan de Pagos',
-                  //   style: TextStyle(
-                  //     fontSize: 22,
-                  //     fontWeight: FontWeight.bold,
-                  //     color: Colors.black87,
-                  //   ),
-                  // ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            // Contenido
-            ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height * 0.5,
-              ),
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildPaymentInfoCard(
-                        controller.generateInstallmentSummary()),
-                  ],
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // Botón para cerrar
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () => Get.back(),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue[700],
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  elevation: 2,
-                ),
-                child: const Text(
-                  'Aceptar',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ));
-  }
+  */
 
   // Widget para mostrar la información de pagos
   Widget _buildPaymentInfoCard(String paymentInfo) {
@@ -604,8 +501,6 @@ class PaymentView extends GetView<CartController> {
   Widget _formatLineItem(String line) {
     List<String> parts = line.split(':');
     bool isPagoInicial = line.contains("Pago Inicial");
-    bool isNumPagos = line.contains("Número de Pagos");
-    bool isMontoPago = line.contains("Monto por Pago");
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
@@ -628,67 +523,6 @@ class PaymentView extends GetView<CartController> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  // Dar formato a cada línea del plan de pagos (método que mantendré solo para compatibilidad)
-  Widget _formatPaymentLine(String line, {bool isHeader = false}) {
-    // Si es encabezado o línea vacía
-    if (isHeader || line.trim().isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 8),
-        child: Text(
-          line,
-          style: TextStyle(
-            fontSize: isHeader ? 17 : 14,
-            fontWeight: isHeader ? FontWeight.bold : FontWeight.normal,
-            color: isHeader ? Colors.indigo.shade800 : Colors.black87,
-          ),
-        ),
-      );
-    }
-
-    // Si es un pago programado (contiene fecha y monto)
-    if (line.contains("Pago") || line.contains("Inicial")) {
-      List<String> parts = line.split(':');
-
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Text(
-                parts[0].trim(),
-                style: const TextStyle(fontSize: 14),
-              ),
-            ),
-            Text(
-              parts.length > 1 ? parts[1].trim() : "",
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF1565C0),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    // Otras líneas
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Text(
-        line,
-        style: TextStyle(
-          fontSize: 14,
-          color:
-              line.contains("Total") ? Colors.indigo.shade800 : Colors.black87,
-          fontWeight:
-              line.contains("Total") ? FontWeight.bold : FontWeight.normal,
-        ),
       ),
     );
   }

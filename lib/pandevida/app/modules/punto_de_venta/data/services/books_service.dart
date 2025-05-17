@@ -64,7 +64,7 @@ class BooksService {
         value: barcode,
       );
 
-      // Si no hay resultados, retornamos error
+      // Si no hay resultados, retornamos error sin mostrar diálogo
       if (results.isEmpty) {
         return {
           'error': true,
@@ -75,7 +75,6 @@ class BooksService {
 
       // Si encontramos resultados, usamos el primero para crear un objeto Book
       // Los datos ya vienen formateados correctamente por el ApiProvider
-
       final bookData = results[0];
       final Book book = Book.fromJson(bookData);
 
@@ -87,6 +86,54 @@ class BooksService {
       return {
         'error': true,
         'message': 'Error al buscar libro por código de barras: ${e.toString()}'
+      };
+    }
+  }
+
+  // Nuevo método para buscar libros por similitud en el nombre
+  Future<Map<String, dynamic>> findByNameSimilarity(String searchTerm) async {
+    try {
+      // Primero obtenemos todos los libros
+      final allBooksResult = await getAll();
+
+      // Si hay un error al obtener los libros, lo retornamos
+      if (allBooksResult['error'] == true) {
+        return allBooksResult as Map<String, dynamic>;
+      }
+
+      // Obtenemos la lista de libros
+      final List<Book> allBooks = allBooksResult['data'];
+
+      // Si la lista está vacía, retornamos que no se encontraron libros
+      if (allBooks.isEmpty) {
+        return {
+          'error': true,
+          'message': 'No hay libros disponibles para buscar'
+        };
+      }
+
+      // Convertimos el término de búsqueda a minúsculas para comparación insensible a mayúsculas/minúsculas
+      final lowercaseSearchTerm = searchTerm.toLowerCase();
+
+      // Filtramos los libros que contienen el término de búsqueda en su nombre
+      final List<Book> matchedBooks = allBooks.where((book) {
+        return book.nombre.toLowerCase().contains(lowercaseSearchTerm);
+      }).toList();
+
+      // Si no hay libros que coincidan, retornamos error
+      if (matchedBooks.isEmpty) {
+        return {
+          'error': true,
+          'message': 'No se encontraron libros que coincidan con: $searchTerm'
+        };
+      }
+
+      // Devolvemos los libros que coinciden
+      return {'error': false, 'data': matchedBooks};
+    } catch (e) {
+      return {
+        'error': true,
+        'message': 'Error al buscar libros por nombre: ${e.toString()}'
       };
     }
   }

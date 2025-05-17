@@ -3,27 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-
-class BookItem {
-  final String id;
-  final String title;
-  final String barcode;
-  final double price;
-  int quantity;
-  final String imageUrl;
-  final TextEditingController quantityController;
-
-  BookItem({
-    required this.id,
-    required this.title,
-    required this.barcode,
-    required this.price,
-    this.quantity = 1,
-    required this.imageUrl,
-  }) : quantityController = TextEditingController(text: '1');
-
-  double get totalPrice => price * quantity;
-}
+import '../../../data/models/book_model.dart';
+import '../../../data/services/books_service.dart';
+import '../../../data/services/camera_service.dart';
 
 // Clase para manejar la información de pagos a plazos
 class InstallmentPlan {
@@ -39,13 +21,27 @@ class InstallmentPlan {
 }
 
 class CartController extends GetxController {
+  // Service para acceder a los libros de la base de datos
+  final BooksService _booksService = BooksService();
+
+  // Camera service para el escaneo de códigos
+  late final CameraService cameraService;
+
+  // Estado del escáner
+  final RxBool isCameraActive = false.obs;
+
   // Observable list of items in cart
-  final RxList<BookItem> items = <BookItem>[].obs;
+  final RxList<Book> items = <Book>[].obs;
+
+  // Map para mantener la cantidad y controlador por cada libro
+  final RxMap<String, int> quantities = <String, int>{}.obs;
+  final Map<String, TextEditingController> quantityControllers = {};
 
   // Search related
   final searchController = TextEditingController();
-  final RxList<BookItem> searchResults = <BookItem>[].obs;
+  final RxList<Book> searchResults = <Book>[].obs;
   final RxBool isSearching = false.obs;
+  final RxBool isLoading = false.obs;
 
   // User role - admin por defecto
   final RxBool isAdmin = true.obs;
@@ -66,44 +62,55 @@ class CartController extends GetxController {
   final TextEditingController notesController = TextEditingController();
   final Rx<DateTime> startDate = DateTime.now().obs;
 
-  // Mock book database (replace with real database later)
-  final List<BookItem> bookDatabase = [
-    BookItem(
-      id: '1',
-      title: 'El principio del poder',
-      barcode: '9781234567897',
-      price: 350.0,
-      imageUrl: 'assets/book1.jpg',
-    ),
-    BookItem(
-      id: '2',
-      title: 'Vida con propósito',
-      barcode: '9789876543210',
-      price: 280.0,
-      imageUrl: 'assets/book2.jpg',
-    ),
-    BookItem(
-      id: '3',
-      title: 'La batalla por tu mente',
-      barcode: '9785432109876',
-      price: 320.0,
-      imageUrl: 'assets/book3.jpg',
-    ),
-    BookItem(
-      id: '4',
-      title: 'Rompe los límites',
-      barcode: '9788765432109',
-      price: 290.0,
-      imageUrl: 'assets/book4.jpg',
-    ),
-    BookItem(
-      id: '5',
-      title: 'Esperanza en tiempos difíciles',
-      barcode: '9787654321098',
-      price: 315.0,
-      imageUrl: 'assets/book5.jpg',
-    ),
-  ];
+  @override
+  void onInit() {
+    super.onInit();
+    cameraService = Get.find<CameraService>();
+
+    // Registramos la función para procesar códigos de barras
+    cameraService.setBarcodeCallback((barcode) async {
+      // Buscar el producto por código de barras
+      final productFound = await searchByBarcode(barcode);
+
+      if (productFound) {
+        // Si se encontró el producto, lo agregamos automáticamente al carrito
+        final foundProduct = searchResults.first;
+        addToCart(foundProduct);
+
+        // Mostramos mensaje de éxito
+        Get.snackbar(
+          '¡Producto agregado!',
+          'Se agregó "${foundProduct.nombre}" al carrito',
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.green.withAlpha(230),
+          colorText: Colors.white,
+          duration: const Duration(seconds: 2),
+          margin: const EdgeInsets.all(10),
+          borderRadius: 10,
+          icon: const Icon(
+            Icons.shopping_cart,
+            color: Colors.white,
+          ),
+        );
+      } else {
+        // Si no se encontró, mostramos mensaje de error
+        Get.snackbar(
+          'Producto no encontrado',
+          'El código de barras $barcode no existe en el inventario',
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red.withAlpha(230),
+          colorText: Colors.white,
+          duration: const Duration(seconds: 3),
+          margin: const EdgeInsets.all(10),
+          borderRadius: 10,
+          icon: const Icon(
+            Icons.error_outline,
+            color: Colors.white,
+          ),
+        );
+      }
+    });
+  }
 
   @override
   void onClose() {
@@ -111,14 +118,47 @@ class CartController extends GetxController {
     customerNameController.dispose();
     contactInfoController.dispose();
     notesController.dispose();
-    for (var item in items) {
-      item.quantityController.dispose();
-    }
+
+    // Dispose de los controladores de texto
+    quantityControllers.forEach((_, controller) {
+      controller.dispose();
+    });
     super.onClose();
   }
 
+  // Método para obtener todos los libros
+  Future<void> getAllBooks() async {
+    isLoading.value = true;
+    try {
+      final result = await _booksService.getAll();
+      if (!result['error']) {
+        // La búsqueda fue exitosa
+        searchResults.assignAll(result['data']);
+        isSearching.value = searchResults.isNotEmpty;
+      } else {
+        Get.snackbar(
+          'Error',
+          'No se pudieron obtener los libros: ${result['message']}',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Error al buscar libros: $e',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   // Search books by title or barcode
-  void searchBooks(String query) {
+  void searchBooks(String query) async {
     if (query.isEmpty) {
       searchResults.clear();
       isSearching.value = false;
@@ -126,46 +166,98 @@ class CartController extends GetxController {
     }
 
     isSearching.value = true;
-    final results = bookDatabase.where((book) {
-      return book.title.toLowerCase().contains(query.toLowerCase()) ||
-          book.barcode.contains(query);
-    }).toList();
+    isLoading.value = true;
 
-    searchResults.assignAll(results);
+    try {
+      // Intentamos primero buscar por código de barras exacto
+      final barcodeResult = await _booksService.findByBarcode(query);
+
+      if (!barcodeResult['error']) {
+        // Si encontramos el libro por código de barras
+        searchResults.clear();
+        searchResults.add(barcodeResult['data']);
+      } else {
+        // Si no encontramos por código de barras, buscamos por similitud en el nombre
+        final nameResult = await _booksService.findByNameSimilarity(query);
+
+        if (!nameResult['error']) {
+          searchResults.assignAll(nameResult['data']);
+        } else {
+          searchResults.clear();
+          Get.snackbar(
+            'Resultado',
+            'No se encontraron libros que coincidan con "$query"',
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        }
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Error al buscar: $e',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      searchResults.clear();
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   // Search book by barcode (for scanner)
-  void searchByBarcode(String barcode) {
-    final results = bookDatabase.where((book) {
-      return book.barcode == barcode;
-    }).toList();
+  Future<bool> searchByBarcode(String barcode) async {
+    isLoading.value = true;
+    try {
+      final result = await _booksService.findByBarcode(barcode);
 
-    searchResults.assignAll(results);
-    isSearching.value = results.isNotEmpty;
+      if (!result['error']) {
+        // La búsqueda fue exitosa
+        searchResults.clear();
+        searchResults.add(result['data']);
+        isSearching.value = true;
+        return true;
+      } else {
+        // Eliminamos el mensaje de snackbar aquí para evitar duplicados
+        // El mensaje lo mostrará la vista (CartView)
+        searchResults.clear();
+        isSearching.value = false;
+        return false;
+      }
+    } catch (e) {
+      // Mantenemos este snackbar para errores inesperados, no para "no encontrado"
+      Get.snackbar(
+        'Error',
+        'Error al buscar por código de barras: $e',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      searchResults.clear();
+      isSearching.value = false;
+      return false;
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   // Add book to cart
-  void addToCart(BookItem book) {
+  void addToCart(Book book) {
     final existingIndex = items.indexWhere((item) => item.id == book.id);
 
     if (existingIndex >= 0) {
       // Book already in cart, increment quantity
-      items[existingIndex].quantity++;
-      items[existingIndex].quantityController.text =
-          items[existingIndex].quantity.toString();
-      items.refresh();
+      quantities[book.id] = (quantities[book.id] ?? 1) + 1;
+      quantityControllers[book.id]?.text = quantities[book.id].toString();
+      quantities.refresh();
     } else {
       // Add new book to cart
-      final newBook = BookItem(
-        id: book.id,
-        title: book.title,
-        barcode: book.barcode,
-        price: book.price,
-        quantity: 1,
-        imageUrl: book.imageUrl,
-      );
-      newBook.quantityController.text = '1';
-      items.add(newBook);
+      items.add(book);
+      quantities[book.id] = 1;
+
+      // Crear un nuevo controlador para este libro
+      final controller = TextEditingController(text: '1');
+      quantityControllers[book.id] = controller;
     }
 
     // Clear search and show the cart
@@ -177,26 +269,32 @@ class CartController extends GetxController {
   // Remove book from cart
   void removeFromCart(String id) {
     items.removeWhere((item) => item.id == id);
+    quantities.remove(id);
+
+    // Eliminar y disponer el controlador asociado
+    final controller = quantityControllers[id];
+    if (controller != null) {
+      controller.dispose();
+      quantityControllers.remove(id);
+    }
   }
 
   // Increase book quantity
   void increaseQuantity(String id) {
-    final index = items.indexWhere((item) => item.id == id);
-    if (index >= 0) {
-      items[index].quantity++;
-      items[index].quantityController.text = items[index].quantity.toString();
-      items.refresh();
+    if (quantities.containsKey(id)) {
+      quantities[id] = quantities[id]! + 1;
+      quantityControllers[id]?.text = quantities[id].toString();
+      quantities.refresh();
     }
   }
 
   // Decrease book quantity
   void decreaseQuantity(String id) {
-    final index = items.indexWhere((item) => item.id == id);
-    if (index >= 0 && items[index].quantity > 1) {
-      items[index].quantity--;
-      items[index].quantityController.text = items[index].quantity.toString();
-      items.refresh();
-    } else if (index >= 0 && items[index].quantity == 1) {
+    if (quantities.containsKey(id) && quantities[id]! > 1) {
+      quantities[id] = quantities[id]! - 1;
+      quantityControllers[id]?.text = quantities[id].toString();
+      quantities.refresh();
+    } else if (quantities.containsKey(id) && quantities[id]! == 1) {
       // If quantity becomes 0, remove the item
       removeFromCart(id);
     }
@@ -209,12 +307,21 @@ class CartController extends GetxController {
       return;
     }
 
-    final index = items.indexWhere((item) => item.id == id);
-    if (index >= 0) {
-      items[index].quantity = quantity;
-      items[index].quantityController.text = quantity.toString();
-      items.refresh();
+    if (quantities.containsKey(id)) {
+      quantities[id] = quantity;
+      quantityControllers[id]?.text = quantity.toString();
+      quantities.refresh();
     }
+  }
+
+  // Get quantity for a specific book
+  int getQuantity(String id) {
+    return quantities[id] ?? 1;
+  }
+
+  // Get total price for a specific book
+  double getBookTotalPrice(Book book) {
+    return book.precio * (quantities[book.id] ?? 1);
   }
 
   // Toggle customer type (regular/supplier)
@@ -229,7 +336,11 @@ class CartController extends GetxController {
 
   // Calculate subtotal
   double get subtotal {
-    return items.fold(0, (sum, item) => sum + item.totalPrice);
+    double total = 0;
+    for (var book in items) {
+      total += book.precio * (quantities[book.id] ?? 1);
+    }
+    return total;
   }
 
   // Calculate discount amount
@@ -355,6 +466,14 @@ class CartController extends GetxController {
 
     // Clear the cart after purchase
     items.clear();
+    quantities.clear();
+
+    // Limpiar y disponer los controladores
+    quantityControllers.forEach((_, controller) {
+      controller.dispose();
+    });
+    quantityControllers.clear();
+
     paymentReceiptImage.value = null;
     isSupplier.value = false;
     isInstallmentPayment.value = false;

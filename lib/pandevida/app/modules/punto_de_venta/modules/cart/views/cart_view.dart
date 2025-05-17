@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:delayed_display/delayed_display.dart';
 import '../controllers/cart_controller.dart';
 import 'payment_view.dart'; // Importamos la nueva vista de pagos
 
 class CartView extends GetView<CartController> {
   const CartView({super.key});
+
+  // Reproductor de audio para el sonido del scanner
+  static final AudioPlayer _audioPlayer = AudioPlayer();
+
+  // Precargar el sonido para mejor rendimiento - esto se llama la primera vez que se crea la vista
+  static final bool _initialized = _initializeAudio();
+
+  static bool _initializeAudio() {
+    _audioPlayer.setSourceAsset('sonido.wav');
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,15 +27,95 @@ class CartView extends GetView<CartController> {
         title: const Text('Punto de Venta - Libros'),
         centerTitle: true,
       ),
-      body: Column(
+      body: Stack(
         children: [
-          _buildSearchBar(),
-          Expanded(
-            child: Obx(() {
-              return controller.isSearching.value
-                  ? _buildSearchResults()
-                  : _buildCartItems();
-            }),
+          Column(
+            children: [
+              _buildSearchBar(),
+              Expanded(
+                child: Obx(() {
+                  return controller.isSearching.value
+                      ? _buildSearchResults()
+                      : _buildCartItems();
+                }),
+              ),
+            ],
+          ),
+
+          // Panel de la cámara cuando está activa, mismo patrón que en CartFloatingButtonsWidget
+          Obx(
+            () => Visibility(
+              visible: controller.isCameraActive.value,
+              child: Positioned(
+                top: 80, // Justo debajo de la barra de búsqueda
+                left: 10,
+                right: 10,
+                child: Container(
+                  height: 250,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        // Cámara
+                        controller.cameraService.openScanner(),
+
+                        // Botón para cerrar la cámara
+                        Positioned(
+                          top: 10,
+                          right: 10,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.red,
+                            radius: 20,
+                            child: IconButton(
+                              icon:
+                                  const Icon(Icons.close, color: Colors.white),
+                              onPressed: () =>
+                                  controller.isCameraActive.value = false,
+                            ),
+                          ),
+                        ),
+
+                        // Guía visual única para el escaneo
+                        Container(
+                          width: 200,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.blue, width: 2),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+
+                        // Texto instructivo en la parte inferior
+                        Positioned(
+                          bottom: 20,
+                          left: 0,
+                          right: 0,
+                          child: Center(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 16),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.6),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: const Text(
+                                "Alinea el código de barras dentro del recuadro",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -64,7 +157,7 @@ class CartView extends GetView<CartController> {
           const SizedBox(width: 8),
           IconButton(
             icon: const Icon(Icons.qr_code_scanner),
-            onPressed: () => _openBarcodeScanner(),
+            onPressed: () => controller.isCameraActive.value = true,
             style: IconButton.styleFrom(
               backgroundColor: Colors.blue,
               foregroundColor: Colors.white,
@@ -76,55 +169,81 @@ class CartView extends GetView<CartController> {
   }
 
   Widget _buildSearchResults() {
-    return controller.searchResults.isEmpty
-        ? const Center(child: Text('No se encontraron resultados'))
-        : ListView.builder(
-            padding: const EdgeInsets.only(bottom: 120),
-            itemCount: controller.searchResults.length,
-            itemBuilder: (context, index) {
-              final book = controller.searchResults[index];
-              return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: ListTile(
-                  leading: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Icon(Icons.book, color: Colors.blue[800]),
-                  ),
-                  title: Text(book.title),
-                  subtitle: Text(
-                      'Código: ${book.barcode} - Precio: \$${book.price.toStringAsFixed(2)}'),
-                  trailing: ElevatedButton(
-                    onPressed: () {
-                      controller.addToCart(book);
-                      // Ocultar el teclado al agregar un producto
-                      FocusScope.of(context).unfocus();
-                      // Mostrar un mensaje más elegante al agregar un producto
-                      Get.snackbar(
-                        'Agregado al carrito',
-                        'Se agregó "${book.title}" al carrito',
-                        snackPosition: SnackPosition.TOP,
-                        backgroundColor: Colors.green.withAlpha(230),
-                        colorText: Colors.white,
-                        duration: const Duration(seconds: 2),
-                        margin: const EdgeInsets.all(10),
-                        borderRadius: 10,
-                        icon: const Icon(
-                          Icons.check_circle_outline,
-                          color: Colors.white,
-                        ),
-                      );
-                    },
-                    child: const Text('Agregar'),
-                  ),
+    return Obx(() {
+      // Mostramos el indicador de carga cuando isLoading es true
+      if (controller.isLoading.value) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const CircularProgressIndicator(),
+              const SizedBox(height: 20),
+              Text(
+                'Buscando libros...',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[700],
                 ),
-              );
-            },
+              ),
+            ],
+          ),
+        );
+      }
+
+      // Cuando no hay resultados
+      if (controller.searchResults.isEmpty) {
+        return const Center(child: Text('No se encontraron resultados'));
+      }
+
+      // Mostramos los resultados
+      return ListView.builder(
+        padding: const EdgeInsets.only(bottom: 120),
+        itemCount: controller.searchResults.length,
+        itemBuilder: (context, index) {
+          final book = controller.searchResults[index];
+          return Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: ListTile(
+              leading: Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Icon(Icons.book, color: Colors.blue[800]),
+              ),
+              title: Text(book.nombre),
+              subtitle: Text(
+                  'Código: ${book.codigoBarras} - Precio: \$${book.precio.toStringAsFixed(2)}'),
+              trailing: ElevatedButton(
+                onPressed: () {
+                  controller.addToCart(book);
+                  // Ocultar el teclado al agregar un producto
+                  FocusScope.of(context).unfocus();
+                  // Mostrar un mensaje más elegante al agregar un producto
+                  Get.snackbar(
+                    'Agregado al carrito',
+                    'Se agregó "${book.nombre}" al carrito',
+                    snackPosition: SnackPosition.TOP,
+                    backgroundColor: Colors.green.withAlpha(230),
+                    colorText: Colors.white,
+                    duration: const Duration(seconds: 2),
+                    margin: const EdgeInsets.all(10),
+                    borderRadius: 10,
+                    icon: const Icon(
+                      Icons.check_circle_outline,
+                      color: Colors.white,
+                    ),
+                  );
+                },
+                child: const Text('Agregar'),
+              ),
+            ),
           );
+        },
+      );
+    });
   }
 
   Widget _buildCartItems() {
@@ -178,7 +297,7 @@ class CartView extends GetView<CartController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              item.title,
+                              item.nombre,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
@@ -186,14 +305,14 @@ class CartView extends GetView<CartController> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'Precio: \$${item.price.toStringAsFixed(2)}',
+                              'Precio: \$${item.precio.toStringAsFixed(2)}',
                               style: TextStyle(
                                 color: Colors.grey[600],
                               ),
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'Total: \$${(item.price * item.quantity).toStringAsFixed(2)}',
+                              'Total: \$${controller.getBookTotalPrice(item).toStringAsFixed(2)}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.w500,
                               ),
@@ -215,7 +334,8 @@ class CartView extends GetView<CartController> {
                             width: 60,
                             height: 34,
                             child: TextField(
-                              controller: item.quantityController,
+                              controller:
+                                  controller.quantityControllers[item.id],
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.center,
                               style: const TextStyle(
@@ -248,8 +368,11 @@ class CartView extends GetView<CartController> {
                                 if (newQuantity != null && newQuantity > 0) {
                                   controller.setQuantity(item.id, newQuantity);
                                 } else {
-                                  item.quantityController.text =
-                                      item.quantity.toString();
+                                  controller
+                                          .quantityControllers[item.id]?.text =
+                                      controller
+                                          .getQuantity(item.id)
+                                          .toString();
                                 }
                               },
                             ),
@@ -617,6 +740,12 @@ class CartView extends GetView<CartController> {
   }
 
   void _openBarcodeScanner() {
+    // Asegurar que el sonido esté preparado
+    _audioPlayer.setSourceAsset('sonido.wav');
+
+    // Variable para controlar si estamos procesando un código
+    bool isProcessing = false;
+
     Get.bottomSheet(
       SizedBox(
         height: Get.height * 0.7,
@@ -642,19 +771,180 @@ class CartView extends GetView<CartController> {
               ),
             ),
             Expanded(
-              child: MobileScanner(
-                controller: MobileScannerController(
-                  detectionSpeed: DetectionSpeed.normal,
-                  facing: CameraFacing.back,
-                ),
-                onDetect: (capture) {
-                  final barcodes = capture.barcodes;
-                  if (barcodes.isNotEmpty && barcodes.first.rawValue != null) {
-                    final barcode = barcodes.first.rawValue!;
-                    controller.searchByBarcode(barcode);
-                    Get.back();
-                  }
-                },
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  MobileScanner(
+                    controller: MobileScannerController(
+                      detectionSpeed: DetectionSpeed.unrestricted,
+                      facing: CameraFacing.back,
+                      formats: [
+                        BarcodeFormat.ean8,
+                        BarcodeFormat.ean13,
+                        BarcodeFormat.upcA,
+                        BarcodeFormat.upcE,
+                        BarcodeFormat.code39,
+                        BarcodeFormat.code93,
+                        BarcodeFormat.code128,
+                        BarcodeFormat.dataMatrix,
+                        BarcodeFormat.qrCode,
+                      ],
+                    ),
+                    onDetect: (capture) async {
+                      final barcodes = capture.barcodes;
+                      if (barcodes.isNotEmpty &&
+                          barcodes.first.rawValue != null &&
+                          !isProcessing) {
+                        isProcessing = true;
+                        final barcode = barcodes.first.rawValue!;
+
+                        // Primero verificamos que el escáner siga abierto antes de continuar
+                        if (!Get.isBottomSheetOpen!) return;
+
+                        // Reproducir sonido antes de cerrar el escáner
+                        _audioPlayer.stop().then((_) {
+                          _audioPlayer.play(AssetSource('sonido.wav'));
+                        });
+
+                        // Cerramos el escáner
+                        Get.back();
+
+                        // Mostramos un diálogo de carga
+                        showDialog(
+                          context: Get.context!,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) => const Center(
+                            child: Card(
+                              child: Padding(
+                                padding: EdgeInsets.all(20.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    CircularProgressIndicator(),
+                                    SizedBox(height: 16),
+                                    Text("Buscando producto..."),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+
+                        try {
+                          // Llamamos a searchByBarcode y esperamos el resultado
+                          final productFound =
+                              await controller.searchByBarcode(barcode);
+
+                          // Cerramos el diálogo de carga
+                          if (Navigator.of(Get.context!).canPop()) {
+                            Navigator.of(Get.context!).pop();
+                          }
+
+                          if (productFound) {
+                            // Si se encontró el producto, lo agregamos automáticamente al carrito
+                            final foundProduct = controller.searchResults.first;
+                            controller.addToCart(foundProduct);
+
+                            // Mostramos mensaje de éxito con animación
+                            Get.snackbar(
+                              '¡Producto agregado!',
+                              'Se agregó "${foundProduct.nombre}" al carrito',
+                              snackPosition: SnackPosition.TOP,
+                              backgroundColor: Colors.green.withAlpha(230),
+                              colorText: Colors.white,
+                              duration: const Duration(seconds: 2),
+                              margin: const EdgeInsets.all(10),
+                              borderRadius: 10,
+                              icon: const Icon(
+                                Icons.shopping_cart,
+                                color: Colors.white,
+                              ),
+                            );
+                          } else {
+                            // Si no se encontró, mostramos mensaje de error
+                            Get.snackbar(
+                              'Producto no encontrado',
+                              'El código de barras $barcode no existe en el inventario',
+                              snackPosition: SnackPosition.TOP,
+                              backgroundColor: Colors.red.withAlpha(230),
+                              colorText: Colors.white,
+                              duration: const Duration(seconds: 3),
+                              margin: const EdgeInsets.all(10),
+                              borderRadius: 10,
+                              icon: const Icon(
+                                Icons.error_outline,
+                                color: Colors.white,
+                              ),
+                            );
+                          }
+
+                          // Revertir el estado de procesamiento después de un tiempo
+                          Future.delayed(const Duration(seconds: 2), () {
+                            isProcessing = false;
+                          });
+                        } catch (e) {
+                          // Garantizamos el cierre del diálogo en caso de error
+                          if (Navigator.of(Get.context!).canPop()) {
+                            Navigator.of(Get.context!).pop();
+                          }
+
+                          // Mostramos el mensaje de error
+                          Get.snackbar(
+                            'Error',
+                            'Ocurrió un error al buscar el producto: $e',
+                            snackPosition: SnackPosition.TOP,
+                            backgroundColor: Colors.red.withAlpha(230),
+                            colorText: Colors.white,
+                            duration: const Duration(seconds: 3),
+                            margin: const EdgeInsets.all(10),
+                            borderRadius: 10,
+                            icon: const Icon(
+                              Icons.error_outline,
+                              color: Colors.white,
+                            ),
+                          );
+
+                          isProcessing = false;
+                        }
+                      }
+                    },
+                  ),
+
+                  // Guía visual para el escaneo con animación DelayedDisplay
+                  DelayedDisplay(
+                    delay: const Duration(milliseconds: 300),
+                    fadingDuration: const Duration(milliseconds: 500),
+                    child: Container(
+                      width: Get.width * 0.7,
+                      height: Get.width * 0.7,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blue, width: 2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                  ),
+
+                  // Texto instructivo en la parte inferior
+                  Positioned(
+                    bottom: 20,
+                    child: DelayedDisplay(
+                      delay: const Duration(milliseconds: 500),
+                      fadingDuration: const Duration(milliseconds: 500),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 16),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.6),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const Text(
+                          "Alinea el código de barras dentro del recuadro",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
