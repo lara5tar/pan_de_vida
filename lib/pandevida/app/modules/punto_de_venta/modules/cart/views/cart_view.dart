@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:image_picker/image_picker.dart';
 import '../controllers/cart_controller.dart';
+import 'payment_view.dart'; // Importamos la nueva vista de pagos
 
 class CartView extends GetView<CartController> {
   const CartView({super.key});
@@ -28,7 +28,7 @@ class CartView extends GetView<CartController> {
       ),
       bottomSheet: Obx(() {
         if (controller.items.isEmpty) return const SizedBox.shrink();
-        return _buildCheckoutSection();
+        return _buildCheckoutSection(context);
       }),
     );
   }
@@ -56,7 +56,9 @@ class CartView extends GetView<CartController> {
                   },
                 ),
               ),
-              onChanged: (value) => controller.searchBooks(value),
+              onChanged: (value) {
+                controller.searchBooks(value);
+              },
             ),
           ),
           const SizedBox(width: 8),
@@ -99,12 +101,14 @@ class CartView extends GetView<CartController> {
                   trailing: ElevatedButton(
                     onPressed: () {
                       controller.addToCart(book);
+                      // Ocultar el teclado al agregar un producto
+                      FocusScope.of(context).unfocus();
                       // Mostrar un mensaje más elegante al agregar un producto
                       Get.snackbar(
                         'Agregado al carrito',
                         'Se agregó "${book.title}" al carrito',
                         snackPosition: SnackPosition.TOP,
-                        backgroundColor: Colors.green.withOpacity(0.9),
+                        backgroundColor: Colors.green.withAlpha(230),
                         colorText: Colors.white,
                         duration: const Duration(seconds: 2),
                         margin: const EdgeInsets.all(10),
@@ -269,13 +273,13 @@ class CartView extends GetView<CartController> {
       {required IconData icon, required VoidCallback onPressed}) {
     return Container(
       width: 34,
-      height: 34, // Ajustado a 34px para coincidir
+      height: 34,
       decoration: BoxDecoration(
         color: Colors.blue,
         borderRadius: BorderRadius.circular(4),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
+            color: Colors.grey.withAlpha(77),
             spreadRadius: 1,
             blurRadius: 2,
             offset: const Offset(0, 1),
@@ -284,17 +288,21 @@ class CartView extends GetView<CartController> {
       ),
       child: IconButton(
         padding: EdgeInsets.zero,
-        icon: Icon(icon,
-            color: Colors.white, size: 20), // Aumentado el tamaño del icono
+        icon: Icon(icon, color: Colors.white, size: 20),
         onPressed: onPressed,
         constraints: const BoxConstraints(),
       ),
     );
   }
 
-  Widget _buildCheckoutSection() {
+  Widget _buildCheckoutSection(BuildContext context) {
+    // Calculamos la altura máxima del bottomSheet (60% de la pantalla)
+    final maxHeight = MediaQuery.of(context).size.height * 0.6;
+
     return Container(
-      padding: const EdgeInsets.all(16),
+      constraints: BoxConstraints(
+        maxHeight: maxHeight,
+      ),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: const BorderRadius.only(
@@ -303,7 +311,7 @@ class CartView extends GetView<CartController> {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
+            color: Colors.grey.withAlpha(77),
             spreadRadius: 1,
             blurRadius: 10,
             offset: const Offset(0, -2),
@@ -313,195 +321,243 @@ class CartView extends GetView<CartController> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Customer type switcher
-          Row(
-            children: [
-              const Text(
-                'Tipo de cliente:',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+          // Header del bottomSheet con indicador de arrastre
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.grey.withAlpha(77),
+                  width: 1,
                 ),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Obx(() => Row(
-                      children: [
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () => controller.isSupplier.value = false,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              decoration: BoxDecoration(
-                                color: !controller.isSupplier.value
-                                    ? Colors.blue
-                                    : Colors.grey[200],
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(8),
-                                  bottomLeft: Radius.circular(8),
-                                ),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Regular',
-                                style: TextStyle(
-                                  color: !controller.isSupplier.value
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () => controller.isSupplier.value = true,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              decoration: BoxDecoration(
-                                color: controller.isSupplier.value
-                                    ? Colors.blue
-                                    : Colors.grey[200],
-                                borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(8),
-                                  bottomRight: Radius.circular(8),
-                                ),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Proveedor',
-                                style: TextStyle(
-                                  color: controller.isSupplier.value
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )),
+            ),
+            child: Center(
+              child: Container(
+                width: 40,
+                height: 5,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
-            ],
+            ),
           ),
 
-          const SizedBox(height: 16),
-
-          // Payment receipt section
-          Row(
-            children: [
-              const Text(
-                'Comprobante de pago:',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Obx(() {
-                  final hasImage = controller.paymentReceiptImage.value != null;
-                  return hasImage
-                      ? Row(
+          // Contenido scrollable
+          Flexible(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Customer type switcher - Solo visible para admin
+                  Obx(() => controller.isAdmin.value
+                      ? Column(
                           children: [
-                            Expanded(
-                              child: Container(
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  image: DecorationImage(
-                                    image: FileImage(
-                                        controller.paymentReceiptImage.value!),
-                                    fit: BoxFit.cover,
+                            Row(
+                              children: [
+                                const Text(
+                                  'Tipo de cliente:',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                              ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Obx(() => Row(
+                                        children: [
+                                          Expanded(
+                                            child: GestureDetector(
+                                              onTap: () => controller
+                                                  .isSupplier.value = false,
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 8),
+                                                decoration: BoxDecoration(
+                                                  color: !controller
+                                                          .isSupplier.value
+                                                      ? Colors.blue
+                                                      : Colors.grey[200],
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                    topLeft: Radius.circular(8),
+                                                    bottomLeft:
+                                                        Radius.circular(8),
+                                                  ),
+                                                ),
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  'Regular',
+                                                  style: TextStyle(
+                                                    color: !controller
+                                                            .isSupplier.value
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: GestureDetector(
+                                              onTap: () => controller
+                                                  .isSupplier.value = true,
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 8),
+                                                decoration: BoxDecoration(
+                                                  color: controller
+                                                          .isSupplier.value
+                                                      ? Colors.blue
+                                                      : Colors.grey[200],
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                    topRight:
+                                                        Radius.circular(8),
+                                                    bottomRight:
+                                                        Radius.circular(8),
+                                                  ),
+                                                ),
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  'Proveedor',
+                                                  style: TextStyle(
+                                                    color: controller
+                                                            .isSupplier.value
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )),
+                                ),
+                              ],
                             ),
-                            IconButton(
-                              icon: const Icon(Icons.delete, color: Colors.red),
-                              onPressed: () => controller.clearPaymentReceipt(),
-                            ),
+                            const SizedBox(height: 16),
                           ],
                         )
-                      : Row(
+                      : const SizedBox()),
+
+                  // Price summary
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Obx(() => Column(
                           children: [
-                            Expanded(
-                              child: OutlinedButton.icon(
-                                onPressed: () => controller
-                                    .getPaymentReceipt(ImageSource.gallery),
-                                icon: const Icon(Icons.photo_library),
-                                label: const Text('Galería'),
+                            // Subtotal solo visible para admin
+                            if (controller.isAdmin.value)
+                              _buildSummaryRow('Subtotal:',
+                                  '\$${controller.subtotal.toStringAsFixed(2)}'),
+
+                            // Descuento solo visible para admin y si es proveedor
+                            if (controller.isAdmin.value &&
+                                controller.isSupplier.value)
+                              _buildSummaryRow(
+                                'Descuento (${controller.supplierDiscountPercentage.value.toStringAsFixed(0)}%):',
+                                '-\$${controller.discountAmount.toStringAsFixed(2)}',
+                                valueColor: Colors.green,
                               ),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: OutlinedButton.icon(
-                                onPressed: () => controller
-                                    .getPaymentReceipt(ImageSource.camera),
-                                icon: const Icon(Icons.camera_alt),
-                                label: const Text('Cámara'),
-                              ),
+
+                            // Divider solo para admin
+                            if (controller.isAdmin.value) const Divider(),
+
+                            // Total siempre visible para todos
+                            _buildSummaryRow(
+                              'Total:',
+                              '\$${controller.total.toStringAsFixed(2)}',
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
                           ],
+                        )),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // Agregamos un botón para cambiar entre roles (solo para desarrollo)
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      controller.isAdmin.toggle();
+                      if (controller.isAdmin.value) {
+                        Get.snackbar(
+                          'Modo Admin',
+                          'Has cambiado a vista de administrador',
+                          snackPosition: SnackPosition.BOTTOM,
+                          backgroundColor: Colors.blue,
+                          colorText: Colors.white,
                         );
-                }),
+                      } else {
+                        Get.snackbar(
+                          'Modo Vendedor',
+                          'Has cambiado a vista de vendedor',
+                          snackPosition: SnackPosition.BOTTOM,
+                          backgroundColor: Colors.green,
+                          colorText: Colors.white,
+                        );
+                      }
+                    },
+                    icon: Obx(() => Icon(
+                        controller.isAdmin.value
+                            ? Icons.admin_panel_settings
+                            : Icons.person,
+                        color: Colors.white)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: controller.isAdmin.value
+                          ? Colors.blue[800]
+                          : Colors.green,
+                      foregroundColor: Colors.white,
+                    ),
+                    label: Obx(() => Text(controller.isAdmin.value
+                        ? 'Cambiar a Vendedor'
+                        : 'Cambiar a Admin')),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
 
-          const SizedBox(height: 16),
-
-          // Price summary
+          // Botón de ir a pago siempre visible en la parte inferior
           Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Column(
-              children: [
-                _buildSummaryRow(
-                    'Subtotal:', '\$${controller.subtotal.toStringAsFixed(2)}'),
-                Obx(() {
-                  if (!controller.isSupplier.value)
-                    return const SizedBox.shrink();
-                  return _buildSummaryRow(
-                    'Descuento (${controller.supplierDiscountPercentage.value.toStringAsFixed(0)}%):',
-                    '-\$${controller.discountAmount.toStringAsFixed(2)}',
-                    valueColor: Colors.green,
-                  );
-                }),
-                const Divider(),
-                _buildSummaryRow(
-                  'Total:',
-                  '\$${controller.total.toStringAsFixed(2)}',
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 16),
-
-          // Checkout button
-          SizedBox(
             width: double.infinity,
-            height: 50,
-            child: ElevatedButton(
-              onPressed: () => controller.completePurchase(),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue[700],
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                top: BorderSide(
+                  color: Colors.grey.withAlpha(77),
+                  width: 1,
                 ),
               ),
-              child: const Text(
-                'Completar Compra',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+            ),
+            child: SizedBox(
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () => _goToPayment(),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue[700],
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: const Text(
+                  'Continuar a Pago',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -509,6 +565,23 @@ class CartView extends GetView<CartController> {
         ],
       ),
     );
+  }
+
+  // Método para navegar a la pantalla de pago
+  void _goToPayment() {
+    if (controller.items.isEmpty) {
+      Get.snackbar(
+        'Carrito vacío',
+        'Agrega productos al carrito para continuar',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return;
+    }
+
+    // Navegamos a la vista de pago
+    Get.to(() => const PaymentView());
   }
 
   Widget _buildSummaryRow(

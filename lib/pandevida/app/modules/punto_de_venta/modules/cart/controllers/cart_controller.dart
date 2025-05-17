@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class BookItem {
   final String id;
@@ -24,6 +25,19 @@ class BookItem {
   double get totalPrice => price * quantity;
 }
 
+// Clase para manejar la información de pagos a plazos
+class InstallmentPlan {
+  final String customerName;
+  final String contactInfo;
+  final String notes;
+
+  InstallmentPlan({
+    required this.customerName,
+    required this.contactInfo,
+    this.notes = '',
+  });
+}
+
 class CartController extends GetxController {
   // Observable list of items in cart
   final RxList<BookItem> items = <BookItem>[].obs;
@@ -33,13 +47,24 @@ class CartController extends GetxController {
   final RxList<BookItem> searchResults = <BookItem>[].obs;
   final RxBool isSearching = false.obs;
 
+  // User role - admin por defecto
+  final RxBool isAdmin = true.obs;
+
   // Customer type and discount
   final RxBool isSupplier = false.obs;
   final RxDouble supplierDiscountPercentage =
-      10.0.obs; // Default 10% discount for suppliers
+      30.0.obs; // Default 10% discount for suppliers
 
   // Payment receipt
   final Rx<File?> paymentReceiptImage = Rx<File?>(null);
+
+  // Variables para pagos a plazos
+  final RxBool isInstallmentPayment = false.obs;
+  final Rx<InstallmentPlan?> installmentPlan = Rx<InstallmentPlan?>(null);
+  final TextEditingController customerNameController = TextEditingController();
+  final TextEditingController contactInfoController = TextEditingController();
+  final TextEditingController notesController = TextEditingController();
+  final Rx<DateTime> startDate = DateTime.now().obs;
 
   // Mock book database (replace with real database later)
   final List<BookItem> bookDatabase = [
@@ -83,6 +108,9 @@ class CartController extends GetxController {
   @override
   void onClose() {
     searchController.dispose();
+    customerNameController.dispose();
+    contactInfoController.dispose();
+    notesController.dispose();
     for (var item in items) {
       item.quantityController.dispose();
     }
@@ -231,21 +259,113 @@ class CartController extends GetxController {
     paymentReceiptImage.value = null;
   }
 
+  // Crear plan de pagos por defecto (sin validaciones)
+  void generateDefaultInstallmentPlan() {
+    // Ya no asignaremos valores por defecto, solamente crearemos el plan
+    // con los valores actuales (que pueden estar vacíos)
+    installmentPlan.value = InstallmentPlan(
+      customerName: customerNameController.text,
+      contactInfo: contactInfoController.text,
+      notes: notesController.text,
+    );
+  }
+
+  // Crear plan de pagos simplificado
+  void createInstallmentPlan() {
+    // Solo crearemos el plan si hay datos básicos del cliente
+    if (customerNameController.text.isNotEmpty &&
+        contactInfoController.text.isNotEmpty) {
+      installmentPlan.value = InstallmentPlan(
+        customerName: customerNameController.text,
+        contactInfo: contactInfoController.text,
+        notes: notesController.text,
+      );
+    }
+  }
+
+  // Actualizar la fecha de inicio
+  void updateStartDate(DateTime date) {
+    startDate.value = date;
+  }
+
+  // Generar resumen de información del cliente
+  String generateInstallmentSummary() {
+    if (!isInstallmentPayment.value || installmentPlan.value == null) {
+      return "No hay información del cliente registrada";
+    }
+
+    final plan = installmentPlan.value!;
+
+    String summary = "";
+    summary += "Cliente: ${plan.customerName}\n";
+    summary += "Contacto: ${plan.contactInfo}";
+
+    if (plan.notes.isNotEmpty) {
+      summary += "\n\nNotas: ${plan.notes}";
+    }
+
+    return summary;
+  }
+
   // Complete purchase
   Future<void> completePurchase() async {
-    // This is where we would send the order to a backend service
-    // For now, we'll just simulate a successful purchase
+    // Si es pago a plazos, validamos los campos requeridos
+    if (isInstallmentPayment.value) {
+      // Validar nombre del cliente
+      if (customerNameController.text.isEmpty) {
+        Get.snackbar(
+          'Error',
+          'El nombre del cliente es obligatorio para compras a plazos',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        return;
+      }
+
+      // Validar información de contacto
+      if (contactInfoController.text.isEmpty) {
+        Get.snackbar(
+          'Error',
+          'La información de contacto es obligatoria para compras a plazos',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        return;
+      }
+
+      // Crear un plan simplificado si no existe
+      if (installmentPlan.value == null) {
+        installmentPlan.value = InstallmentPlan(
+          customerName: customerNameController.text,
+          contactInfo: contactInfoController.text,
+          notes: notesController.text,
+        );
+      }
+    }
 
     await Future.delayed(const Duration(seconds: 1));
+
+    String message = 'La compra se ha completado con éxito';
+    if (isInstallmentPayment.value && installmentPlan.value != null) {
+      message +=
+          '. Plan de pagos registrado para ${installmentPlan.value!.customerName}';
+    }
 
     // Clear the cart after purchase
     items.clear();
     paymentReceiptImage.value = null;
     isSupplier.value = false;
+    isInstallmentPayment.value = false;
+    installmentPlan.value = null;
+    customerNameController.clear();
+    contactInfoController.clear();
+    notesController.clear();
 
     Get.snackbar(
       'Compra Realizada',
-      'La compra se ha completado con éxito',
+      message,
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: Colors.green,
       colorText: Colors.white,
