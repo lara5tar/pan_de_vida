@@ -1,4 +1,3 @@
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -100,6 +99,9 @@ class CongregantProfileController extends GetxController {
   }
 
   toCall() async {
-    await FlutterPhoneDirectCaller.callNumber(congregant.cel);
+    final tel = Uri.parse('tel:${congregant.cel}');
+    if (await canLaunchUrl(tel)) {
+      await launchUrl(tel);
+    }
   }
 }

@@ -94,7 +94,11 @@ class BooksController extends GetxController {
     if (startIndex >= filtered.length) {
       // Si el índice de inicio está fuera de rango, volver a la primera página
       currentPage.value = 0;
-      return paginatedBooks;
+      // Recalcular para la primera página en lugar de llamar recursivamente
+      final endIndex = (booksPerPage <= filtered.length)
+          ? booksPerPage
+          : filtered.length;
+      return filtered.sublist(0, endIndex);
     }
 
     final endIndex = (startIndex + booksPerPage <= filtered.length)

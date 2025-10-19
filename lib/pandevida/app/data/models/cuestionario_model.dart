@@ -16,18 +16,29 @@ class CuestionarioModel {
     required this.videos,
   });
 
-  factory CuestionarioModel.fromJson(Map<String, dynamic> json) =>
-      CuestionarioModel(
+  factory CuestionarioModel.fromJson(Map<String, dynamic> json) {
+    print('CuestionarioModel.fromJson called with:');
+    for (var key in json.keys) {
+      print('$key: ${json[key]}');
+    }
+    return CuestionarioModel(
         numClase: json['numClase'],
         idInscripcion: json['idInscripcion'],
-        codVideo: json['codCuestionario']['CODVIDEO'],
-        activo: json['codCuestionario']['ACTIVO'] == 'true',
+        // codVideo: json['codCuestionario']['CODVIDEO'] ?? '',
+        codVideo: json['codCuestionario'] != null && json['codCuestionario']['CODVIDEO'] != null
+            ? json['codCuestionario']['CODVIDEO']
+            : '',
+        // activo: json['codCuestionario']['ACTIVO'] == 'true',
+        activo: json['codCuestionario'] != null && json['codCuestionario']['ACTIVO'] != null
+            ? json['codCuestionario']['ACTIVO'] == true || json['codCuestionario']['ACTIVO'] == 'true'
+            : false,
         videos: List<Video>.from(
           json['videos'].map(
             (x) => Video.fromJson(x),
           ),
         ),
       );
+  }
 
   Map<String, dynamic> toJson() => {
         'numClase': numClase,
