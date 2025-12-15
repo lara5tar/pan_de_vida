@@ -34,7 +34,7 @@ class ClaseCuestionarioVideoController extends GetxController {
     var arguments = Get.arguments;
 
     var result = await EscuelaService.getVideoInfo(arguments['codVideo']);
-
+print(result);
     if (result['error']) {
       Get.snackbar('Error', result['message']);
     } else {
@@ -50,6 +50,8 @@ class ClaseCuestionarioVideoController extends GetxController {
         preguntas = result['data'];
         opcionesElegidas.value =
             List.generate(preguntas.length, (index) => Respuesta.empty());
+
+        
         isLoading.value = false;
       }
     }

@@ -95,7 +95,7 @@ abstract class _Paths {
   static const EVENT_FORM = '$EVENTS/form';
   static const EVENT = '$EVENTS/event';
   static const EVENT_CALENDAR = '$EVENTS/calendar';
-  static const PUNTODEVENTA = '/puntodeventa';
+  static const PUNTODEVENTA = '/punto-de-venta';
 
   // Rutas para la gestión de libros
   static const BOOKS = '/books';

@@ -8,6 +8,7 @@ class ApiService {
     String url,
     Map<String, dynamic> data,
   ) async {
+    print(Keys.URL_SERVICE + url);
     try {
       var response = await http.post(
         Uri.parse(Keys.URL_SERVICE + url),
