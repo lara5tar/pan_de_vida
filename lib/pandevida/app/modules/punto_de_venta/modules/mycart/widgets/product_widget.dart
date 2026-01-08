@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../data/models/book_model.dart';
 import '../controllers/mycart_controller.dart';
 
 class ProductWidget extends GetView<MycartController> {
@@ -14,7 +15,7 @@ class ProductWidget extends GetView<MycartController> {
   Widget build(BuildContext context) {
     return Obx(
       () => Container(
-        color: Colors.white.withOpacity(0.8),
+        color: Colors.white.withValues(alpha: 0.8),
         margin: const EdgeInsets.only(bottom: 2),
         child: Padding(
           padding: const EdgeInsets.symmetric(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import '../../../data/models/book_model.dart';
 import '../controllers/mycart_controller.dart';
 
 class BookWidget extends GetView<MycartController> {
@@ -22,7 +23,7 @@ class BookWidget extends GetView<MycartController> {
 
     return Obx(
       () => Container(
-        color: Colors.white.withOpacity(0.8),
+        color: Colors.white.withValues(alpha: 0.8),
         margin: const EdgeInsets.only(bottom: 2),
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -56,10 +57,12 @@ class BookWidget extends GetView<MycartController> {
                     width: 70,
                     child: controller.selectedCartItem.value == cartItem
                         ? RawKeyboardListener(
-                            focusNode: FocusNode(), // Necesario para capturar eventos de teclado
+                            focusNode:
+                                FocusNode(), // Necesario para capturar eventos de teclado
                             onKey: (RawKeyEvent event) {
                               if (event is RawKeyDownEvent &&
-                                  event.logicalKey == LogicalKeyboardKey.enter) {
+                                  event.logicalKey ==
+                                      LogicalKeyboardKey.enter) {
                                 final newQuantity =
                                     int.tryParse(textEditingController.text);
                                 if (newQuantity != null) {
@@ -88,7 +91,7 @@ class BookWidget extends GetView<MycartController> {
                                   controller.updateQuantityByInput(newQuantity);
                                 }
                               },
-                              onTapOutside: (_){
+                              onTapOutside: (_) {
                                 // Cuando se toca fuera del textfield, se actualiza la cantidad
                                 final newQuantity =
                                     int.tryParse(textEditingController.text);

@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 class Book {
   final String id;
   final String nombre;
@@ -48,4 +50,12 @@ class Book {
       codigoBarras: codigoBarras ?? this.codigoBarras,
     );
   }
+}
+
+class CartItem {
+  Book book;
+  var quantity = 1.obs;
+  var isSelected = false.obs;
+
+  CartItem(this.book);
 }

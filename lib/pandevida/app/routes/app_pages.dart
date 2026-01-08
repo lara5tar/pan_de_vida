@@ -45,6 +45,10 @@ import '../modules/punto_de_venta/modules/books/bindings/books_binding.dart';
 import '../modules/punto_de_venta/modules/books/views/books_view.dart';
 import '../modules/punto_de_venta/modules/books/views/book_form_view.dart';
 import '../modules/punto_de_venta/modules/books/views/book_detail_view.dart';
+import '../modules/punto_de_venta/modules/pos_view/bindings/pos_view_binding.dart';
+import '../modules/punto_de_venta/modules/pos_view/views/pos_view.dart';
+import '../modules/punto_de_venta/modules/search_view/bindings/search_view_binding.dart';
+import '../modules/punto_de_venta/modules/search_view/views/search_view.dart';
 import '../modules/restauracion/bindings/restauracion_binding.dart';
 import '../modules/restauracion/views/restauracion_congregante_view.dart';
 import '../modules/restauracion/views/restauracion_view.dart';
@@ -270,6 +274,16 @@ class AppPages {
       name: _Paths.CART,
       page: () => const CartView(),
       binding: CartBinding(),
+    ),
+    GetPage(
+      name: _Paths.POS_VIEW,
+      page: () => const PosView(),
+      binding: PosViewBinding(),
+    ),
+    GetPage(
+      name: _Paths.SEARCH_VIEW,
+      page: () => const SearchView(),
+      binding: SearchViewBinding(),
     ),
   ];
 }

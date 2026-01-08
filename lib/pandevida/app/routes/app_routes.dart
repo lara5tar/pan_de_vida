@@ -47,6 +47,9 @@ abstract class Routes {
   static const BOOK_FORM = _Paths.BOOK_FORM;
   static const BOOK_DETAIL = _Paths.BOOK_DETAIL;
   static const CART = _Paths.CART; // New cart route
+  static const POS_VIEW =
+      _Paths.POS_VIEW; // Punto de Venta con cámara integrada
+  static const SEARCH_VIEW = _Paths.SEARCH_VIEW; // Búsqueda de libros
 }
 
 abstract class _Paths {
@@ -95,7 +98,7 @@ abstract class _Paths {
   static const EVENT_FORM = '$EVENTS/form';
   static const EVENT = '$EVENTS/event';
   static const EVENT_CALENDAR = '$EVENTS/calendar';
-  static const PUNTODEVENTA = '/punto-de-venta';
+  static const PUNTODEVENTA = '/puntoventa';
 
   // Rutas para la gestión de libros
   static const BOOKS = '/books';
@@ -104,6 +107,12 @@ abstract class _Paths {
 
   // Ruta para el carrito de compras de libros
   static const CART = '/cart';
+
+  // Ruta para el punto de venta con cámara integrada
+  static const POS_VIEW = '/punto-de-venta';
+
+  // Ruta para la búsqueda de libros
+  static const SEARCH_VIEW = '/search-books';
 }
 
 // List<String> opciones = [

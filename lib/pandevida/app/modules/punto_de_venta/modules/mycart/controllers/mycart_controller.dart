@@ -6,6 +6,8 @@ import '../../../data/services/camera_service.dart';
 import '../../../widgets/confirm_dialog.dart';
 import '../widgets/search_book_dialog.dart';
 
+// CartItem está ahora definido en book_model.dart
+
 class MycartController extends GetxController {
   var cameraService = Get.find<CameraService>();
   var booksService = BooksService();
@@ -222,12 +224,4 @@ class MycartController extends GetxController {
       await findBookByBarcode(code);
     }
   }
-}
-
-class CartItem {
-  Book book;
-  var quantity = 1.obs;
-  var isSelected = false.obs;
-
-  CartItem(this.book);
 }
