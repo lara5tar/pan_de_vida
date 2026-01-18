@@ -47,6 +47,23 @@ class LandingView extends GetView<LandingController> {
                         },
                         child: const Text('Go to Punto de Venta'),
                       ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          Get.toNamed(Routes.POS_VIEW);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.teal,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 12,
+                          ),
+                        ),
+                        child: const Text(
+                          'Punto de Venta (Subinventarios)',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
                     ] else
                       Container(),
                     const EventWidget(),

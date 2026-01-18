@@ -49,6 +49,13 @@ import '../modules/punto_de_venta/modules/pos_view/bindings/pos_view_binding.dar
 import '../modules/punto_de_venta/modules/pos_view/views/pos_view.dart';
 import '../modules/punto_de_venta/modules/search_view/bindings/search_view_binding.dart';
 import '../modules/punto_de_venta/modules/search_view/views/search_view.dart';
+import '../modules/punto_de_venta/modules/subinventario_selection/bindings/subinventario_selection_binding.dart';
+import '../modules/punto_de_venta/modules/subinventario_selection/views/subinventario_selection_view.dart';
+import '../modules/punto_de_venta/modules/abonos/bindings/abonos_binding.dart';
+import '../modules/punto_de_venta/modules/abonos/views/buscar_apartado_view.dart';
+import '../modules/punto_de_venta/modules/abonos/views/registrar_abono_view.dart';
+import '../modules/punto_de_venta/modules/abonos/views/historial_abonos_view.dart';
+import '../modules/punto_de_venta/modules/cart/views/crear_cliente_view.dart';
 import '../modules/restauracion/bindings/restauracion_binding.dart';
 import '../modules/restauracion/views/restauracion_congregante_view.dart';
 import '../modules/restauracion/views/restauracion_view.dart';
@@ -275,8 +282,15 @@ class AppPages {
       page: () => const CartView(),
       binding: CartBinding(),
     ),
+    // Punto de Venta - Primero muestra selección de subinventario
     GetPage(
       name: _Paths.POS_VIEW,
+      page: () => const SubinventarioSelectionView(),
+      binding: SubinventarioSelectionBinding(),
+    ),
+    // Vista principal del punto de venta con cámara
+    GetPage(
+      name: _Paths.POS_VIEW_MAIN,
       page: () => const PosView(),
       binding: PosViewBinding(),
     ),
@@ -284,6 +298,33 @@ class AppPages {
       name: _Paths.SEARCH_VIEW,
       page: () => const SearchView(),
       binding: SearchViewBinding(),
+    ),
+    // Mantener esta ruta para compatibilidad pero usar POS_VIEW
+    GetPage(
+      name: _Paths.SUBINVENTARIO_SELECTION,
+      page: () => const SubinventarioSelectionView(),
+      binding: SubinventarioSelectionBinding(),
+    ),
+    // Rutas para el módulo de abonos
+    GetPage(
+      name: _Paths.ABONOS_BUSCAR,
+      page: () => const BuscarApartadoView(),
+      binding: AbonosBinding(),
+    ),
+    GetPage(
+      name: _Paths.ABONOS_REGISTRAR,
+      page: () => const RegistrarAbonoView(),
+      binding: AbonosBinding(),
+    ),
+    GetPage(
+      name: _Paths.ABONOS_HISTORIAL,
+      page: () => const HistorialAbonosView(),
+      binding: AbonosBinding(),
+    ),
+    // Ruta para crear cliente
+    GetPage(
+      name: _Paths.CREAR_CLIENTE,
+      page: () => const CrearClienteView(),
     ),
   ];
 }

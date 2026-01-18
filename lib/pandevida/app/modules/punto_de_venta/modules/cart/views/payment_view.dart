@@ -190,12 +190,32 @@ class PaymentView extends GetView<CartController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 24),
-                  const Text(
-                    'Información del cliente',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Información del cliente',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextButton.icon(
+                        onPressed: () async {
+                          final cliente = await Get.toNamed('/punto-venta/crear-cliente');
+                          if (cliente != null) {
+                            // El cliente es un objeto Cliente del modelo
+                            controller.customerNameController.text = cliente.nombre ?? '';
+                            controller.contactInfoController.text = cliente.telefono ?? '';
+                          }
+                        },
+                        icon: const Icon(Icons.person_add, size: 20),
+                        label: const Text('Crear'),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.blue,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 16),
 

@@ -441,247 +441,291 @@ class CartView extends GetView<CartController> {
           ),
         ],
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      child: Stack(
         children: [
-          // Header del bottomSheet con indicador de arrastre
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Colors.grey.withAlpha(77),
-                  width: 1,
-                ),
-              ),
-            ),
-            child: Center(
-              child: Container(
-                width: 40,
-                height: 5,
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Header del bottomSheet con indicador de arrastre
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(10),
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Colors.grey.withAlpha(77),
+                      width: 1,
+                    ),
+                  ),
+                ),
+                child: Center(
+                  child: Container(
+                    width: 40,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
                 ),
               ),
-            ),
+
+              // Contenido scrollable
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                    top: 16,
+                    bottom: 120, // Espacio para los botones
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Customer type switcher - Solo visible para admin
+                      Obx(() => controller.isAdmin.value
+                          ? Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    const Text(
+                                      'Tipo de cliente:',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Expanded(
+                                      child: Obx(() => Row(
+                                            children: [
+                                              Expanded(
+                                                child: GestureDetector(
+                                                  onTap: () => controller
+                                                      .isSupplier.value = false,
+                                                  child: Container(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(vertical: 8),
+                                                    decoration: BoxDecoration(
+                                                      color: !controller
+                                                              .isSupplier.value
+                                                          ? Colors.blue
+                                                          : Colors.grey[200],
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                              .only(
+                                                        topLeft:
+                                                            Radius.circular(8),
+                                                        bottomLeft:
+                                                            Radius.circular(8),
+                                                      ),
+                                                    ),
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                      'Regular',
+                                                      style: TextStyle(
+                                                        color: !controller
+                                                                .isSupplier
+                                                                .value
+                                                            ? Colors.white
+                                                            : Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: GestureDetector(
+                                                  onTap: () => controller
+                                                      .isSupplier.value = true,
+                                                  child: Container(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(vertical: 8),
+                                                    decoration: BoxDecoration(
+                                                      color: controller
+                                                              .isSupplier.value
+                                                          ? Colors.blue
+                                                          : Colors.grey[200],
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                              .only(
+                                                        topRight:
+                                                            Radius.circular(8),
+                                                        bottomRight:
+                                                            Radius.circular(8),
+                                                      ),
+                                                    ),
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                      'Proveedor',
+                                                      style: TextStyle(
+                                                        color: controller
+                                                                .isSupplier
+                                                                .value
+                                                            ? Colors.white
+                                                            : Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 16),
+                              ],
+                            )
+                          : const SizedBox()),
+
+                      // Price summary
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Obx(() => Column(
+                              children: [
+                                // Subtotal solo visible para admin
+                                if (controller.isAdmin.value)
+                                  _buildSummaryRow('Subtotal:',
+                                      '\$${controller.subtotal.toStringAsFixed(2)}'),
+
+                                // Descuento solo visible para admin y si es proveedor
+                                if (controller.isAdmin.value &&
+                                    controller.isSupplier.value)
+                                  _buildSummaryRow(
+                                    'Descuento (${controller.supplierDiscountPercentage.value.toStringAsFixed(0)}%):',
+                                    '-\$${controller.discountAmount.toStringAsFixed(2)}',
+                                    valueColor: Colors.green,
+                                  ),
+
+                                // Divider solo para admin
+                                if (controller.isAdmin.value) const Divider(),
+
+                                // Total siempre visible para todos
+                                _buildSummaryRow(
+                                  'Total:',
+                                  '\$${controller.total.toStringAsFixed(2)}',
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ],
+                            )),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Agregamos un botón para cambiar entre roles (solo para desarrollo)
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          controller.isAdmin.toggle();
+                          if (controller.isAdmin.value) {
+                            Get.snackbar(
+                              'Modo Admin',
+                              'Has cambiado a vista de administrador',
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.blue,
+                              colorText: Colors.white,
+                            );
+                          } else {
+                            Get.snackbar(
+                              'Modo Vendedor',
+                              'Has cambiado a vista de vendedor',
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.green,
+                              colorText: Colors.white,
+                            );
+                          }
+                        },
+                        icon: Obx(() => Icon(
+                            controller.isAdmin.value
+                                ? Icons.admin_panel_settings
+                                : Icons.person,
+                            color: Colors.white)),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: controller.isAdmin.value
+                              ? Colors.blue[800]
+                              : Colors.green,
+                          foregroundColor: Colors.white,
+                        ),
+                        label: Obx(() => Text(controller.isAdmin.value
+                            ? 'Cambiar a Vendedor'
+                            : 'Cambiar a Admin')),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
 
-          // Contenido scrollable
-          Flexible(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+          // Botones de acción siempre visibles al final (posición absoluta)
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  top: BorderSide(
+                    color: Colors.grey.withAlpha(77),
+                    width: 1,
+                  ),
+                ),
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Customer type switcher - Solo visible para admin
-                  Obx(() => controller.isAdmin.value
-                      ? Column(
-                          children: [
-                            Row(
-                              children: [
-                                const Text(
-                                  'Tipo de cliente:',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Obx(() => Row(
-                                        children: [
-                                          Expanded(
-                                            child: GestureDetector(
-                                              onTap: () => controller
-                                                  .isSupplier.value = false,
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 8),
-                                                decoration: BoxDecoration(
-                                                  color: !controller
-                                                          .isSupplier.value
-                                                      ? Colors.blue
-                                                      : Colors.grey[200],
-                                                  borderRadius:
-                                                      const BorderRadius.only(
-                                                    topLeft: Radius.circular(8),
-                                                    bottomLeft:
-                                                        Radius.circular(8),
-                                                  ),
-                                                ),
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  'Regular',
-                                                  style: TextStyle(
-                                                    color: !controller
-                                                            .isSupplier.value
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: GestureDetector(
-                                              onTap: () => controller
-                                                  .isSupplier.value = true,
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 8),
-                                                decoration: BoxDecoration(
-                                                  color: controller
-                                                          .isSupplier.value
-                                                      ? Colors.blue
-                                                      : Colors.grey[200],
-                                                  borderRadius:
-                                                      const BorderRadius.only(
-                                                    topRight:
-                                                        Radius.circular(8),
-                                                    bottomRight:
-                                                        Radius.circular(8),
-                                                  ),
-                                                ),
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  'Proveedor',
-                                                  style: TextStyle(
-                                                    color: controller
-                                                            .isSupplier.value
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      )),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 16),
-                          ],
-                        )
-                      : const SizedBox()),
-
-                  // Price summary
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.circular(8),
+                  // Botón de continuar a pago
+                  SizedBox(
+                    height: 50,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => _goToPayment(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue[700],
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Text(
+                        'Continuar a Pago',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                    child: Obx(() => Column(
-                          children: [
-                            // Subtotal solo visible para admin
-                            if (controller.isAdmin.value)
-                              _buildSummaryRow('Subtotal:',
-                                  '\$${controller.subtotal.toStringAsFixed(2)}'),
-
-                            // Descuento solo visible para admin y si es proveedor
-                            if (controller.isAdmin.value &&
-                                controller.isSupplier.value)
-                              _buildSummaryRow(
-                                'Descuento (${controller.supplierDiscountPercentage.value.toStringAsFixed(0)}%):',
-                                '-\$${controller.discountAmount.toStringAsFixed(2)}',
-                                valueColor: Colors.green,
-                              ),
-
-                            // Divider solo para admin
-                            if (controller.isAdmin.value) const Divider(),
-
-                            // Total siempre visible para todos
-                            _buildSummaryRow(
-                              'Total:',
-                              '\$${controller.total.toStringAsFixed(2)}',
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ],
-                        )),
                   ),
-
-                  const SizedBox(height: 16),
-
-                  // Agregamos un botón para cambiar entre roles (solo para desarrollo)
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      controller.isAdmin.toggle();
-                      if (controller.isAdmin.value) {
-                        Get.snackbar(
-                          'Modo Admin',
-                          'Has cambiado a vista de administrador',
-                          snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: Colors.blue,
-                          colorText: Colors.white,
-                        );
-                      } else {
-                        Get.snackbar(
-                          'Modo Vendedor',
-                          'Has cambiado a vista de vendedor',
-                          snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: Colors.green,
-                          colorText: Colors.white,
-                        );
-                      }
-                    },
-                    icon: Obx(() => Icon(
-                        controller.isAdmin.value
-                            ? Icons.admin_panel_settings
-                            : Icons.person,
-                        color: Colors.white)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: controller.isAdmin.value
-                          ? Colors.blue[800]
-                          : Colors.green,
-                      foregroundColor: Colors.white,
+                  const SizedBox(height: 8),
+                  // Botón de abonos
+                  SizedBox(
+                    height: 45,
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: () => Get.toNamed('/abonos/buscar'),
+                      icon: const Icon(Icons.payment),
+                      label: const Text('Registrar Abono'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.green[700],
+                        side: BorderSide(color: Colors.green[700]!, width: 2),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
                     ),
-                    label: Obx(() => Text(controller.isAdmin.value
-                        ? 'Cambiar a Vendedor'
-                        : 'Cambiar a Admin')),
                   ),
                 ],
-              ),
-            ),
-          ),
-
-          // Botón de ir a pago siempre visible en la parte inferior
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border(
-                top: BorderSide(
-                  color: Colors.grey.withAlpha(77),
-                  width: 1,
-                ),
-              ),
-            ),
-            child: SizedBox(
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () => _goToPayment(),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue[700],
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: const Text(
-                  'Continuar a Pago',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
               ),
             ),
           ),

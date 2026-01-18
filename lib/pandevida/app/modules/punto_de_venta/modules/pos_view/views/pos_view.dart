@@ -17,44 +17,55 @@ class PosView extends GetView<PosViewController> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Título con información del carrito
+            // Título con información del carrito y subinventario
             Container(
               color: Colors.white.withValues(alpha: 0.9),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.shopping_cart,
-                        color: Colors.blue[900],
-                        size: 28,
-                      ),
-                      const SizedBox(width: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Punto de Venta',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey[800],
-                            ),
-                          ),
-                          Obx(
-                            () => Text(
-                              '${controller.cartItems.length} ${controller.cartItems.length == 1 ? 'libro' : 'libros'}',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey[600],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.shopping_cart,
+                          color: Colors.blue[900],
+                          size: 28,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Obx(() {
+                            final sub = controller.subinventarioActivo.value;
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  sub?.nombreDisplay ?? 'Punto de Venta',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey[800],
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  sub != null
+                                      ? '${sub.totalLibros} libros · ${sub.totalUnidades} unidades disponibles'
+                                      : '${controller.cartItems.length} ${controller.cartItems.length == 1 ? 'libro' : 'libros'}',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey[600],
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            );
+                          }),
+                        ),
+                      ],
+                    ),
                   ),
                   // Botón de cámara
                   Obx(

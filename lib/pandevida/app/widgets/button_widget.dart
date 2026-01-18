@@ -37,7 +37,7 @@ class ButtonWidget extends StatelessWidget {
         }
       },
       child: Container(
-        color: Colors.white.withOpacity(0.8),
+        color: const Color(0xCCFFFFFF),
         child: Column(
           children: [
             Row(
@@ -128,7 +128,9 @@ class ButtonWidget extends StatelessWidget {
                   SizedBox(
                     width: 60,
                     child: Center(
-                      child: Text(trailing!.substring(0, 6)),
+                      child: Text(trailing!.length > 6
+                          ? trailing!.substring(0, 6)
+                          : trailing!),
                     ),
                   ),
                   const SizedBox(width: 20),

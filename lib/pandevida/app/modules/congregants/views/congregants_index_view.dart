@@ -22,24 +22,7 @@ class CongregantsIndexView extends GetView<CongregantsIndexController> {
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: [
-                    // GroupButton(
-                    //   controller: controller.groupButtonController,
-                    //   onSelected: (name, index, isSelected) =>
-                    //       print('$index button is selected $isSelected'),
-                    //   buttons: const [
-                    //     'Mis 3',
-                    //     'Los 3 de mis 3',
-                    //   ],
-                    //   options: const GroupButtonOptions(
-                    //     selectedTextStyle: TextStyle(
-                    //       fontWeight: FontWeight.bold,
-                    //       color: Colors.white,
-                    //     ),
-                    //     selectedColor: Colors.blue,
-                    //     unselectedColor: Colors.white,
-                    //     unselectedBorderColor: Colors.blue,
-                    //   ),
-                    // ),
+                   
                     Expanded(
                       child: ListView(
                         padding: const EdgeInsets.all(0),

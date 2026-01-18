@@ -48,8 +48,20 @@ abstract class Routes {
   static const BOOK_DETAIL = _Paths.BOOK_DETAIL;
   static const CART = _Paths.CART; // New cart route
   static const POS_VIEW =
-      _Paths.POS_VIEW; // Punto de Venta con cámara integrada
+      _Paths.POS_VIEW; // Punto de Venta - Selección de subinventario
+  static const POS_VIEW_MAIN =
+      _Paths.POS_VIEW_MAIN; // Punto de Venta - Vista principal con cámara
   static const SEARCH_VIEW = _Paths.SEARCH_VIEW; // Búsqueda de libros
+  static const SUBINVENTARIO_SELECTION =
+      _Paths.SUBINVENTARIO_SELECTION; // [DEPRECATED] Usar POS_VIEW
+  
+  // Rutas para el módulo de abonos
+  static const ABONOS_BUSCAR = _Paths.ABONOS_BUSCAR; // Buscar apartado
+  static const ABONOS_REGISTRAR = _Paths.ABONOS_REGISTRAR; // Registrar abono
+  static const ABONOS_HISTORIAL = _Paths.ABONOS_HISTORIAL; // Historial de abonos
+  
+  // Ruta para crear cliente
+  static const CREAR_CLIENTE = _Paths.CREAR_CLIENTE; // Crear cliente
 }
 
 abstract class _Paths {
@@ -108,11 +120,25 @@ abstract class _Paths {
   // Ruta para el carrito de compras de libros
   static const CART = '/cart';
 
-  // Ruta para el punto de venta con cámara integrada
+  // Ruta para el punto de venta - Primero muestra selección de subinventario
   static const POS_VIEW = '/punto-de-venta';
+
+  // Ruta para la vista principal del punto de venta con cámara
+  static const POS_VIEW_MAIN = '/pos-view-main';
 
   // Ruta para la búsqueda de libros
   static const SEARCH_VIEW = '/search-books';
+
+  // Ruta para la selección de subinventario (deprecated, usar POS_VIEW)
+  static const SUBINVENTARIO_SELECTION = '/seleccionar-subinventario';
+  
+  // Rutas para el módulo de abonos
+  static const ABONOS_BUSCAR = '/abonos/buscar';
+  static const ABONOS_REGISTRAR = '/abonos/registrar';
+  static const ABONOS_HISTORIAL = '/abonos/historial';
+  
+  // Ruta para crear cliente
+  static const CREAR_CLIENTE = '/punto-venta/crear-cliente';
 }
 
 // List<String> opciones = [

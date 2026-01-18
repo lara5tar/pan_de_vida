@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import '../../../data/models/book_model.dart';
 import '../../../data/services/books_service.dart';
 import '../../../data/services/camera_service.dart';
+import '../../../data/services/venta_service.dart';
 
 // Clase para manejar la información de pagos a plazos
 class InstallmentPlan {
@@ -23,6 +25,10 @@ class InstallmentPlan {
 class CartController extends GetxController {
   // Service para acceder a los libros de la base de datos
   final BooksService _booksService = BooksService();
+  final VentaService _ventaService = VentaService();
+  
+  // Storage para información del usuario
+  final GetStorage _storage = GetStorage('login');
 
   // Camera service para el escaneo de códigos
   late final CameraService cameraService;
@@ -61,11 +67,17 @@ class CartController extends GetxController {
   final TextEditingController contactInfoController = TextEditingController();
   final TextEditingController notesController = TextEditingController();
   final Rx<DateTime> startDate = DateTime.now().obs;
+  
+  // Variable para saber si el usuario es ADMIN LIBRERIA
+  final RxBool isAdminLibreria = false.obs;
 
   @override
   void onInit() {
     super.onInit();
     cameraService = Get.find<CameraService>();
+    
+    // Verificar si el usuario es ADMIN LIBRERIA
+    _checkIfAdminLibreria();
 
     // Registramos la función para procesar códigos de barras
     cameraService.setBarcodeCallback((barcode) async {
@@ -110,6 +122,38 @@ class CartController extends GetxController {
         );
       }
     });
+  }
+  
+  /// Verificar si el usuario tiene rol de ADMIN LIBRERIA
+  void _checkIfAdminLibreria() {
+    try {
+      final roles = _storage.read('roles');
+      if (roles != null && roles is List) {
+        for (var role in roles) {
+          if (role is Map && role['ROL'] == 'ADMIN LIBRERIA') {
+            isAdminLibreria.value = true;
+            print('✅ Usuario es ADMIN LIBRERIA');
+            break;
+          }
+        }
+      }
+    } catch (e) {
+      print('Error al verificar roles: $e');
+      isAdminLibreria.value = false;
+    }
+  }
+  
+  /// Obtener lista de roles del usuario
+  List<Map<String, dynamic>> _getUserRoles() {
+    try {
+      final roles = _storage.read('roles');
+      if (roles != null && roles is List) {
+        return roles.map((r) => Map<String, dynamic>.from(r as Map)).toList();
+      }
+    } catch (e) {
+      print('Error al obtener roles: $e');
+    }
+    return [];
   }
 
   @override
@@ -420,6 +464,18 @@ class CartController extends GetxController {
 
   // Complete purchase
   Future<void> completePurchase() async {
+    // Validar que el carrito no esté vacío
+    if (items.isEmpty) {
+      Get.snackbar(
+        'Error',
+        'El carrito está vacío',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return;
+    }
+
     // Si es pago a plazos, validamos los campos requeridos
     if (isInstallmentPayment.value) {
       // Validar nombre del cliente
@@ -456,38 +512,138 @@ class CartController extends GetxController {
       }
     }
 
-    await Future.delayed(const Duration(seconds: 1));
-
-    String message = 'La compra se ha completado con éxito';
-    if (isInstallmentPayment.value && installmentPlan.value != null) {
-      message +=
-          '. Plan de pagos registrado para ${installmentPlan.value!.customerName}';
-    }
-
-    // Clear the cart after purchase
-    items.clear();
-    quantities.clear();
-
-    // Limpiar y disponer los controladores
-    quantityControllers.forEach((_, controller) {
-      controller.dispose();
-    });
-    quantityControllers.clear();
-
-    paymentReceiptImage.value = null;
-    isSupplier.value = false;
-    isInstallmentPayment.value = false;
-    installmentPlan.value = null;
-    customerNameController.clear();
-    contactInfoController.clear();
-    notesController.clear();
-
-    Get.snackbar(
-      'Compra Realizada',
-      message,
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.green,
-      colorText: Colors.white,
+    // Mostrar indicador de carga
+    Get.dialog(
+      const Center(child: CircularProgressIndicator()),
+      barrierDismissible: false,
     );
+
+    try {
+      // Preparar datos de la venta
+      final fechaVenta = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      final tipoPago = isInstallmentPayment.value ? 'plazos' : 'contado';
+      final usuario = _storage.read('nombre') ?? 'usuario_app';
+      
+      // Preparar lista de libros
+      final libros = items.map((book) {
+        final cantidad = quantities[book.id.toString()] ?? 1;
+        return {
+          'libro_id': book.id,
+          'cantidad': cantidad,
+          'descuento': isSupplier.value ? supplierDiscountPercentage.value : 0.0,
+        };
+      }).toList();
+
+      Map<String, dynamic> resultado;
+
+      // Si es ADMIN LIBRERIA, puede vender desde inventario general
+      if (isAdminLibreria.value) {
+        final roles = _getUserRoles();
+        
+        // Por ahora venderemos desde inventario general
+        // TODO: Agregar opción para que el admin elija de qué inventario vender
+        resultado = await _ventaService.crearVentaAdmin(
+          roles: roles,
+          tipoInventario: 'general',
+          fechaVenta: fechaVenta,
+          tipoPago: tipoPago,
+          usuario: usuario,
+          libros: libros,
+          observaciones: isInstallmentPayment.value
+              ? 'Cliente: ${customerNameController.text}\nContacto: ${contactInfoController.text}\nNotas: ${notesController.text}'
+              : null,
+        );
+      } else {
+        // Usuario normal - debe tener un subinventario seleccionado
+        final subinventarioId = _storage.read('subinventario_id');
+        
+        if (subinventarioId == null) {
+          Get.back(); // Cerrar diálogo de carga
+          Get.snackbar(
+            'Error',
+            'No hay un punto de venta seleccionado',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+          return;
+        }
+
+        final codCongregante = _storage.read('codCongregante') ?? '';
+        
+        resultado = await _ventaService.crearVenta(
+          subinventarioId: subinventarioId,
+          codCongregante: codCongregante,
+          fechaVenta: fechaVenta,
+          tipoPago: tipoPago,
+          usuario: usuario,
+          libros: libros,
+          observaciones: isInstallmentPayment.value
+              ? 'Cliente: ${customerNameController.text}\nContacto: ${contactInfoController.text}\nNotas: ${notesController.text}'
+              : null,
+        );
+      }
+
+      Get.back(); // Cerrar diálogo de carga
+
+      if (resultado['error'] == false) {
+        // Venta exitosa
+        String message = 'La venta se ha completado con éxito';
+        if (isInstallmentPayment.value && installmentPlan.value != null) {
+          message +=
+              '. Plan de pagos registrado para ${installmentPlan.value!.customerName}';
+        }
+        if (isAdminLibreria.value) {
+          message += '\n(Venta realizada desde inventario general)';
+        }
+
+        // Limpiar el carrito
+        items.clear();
+        quantities.clear();
+
+        // Limpiar y disponer los controladores
+        quantityControllers.forEach((_, controller) {
+          controller.dispose();
+        });
+        quantityControllers.clear();
+
+        paymentReceiptImage.value = null;
+        isSupplier.value = false;
+        isInstallmentPayment.value = false;
+        installmentPlan.value = null;
+        customerNameController.clear();
+        contactInfoController.clear();
+        notesController.clear();
+
+        Get.snackbar(
+          'Venta Realizada',
+          message,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 4),
+        );
+      } else {
+        // Error en la venta
+        Get.snackbar(
+          'Error',
+          resultado['message'] ?? 'Error al procesar la venta',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 4),
+        );
+      }
+    } catch (e) {
+      Get.back(); // Cerrar diálogo de carga
+      Get.snackbar(
+        'Error',
+        'Error inesperado: ${e.toString()}',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 4),
+      );
+    }
   }
 }

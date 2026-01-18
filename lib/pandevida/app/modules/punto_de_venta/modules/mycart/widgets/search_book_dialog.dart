@@ -5,7 +5,7 @@ import '../controllers/mycart_controller.dart';
 import '../../../data/models/book_model.dart';
 import '../../../data/services/books_service.dart';
 
-Future<Book?> searchBookDialog() async {
+Future<Book?> searchBookDialog({List<Book>? availableBooks}) async {
   // Obtenemos el controlador de carrito
   final mycartController = Get.find<MycartController>();
 
@@ -24,6 +24,11 @@ Future<Book?> searchBookDialog() async {
   RxString errorMessage = ''.obs;
 
   Book? selectedBook;
+
+  // Si hay libros disponibles del subinventario, mostrarlos al inicio
+  if (availableBooks != null && availableBooks.isNotEmpty) {
+    foundBooks.addAll(availableBooks);
+  }
 
   await Get.dialog(
     barrierColor: Colors.black87,
@@ -75,8 +80,14 @@ Future<Book?> searchBookDialog() async {
                           keyboardType: TextInputType.text,
                           onSubmitted: (value) async {
                             if (value.isNotEmpty) {
-                              await _searchBooks(value, booksService,
-                                  foundBooks, isSearching, errorMessage);
+                              await _searchBooks(
+                                value,
+                                booksService,
+                                foundBooks,
+                                isSearching,
+                                errorMessage,
+                                availableBooks: availableBooks,
+                              );
                             }
                           },
                           decoration: InputDecoration(
@@ -187,8 +198,14 @@ Future<Book?> searchBookDialog() async {
                   ),
                   onPressed: () async {
                     if (searchController.text.isNotEmpty) {
-                      await _searchBooks(searchController.text, booksService,
-                          foundBooks, isSearching, errorMessage);
+                      await _searchBooks(
+                        searchController.text,
+                        booksService,
+                        foundBooks,
+                        isSearching,
+                        errorMessage,
+                        availableBooks: availableBooks,
+                      );
                     }
                   },
                   child: const Text(
@@ -216,28 +233,56 @@ Future<Book?> searchBookDialog() async {
 
 // Función para buscar libros por código de barras o por nombre
 Future<void> _searchBooks(String searchTerm, BooksService booksService,
-    RxList<Book> foundBooks, RxBool isSearching, RxString errorMessage) async {
+    RxList<Book> foundBooks, RxBool isSearching, RxString errorMessage,
+    {List<Book>? availableBooks}) async {
   foundBooks.clear();
   errorMessage.value = '';
   isSearching.value = true;
 
   try {
-    // Primero intentamos buscar por código de barras
-    final barcodeResult = await booksService.findByBarcode(searchTerm);
+    // Si tenemos libros disponibles (del subinventario), buscar solo en esos
+    if (availableBooks != null && availableBooks.isNotEmpty) {
+      final searchLower = searchTerm.toLowerCase();
 
-    if (!barcodeResult['error']) {
-      // Si encontramos por código de barras, añadimos ese libro
-      foundBooks.add(barcodeResult['data']);
-    } else {
-      // Si no encontramos por código de barras, buscamos por similitud en el nombre
-      final nameResult = await booksService.findByNameSimilarity(searchTerm);
+      // Buscar por código de barras primero
+      final byBarcode = availableBooks
+          .where((book) => book.codigoBarras.toLowerCase() == searchLower)
+          .toList();
 
-      if (!nameResult['error']) {
-        // Añadimos todos los libros encontrados por nombre
-        foundBooks.addAll(nameResult['data']);
+      if (byBarcode.isNotEmpty) {
+        foundBooks.addAll(byBarcode);
       } else {
-        // Si no encontramos nada, mostramos el mensaje de error
-        errorMessage.value = nameResult['message'];
+        // Buscar por nombre si no encontró por código
+        final byName = availableBooks
+            .where((book) => book.nombre.toLowerCase().contains(searchLower))
+            .toList();
+
+        if (byName.isNotEmpty) {
+          foundBooks.addAll(byName);
+        } else {
+          errorMessage.value =
+              'No se encontró ningún libro con ese criterio en este punto de venta';
+        }
+      }
+    } else {
+      // Buscar en Firebase (comportamiento original)
+      // Primero intentamos buscar por código de barras
+      final barcodeResult = await booksService.findByBarcode(searchTerm);
+
+      if (!barcodeResult['error']) {
+        // Si encontramos por código de barras, añadimos ese libro
+        foundBooks.add(barcodeResult['data']);
+      } else {
+        // Si no encontramos por código de barras, buscamos por similitud en el nombre
+        final nameResult = await booksService.findByNameSimilarity(searchTerm);
+
+        if (!nameResult['error']) {
+          // Añadimos todos los libros encontrados por nombre
+          foundBooks.addAll(nameResult['data']);
+        } else {
+          // Si no encontramos nada, mostramos el mensaje de error
+          errorMessage.value = nameResult['message'];
+        }
       }
     }
   } catch (e) {

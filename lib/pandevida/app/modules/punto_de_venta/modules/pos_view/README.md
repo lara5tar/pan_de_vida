@@ -30,11 +30,28 @@ Nueva vista de punto de venta para libros con cámara integrada para escaneo con
 - Confirmaciones de seguridad antes de acciones importantes
 
 ## Ruta de Acceso
-La nueva vista está disponible en la ruta: `/pos-view`
+La nueva vista está disponible a través de la selección de subinventarios:
 
-Puedes navegar a ella con:
+**Ruta principal (Punto de Venta):** `/punto-de-venta`
+- Esta ruta primero muestra la selección de subinventarios
+- Si el usuario tiene solo un subinventario, navega automáticamente
+
+**Ruta directa (Vista principal con cámara):** `/pos-view-main`
+- Esta ruta es para uso interno después de seleccionar un subinventario
+
+Puedes navegar al punto de venta (que mostrará la selección de subinventarios) con:
 ```dart
 Get.toNamed(Routes.POS_VIEW);
+```
+
+O directamente a la vista principal con un subinventario:
+```dart
+Get.toNamed(
+  Routes.POS_VIEW_MAIN,
+  arguments: {
+    'subinventario': miSubinventario,
+  },
+);
 ```
 
 ## Componentes Creados

@@ -73,6 +73,28 @@ class CartBottomBarWidget extends GetView<MycartController> {
               ),
             ],
           ),
+          const SizedBox(height: 12),
+          // Botón de Registrar Abono
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () => Get.toNamed('/abonos/buscar'),
+              icon: const Icon(Icons.payment, size: 24),
+              label: const Text(
+                'Registrar Abono',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green[600],
+                foregroundColor: Colors.white,
+                elevation: 2,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

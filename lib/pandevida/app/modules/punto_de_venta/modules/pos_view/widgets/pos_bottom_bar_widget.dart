@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../../widgets/button_widget.dart';
 import '../controllers/pos_view_controller.dart';
 
 class PosBottomBarWidget extends GetView<PosViewController> {

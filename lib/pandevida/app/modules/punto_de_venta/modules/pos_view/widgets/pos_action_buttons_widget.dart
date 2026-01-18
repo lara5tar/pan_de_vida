@@ -48,6 +48,34 @@ class PosActionButtonsWidget extends GetView<PosViewController> {
               controller.goToSearchView();
             },
           ),
+          // Crear cliente
+          _buildActionButton(
+            icon: Icons.person_add,
+            label: 'Cliente',
+            color: Colors.purple[600]!,
+            onPressed: () async {
+              final cliente = await Get.toNamed('/punto-venta/crear-cliente');
+              if (cliente != null) {
+                Get.snackbar(
+                  'Cliente creado',
+                  'El cliente se ha registrado exitosamente',
+                  snackPosition: SnackPosition.BOTTOM,
+                  backgroundColor: Colors.green,
+                  colorText: Colors.white,
+                  duration: const Duration(seconds: 2),
+                );
+              }
+            },
+          ),
+          // Registrar abono
+          _buildActionButton(
+            icon: Icons.payment,
+            label: 'Abonos',
+            color: Colors.teal[600]!,
+            onPressed: () {
+              Get.toNamed('/abonos/buscar');
+            },
+          ),
         ],
       ),
     );
