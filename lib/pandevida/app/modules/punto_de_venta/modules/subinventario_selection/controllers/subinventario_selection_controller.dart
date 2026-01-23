@@ -21,15 +21,19 @@ class SubinventarioSelectionController extends GetxController {
     cargarSubinventarios();
   }
 
-  /// Verifica si el usuario tiene el rol ADMIN LIBRERIA
+  /// Verifica si el usuario tiene el rol ADMIN LIBRERIA o SUPERVISOR
   void _checkIfAdminLibreria() {
     try {
       final roles = _getUserRoles();
-      isAdminLibreria.value =
-          roles.any((role) => role['ROL'] == 'ADMIN LIBRERIA');
-      print('Usuario es ADMIN LIBRERIA: ${isAdminLibreria.value}');
+      const fullAccessRoles = {'ADMIN LIBRERIA', 'SUPERVISOR'};
+      
+      isAdminLibreria.value = roles.any(
+        (role) => fullAccessRoles.contains(role['ROL']),
+      );
+      
+      print('Usuario con acceso total (ADMIN/SUPERVISOR): ${isAdminLibreria.value}');
     } catch (e) {
-      print('Error verificando rol admin: $e');
+      print('Error verificando rol admin/supervisor: $e');
       isAdminLibreria.value = false;
     }
   }
