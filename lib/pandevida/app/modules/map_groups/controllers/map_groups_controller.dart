@@ -11,6 +11,13 @@ class MapGroupsController extends GetxController {
   var bottomSheetVisible = false.obs;
   late GoogleMapController googleMapController;
   var isSelectedMarker = false.obs;
+  
+  // Variables para mostrar info del grupo seleccionado
+  var selectedGroupName = ''.obs;
+  var selectedGroupSchedule = ''.obs;
+  var selectedGroupLat = 0.0.obs;
+  var selectedGroupLng = 0.0.obs;
+  var showGroupDialog = false.obs;
 
   final MapsService apiService = MapsService();
 
@@ -69,13 +76,15 @@ class MapGroupsController extends GetxController {
           infoWindow: InfoWindow(
             title: group.name,
             snippet: group.schedule,
-            onTap: () {
-              navigateToLocation(
-                group.position.latitude,
-                group.position.longitude,
-              );
-            },
           ),
+          onTap: () {
+            // Guardar información del grupo seleccionado
+            selectedGroupName.value = group.name;
+            selectedGroupSchedule.value = group.schedule;
+            selectedGroupLat.value = group.position.latitude;
+            selectedGroupLng.value = group.position.longitude;
+            showGroupDialog.value = true;
+          },
           icon: getColorIcon(group.color),
         ),
       );

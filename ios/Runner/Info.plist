@@ -2,18 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-<key>GMSApiKey</key>
-<string>AIzaSyCq8891GTKoNIqEH-NNMxRgiidHpEYjGZk</string>
-
-<key>NSLocationWhenInUseUsageDescription</key>
-<string>Esta aplicación utiliza tu ubicación para mostrarte grupos cercanos.</string>
-<key>NSCameraUsageDescription</key>
-<string>Necesitamos acceso a la cámara para escanear códigos de barras.</string>
-
-<key>LSApplicationQueriesSchemes</key>
-<array>
-  <string>tel</string>
-</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -36,8 +24,18 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>GMSApiKey</key>
+	<string>AIzaSyCq8891GTKoNIqEH-NNMxRgiidHpEYjGZk</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>tel</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Necesitamos acceso a la cámara para escanear códigos de barras.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Esta aplicación utiliza tu ubicación para mostrarte grupos cercanos.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
