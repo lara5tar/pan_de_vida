@@ -1,0 +1,284 @@
+import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import '../../../data/models/book_model.dart';
+import '../../../data/models/subinventario_model.dart';
+import '../../../data/services/books_service.dart';
+import '../../../data/services/subinventario_service.dart';
+import '../../../widgets/confirm_dialog.dart';
+
+class SearchViewController extends GetxController {
+  final BooksService booksService = BooksService();
+  final SubinventarioService subinventarioService = SubinventarioService();
+
+  // Estados observables
+  var isLoading = true.obs;
+  var hasError = false.obs;
+  var errorMessage = ''.obs;
+  var books = <Book>[].obs;
+  var searchQuery = ''.obs;
+
+  // Subinventario activo (si viene de POS con subinventario)
+  Subinventario? subinventarioActivo;
+  List<LibroSubinventario>? librosDisponibles;
+  
+  // Código del usuario para la nueva API
+  String? codCongregante;
+
+  // Callback para devolver el libro seleccionado (usado desde POS)
+  Function(Book)? onBookSelected;
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    // Obtener los argumentos
+    if (Get.arguments != null) {
+      if (Get.arguments['onBookSelected'] != null) {
+        onBookSelected = Get.arguments['onBookSelected'];
+      }
+      if (Get.arguments['subinventario'] != null) {
+        subinventarioActivo = Get.arguments['subinventario'];
+      }
+      if (Get.arguments['librosDisponibles'] != null) {
+        librosDisponibles = Get.arguments['librosDisponibles'];
+      }
+      if (Get.arguments['codCongregante'] != null) {
+        codCongregante = Get.arguments['codCongregante'];
+      }
+    }
+
+    // Usar la nueva API para buscar TODOS los libros
+    if (codCongregante != null) {
+      buscarTodosLosLibros();
+    } else if (librosDisponibles != null && librosDisponibles!.isNotEmpty) {
+      // Fallback: Si tenemos libros del subinventario, usarlos
+      cargarLibrosDeSubinventario();
+    } else {
+      getBooks();
+    }
+  }
+
+  // Cargar libros del subinventario
+  void cargarLibrosDeSubinventario() {
+    isLoading(true);
+    hasError(false);
+
+    try {
+      books.clear();
+
+      // Convertir LibroSubinventario a Book
+      for (var libro in librosDisponibles!) {
+        books.add(Book(
+          id: libro.id.toString(),
+          nombre: libro.nombre,
+          codigoBarras: libro.codigoBarras ?? '',
+          precio: libro.precio,
+          cantidadEnStock: libro.cantidadDisponible,
+        ));
+      }
+
+      print('Libros del subinventario cargados: ${books.length}');
+    } catch (e) {
+      hasError(true);
+      errorMessage.value = 'Error al cargar libros del subinventario';
+      print('Error en cargarLibrosDeSubinventario: $e');
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  // Buscar libros por nombre o código
+  List<Book> get filteredBooks {
+    final query = searchQuery.value.toLowerCase();
+    if (query.isEmpty) {
+      return books;
+    }
+    return books
+        .where((book) =>
+            book.nombre.toLowerCase().contains(query) ||
+            book.id.toLowerCase().contains(query) ||
+            book.codigoBarras.toLowerCase().contains(query))
+        .toList();
+  }
+
+  // Busca un libro por código exacto (útil para escaneos de códigos de barras)
+  void findBookByExactCode(String code) {
+    if (code.isEmpty) return;
+
+    // Primero buscamos coincidencia exacta con el ID
+    final exactMatch = books.firstWhereOrNull(
+        (book) => book.id.toLowerCase() == code.toLowerCase());
+
+    // Si encontramos una coincidencia exacta
+    if (exactMatch != null) {
+      // Si hay un callback, llamarlo (para agregar al carrito desde POS)
+      if (onBookSelected != null) {
+        onBookSelected!(exactMatch);
+        // Volver atrás después de seleccionar
+        Get.back();
+
+        // Mostrar mensaje después de cerrar
+        Future.microtask(() => Get.snackbar(
+              'Libro encontrado',
+              'Se agregó: ${exactMatch.nombre}',
+              backgroundColor: Colors.green.shade700,
+              colorText: Colors.white,
+              duration: const Duration(seconds: 2),
+            ));
+      } else {
+        // Solo mostrar mensaje si no hay callback
+        Get.snackbar(
+          'Libro encontrado',
+          'Se encontró el libro: ${exactMatch.nombre}',
+          backgroundColor: Colors.green.shade700,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 2),
+        );
+      }
+    } else {
+      // Si no hay coincidencia exacta
+      if (filteredBooks.isEmpty) {
+        Get.snackbar(
+          'Sin resultados',
+          'No se encontró ningún libro con el código: $code',
+          backgroundColor: Colors.orange.shade700,
+  // Buscar TODOS los libros del sistema con info de vendibilidad
+  Future<void> buscarTodosLosLibros() async {
+    if (codCongregante == null) {
+      await getBooks();
+      return;
+    }
+
+    isLoading(true);
+    hasError(false);
+
+    try {
+      final result = await subinventarioService.buscarTodosLosLibros(
+        codCongregante: codCongregante!,
+        conStock: true, // Solo mostrar libros con stock
+      );
+
+      if (!result['error']) {
+        books.clear();
+        final List<dynamic> data = result['data'];
+        
+        for (var item in data) {
+          books.add(Book.fromJson(item));
+        }
+        
+        print('Libros cargados desde API: ${books.length}');
+        print('Libros que puede vender: ${books.where((b) => b.esVendible).length}');
+        print('Libros que NO puede vender: ${books.where((b) => !b.esVendible).length}');
+      } else {
+  // Seleccionar un libro
+  void selectBook(Book book) {
+    // Validar si puede vender este libro
+    if (!book.esVendible) {
+      Get.snackbar(
+        'Libro no disponible',
+        'Este libro no está en tu inventario asignado',
+        backgroundColor: Colors.orange.shade700,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 3),
+      );
+      return;
+    }
+
+    if (book.cantidadDisponible <= 0) {
+      Get.snackbar(
+        'Sin stock',
+        'No tienes unidades disponibles de este libro',
+        backgroundColor: Colors.orange.shade700,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 2),
+      );
+      return;
+    }
+
+    if (onBookSelected != null) {
+      // Si hay un callback (desde POS), usarlo
+      confirmDialog(
+        title: '¿Agregar libro?',
+        content: '¿Deseas agregar "${book.nombre}" al carrito?\nDisponibles: ${book.cantidadDisponible}',
+        confirmAction: () {
+          onBookSelected!(book);
+          Get.back(); // Cerrar el diálogo de confirmación
+
+          // Mostrar snackbar después de cerrar todo
+          Future.microtask(() => Get.snackbar(
+                'Libro agregado',
+                '${book.nombre} agregado al carrito',
+                backgroundColor: Colors.green.shade700,
+                colorText: Colors.white,
+  // Recargar libros
+  Future<void> refresh() async {
+    if (codCongregante != null) {
+      await buscarTodosLosLibros();
+    } else {
+      await getBooks();
+    }
+  }
+}   } else {
+      // Si no hay callback, mostrar detalles
+      goToBookDetail(book);
+    }
+  }   if (!data['error']) {
+        books.clear();
+        books.addAll(data['data']);
+      } else {
+        hasError(true);
+        errorMessage.value = 'No se pudieron cargar los libros';
+      }
+    } catch (e) {
+      hasError(true);
+      errorMessage.value = 'Error al cargar libros: ${e.toString()}';
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  // Seleccionar un libro
+  void selectBook(Book book) {
+    if (onBookSelected != null) {
+      // Si hay un callback (desde POS), usarlo
+      confirmDialog(
+        title: '¿Agregar libro?',
+        content: '¿Deseas agregar "${book.nombre}" al carrito?',
+        confirmAction: () {
+          onBookSelected!(book);
+          Get.back(); // Cerrar el diálogo de confirmación
+
+          // Mostrar snackbar después de cerrar todo
+          Future.microtask(() => Get.snackbar(
+                'Libro agregado',
+                '${book.nombre} agregado al carrito',
+                backgroundColor: Colors.green.shade700,
+                colorText: Colors.white,
+                duration: const Duration(seconds: 2),
+              ));
+        },
+      );
+    } else {
+      // Si no hay callback, mostrar detalles
+      goToBookDetail(book);
+    }
+  }
+
+  // Navegar a los detalles del libro
+  void goToBookDetail(Book book) {
+    Get.toNamed(
+      '/book-detail',
+      arguments: {'book': book},
+    );
+  }
+
+  // Limpiar búsqueda
+  void clearSearch() {
+    searchQuery.value = '';
+  }
+
+  // Recargar libros
+  Future<void> refresh() async {
+    await getBooks();
+  }
+}

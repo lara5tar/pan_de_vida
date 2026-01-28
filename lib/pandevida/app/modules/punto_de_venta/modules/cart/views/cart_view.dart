@@ -1,0 +1,1006 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:delayed_display/delayed_display.dart';
+import '../controllers/cart_controller.dart';
+import 'payment_view.dart'; // Importamos la nueva vista de pagos
+
+class CartView extends GetView<CartController> {
+  const CartView({super.key});
+
+  // Reproductor de audio para el sonido del scanner
+  static final AudioPlayer _audioPlayer = AudioPlayer();
+
+  // Precargar el sonido para mejor rendimiento - esto se llama la primera vez que se crea la vista
+  static final bool _initialized = _initializeAudio();
+
+  static bool _initializeAudio() {
+    _audioPlayer.setSourceAsset('sonido.wav');
+    return true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Punto de Venta - Libros'),
+        centerTitle: true,
+      ),
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              _buildSearchBar(),
+              Expanded(
+                child: Obx(() {
+                  return controller.isSearching.value
+                      ? _buildSearchResults()
+                      : _buildCartItems();
+                }),
+              ),
+            ],
+          ),
+
+          // Panel de la cámara cuando está activa, mismo patrón que en CartFloatingButtonsWidget
+          Obx(
+            () => Visibility(
+              visible: controller.isCameraActive.value,
+              child: Positioned(
+                top: 80, // Justo debajo de la barra de búsqueda
+                left: 10,
+                right: 10,
+                child: Container(
+                  height: 250,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        // Cámara
+                        controller.cameraService.openScanner(),
+
+                        // Botón para cerrar la cámara
+                        Positioned(
+                          top: 10,
+                          right: 10,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.red,
+                            radius: 20,
+                            child: IconButton(
+                              icon:
+                                  const Icon(Icons.close, color: Colors.white),
+                              onPressed: () =>
+                                  controller.isCameraActive.value = false,
+                            ),
+                          ),
+                        ),
+
+                        // Guía visual única para el escaneo
+                        Container(
+                          width: 200,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.blue, width: 2),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+
+                        // Texto instructivo en la parte inferior
+                        Positioned(
+                          bottom: 20,
+                          left: 0,
+                          right: 0,
+                          child: Center(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 16),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.6),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: const Text(
+                                "Alinea el código de barras dentro del recuadro",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      bottomSheet: Obx(() {
+        if (controller.items.isEmpty) return const SizedBox.shrink();
+        return _buildCheckoutSection(context);
+      }),
+    );
+  }
+
+  Widget _buildSearchBar() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: controller.searchController,
+              decoration: InputDecoration(
+                hintText: 'Buscar por título o código de barras',
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: () {
+                    controller.searchController.clear();
+                    controller.searchResults.clear();
+                    controller.isSearching.value = false;
+                  },
+                ),
+              ),
+              onChanged: (value) {
+                controller.searchBooks(value);
+              },
+            ),
+          ),
+          const SizedBox(width: 8),
+          IconButton(
+            icon: const Icon(Icons.qr_code_scanner),
+            onPressed: () => controller.isCameraActive.value = true,
+            style: IconButton.styleFrom(
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchResults() {
+    return Obx(() {
+      // Mostramos el indicador de carga cuando isLoading es true
+      if (controller.isLoading.value) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const CircularProgressIndicator(),
+              const SizedBox(height: 20),
+              Text(
+                'Buscando libros...',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[700],
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+
+      // Cuando no hay resultados
+      if (controller.searchResults.isEmpty) {
+        return const Center(child: Text('No se encontraron resultados'));
+      }
+
+      // Mostramos los resultados
+      return ListView.builder(
+        padding: const EdgeInsets.only(bottom: 120),
+        itemCount: controller.searchResults.length,
+        itemBuilder: (context, index) {
+          final book = controller.searchResults[index];
+          return Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: ListTile(
+              leading: Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Icon(Icons.book, color: Colors.blue[800]),
+              ),
+              title: Text(book.nombre),
+              subtitle: Text(
+                  'Código: ${book.codigoBarras} - Precio: \$${book.precio.toStringAsFixed(2)}'),
+              trailing: ElevatedButton(
+                onPressed: () {
+                  controller.addToCart(book);
+                  // Ocultar el teclado al agregar un producto
+                  FocusScope.of(context).unfocus();
+                  // Mostrar un mensaje más elegante al agregar un producto
+                  Get.snackbar(
+                    'Agregado al carrito',
+                    'Se agregó "${book.nombre}" al carrito',
+                    snackPosition: SnackPosition.TOP,
+                    backgroundColor: Colors.green.withAlpha(230),
+                    colorText: Colors.white,
+                    duration: const Duration(seconds: 2),
+                    margin: const EdgeInsets.all(10),
+                    borderRadius: 10,
+                    icon: const Icon(
+                      Icons.check_circle_outline,
+                      color: Colors.white,
+                    ),
+                  );
+                },
+                child: const Text('Agregar'),
+              ),
+            ),
+          );
+        },
+      );
+    });
+  }
+
+  Widget _buildCartItems() {
+    return controller.items.isEmpty
+        ? Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.shopping_cart_outlined,
+                    size: 80, color: Colors.grey[400]),
+                const SizedBox(height: 16),
+                Text(
+                  'El carrito está vacío',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.grey[600],
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Busca libros para agregar al carrito',
+                  style: TextStyle(
+                    color: Colors.grey[500],
+                  ),
+                ),
+              ],
+            ),
+          )
+        : ListView.builder(
+            padding: const EdgeInsets.only(bottom: 200),
+            itemCount: controller.items.length,
+            itemBuilder: (context, index) {
+              final item = controller.items[index];
+              return Card(
+                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 1),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 5, right: 15, top: 10, bottom: 10),
+                  child: Row(
+                    children: [
+                      // Botón de eliminar movido al lado izquierdo
+                      IconButton(
+                        icon:
+                            const Icon(Icons.delete_outline, color: Colors.red),
+                        onPressed: () => controller.removeFromCart(item.id),
+                      ),
+                      const SizedBox(width: 5),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item.nombre,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Precio: \$${item.precio.toStringAsFixed(2)}',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Total: \$${controller.getBookTotalPrice(item).toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          _quantityButton(
+                            icon: Icons.remove,
+                            onPressed: () =>
+                                controller.decreaseQuantity(item.id),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                            width: 60,
+                            height: 34,
+                            child: TextField(
+                              controller:
+                                  controller.quantityControllers[item.id],
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              decoration: InputDecoration(
+                                contentPadding:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                  borderSide:
+                                      BorderSide(color: Colors.blue.shade300),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                  borderSide:
+                                      BorderSide(color: Colors.blue.shade200),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                  borderSide: const BorderSide(
+                                      color: Colors.blue, width: 1.5),
+                                ),
+                                isDense: true,
+                                isCollapsed: true,
+                              ),
+                              onSubmitted: (value) {
+                                final newQuantity = int.tryParse(value);
+                                if (newQuantity != null && newQuantity > 0) {
+                                  controller.setQuantity(item.id, newQuantity);
+                                } else {
+                                  controller
+                                          .quantityControllers[item.id]?.text =
+                                      controller
+                                          .getQuantity(item.id)
+                                          .toString();
+                                }
+                              },
+                            ),
+                          ),
+                          _quantityButton(
+                            icon: Icons.add,
+                            onPressed: () =>
+                                controller.increaseQuantity(item.id),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+  }
+
+  Widget _quantityButton(
+      {required IconData icon, required VoidCallback onPressed}) {
+    return Container(
+      width: 34,
+      height: 34,
+      decoration: BoxDecoration(
+        color: Colors.blue,
+        borderRadius: BorderRadius.circular(4),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withAlpha(77),
+            spreadRadius: 1,
+            blurRadius: 2,
+            offset: const Offset(0, 1),
+          ),
+        ],
+      ),
+      child: IconButton(
+        padding: EdgeInsets.zero,
+        icon: Icon(icon, color: Colors.white, size: 20),
+        onPressed: onPressed,
+        constraints: const BoxConstraints(),
+      ),
+    );
+  }
+
+  Widget _buildCheckoutSection(BuildContext context) {
+    // Calculamos la altura máxima del bottomSheet (60% de la pantalla)
+    final maxHeight = MediaQuery.of(context).size.height * 0.6;
+
+    return Container(
+      constraints: BoxConstraints(
+        maxHeight: maxHeight,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withAlpha(77),
+            spreadRadius: 1,
+            blurRadius: 10,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Header del bottomSheet con indicador de arrastre
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Colors.grey.withAlpha(77),
+                      width: 1,
+                    ),
+                  ),
+                ),
+                child: Center(
+                  child: Container(
+                    width: 40,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+
+              // Contenido scrollable
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                    top: 16,
+                    bottom: 120, // Espacio para los botones
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Customer type switcher - Solo visible para admin
+                      Obx(() => controller.isAdmin.value
+                          ? Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    const Text(
+                                      'Tipo de cliente:',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Expanded(
+                                      child: Obx(() => Row(
+                                            children: [
+                                              Expanded(
+                                                child: GestureDetector(
+                                                  onTap: () => controller
+                                                      .isSupplier.value = false,
+                                                  child: Container(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(vertical: 8),
+                                                    decoration: BoxDecoration(
+                                                      color: !controller
+                                                              .isSupplier.value
+                                                          ? Colors.blue
+                                                          : Colors.grey[200],
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                              .only(
+                                                        topLeft:
+                                                            Radius.circular(8),
+                                                        bottomLeft:
+                                                            Radius.circular(8),
+                                                      ),
+                                                    ),
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                      'Regular',
+                                                      style: TextStyle(
+                                                        color: !controller
+                                                                .isSupplier
+                                                                .value
+                                                            ? Colors.white
+                                                            : Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: GestureDetector(
+                                                  onTap: () => controller
+                                                      .isSupplier.value = true,
+                                                  child: Container(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(vertical: 8),
+                                                    decoration: BoxDecoration(
+                                                      color: controller
+                                                              .isSupplier.value
+                                                          ? Colors.blue
+                                                          : Colors.grey[200],
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                              .only(
+                                                        topRight:
+                                                            Radius.circular(8),
+                                                        bottomRight:
+                                                            Radius.circular(8),
+                                                      ),
+                                                    ),
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                      'Proveedor',
+                                                      style: TextStyle(
+                                                        color: controller
+                                                                .isSupplier
+                                                                .value
+                                                            ? Colors.white
+                                                            : Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 16),
+                              ],
+                            )
+                          : const SizedBox()),
+
+                      // Price summary
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Obx(() => Column(
+                              children: [
+                                // Subtotal solo visible para admin
+                                if (controller.isAdmin.value)
+                                  _buildSummaryRow('Subtotal:',
+                                      '\$${controller.subtotal.toStringAsFixed(2)}'),
+
+                                // Descuento solo visible para admin y si es proveedor
+                                if (controller.isAdmin.value &&
+                                    controller.isSupplier.value)
+                                  _buildSummaryRow(
+                                    'Descuento (${controller.supplierDiscountPercentage.value.toStringAsFixed(0)}%):',
+                                    '-\$${controller.discountAmount.toStringAsFixed(2)}',
+                                    valueColor: Colors.green,
+                                  ),
+
+                                // Divider solo para admin
+                                if (controller.isAdmin.value) const Divider(),
+
+                                // Total siempre visible para todos
+                                _buildSummaryRow(
+                                  'Total:',
+                                  '\$${controller.total.toStringAsFixed(2)}',
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ],
+                            )),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Agregamos un botón para cambiar entre roles (solo para desarrollo)
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          controller.isAdmin.toggle();
+                          if (controller.isAdmin.value) {
+                            Get.snackbar(
+                              'Modo Admin',
+                              'Has cambiado a vista de administrador',
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.blue,
+                              colorText: Colors.white,
+                            );
+                          } else {
+                            Get.snackbar(
+                              'Modo Vendedor',
+                              'Has cambiado a vista de vendedor',
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.green,
+                              colorText: Colors.white,
+                            );
+                          }
+                        },
+                        icon: Obx(() => Icon(
+                            controller.isAdmin.value
+                                ? Icons.admin_panel_settings
+                                : Icons.person,
+                            color: Colors.white)),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: controller.isAdmin.value
+                              ? Colors.blue[800]
+                              : Colors.green,
+                          foregroundColor: Colors.white,
+                        ),
+                        label: Obx(() => Text(controller.isAdmin.value
+                            ? 'Cambiar a Vendedor'
+                            : 'Cambiar a Admin')),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          // Botones de acción siempre visibles al final (posición absoluta)
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  top: BorderSide(
+                    color: Colors.grey.withAlpha(77),
+                    width: 1,
+                  ),
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Botón de continuar a pago
+                  SizedBox(
+                    height: 50,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => _goToPayment(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue[700],
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Text(
+                        'Continuar a Pago',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  // Botón de abonos
+                  SizedBox(
+                    height: 45,
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: () => Get.toNamed('/abonos/buscar'),
+                      icon: const Icon(Icons.payment),
+                      label: const Text('Registrar Abono'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.green[700],
+                        side: BorderSide(color: Colors.green[700]!, width: 2),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Método para navegar a la pantalla de pago
+  void _goToPayment() {
+    if (controller.items.isEmpty) {
+      Get.snackbar(
+        'Carrito vacío',
+        'Agrega productos al carrito para continuar',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return;
+    }
+
+    // Navegamos a la vista de pago
+    Get.to(() => const PaymentView());
+  }
+
+  Widget _buildSummaryRow(
+    String label,
+    String value, {
+    Color? valueColor,
+    double fontSize = 14,
+    FontWeight fontWeight = FontWeight.normal,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: fontSize,
+              fontWeight: fontWeight,
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: fontSize,
+              fontWeight: fontWeight,
+              color: valueColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _openBarcodeScanner() {
+    // Asegurar que el sonido esté preparado
+    _audioPlayer.setSourceAsset('sonido.wav');
+
+    // Variable para controlar si estamos procesando un código
+    bool isProcessing = false;
+
+    Get.bottomSheet(
+      SizedBox(
+        height: Get.height * 0.7,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Escanear código de barras',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Get.back(),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  MobileScanner(
+                    controller: MobileScannerController(
+                      detectionSpeed: DetectionSpeed.unrestricted,
+                      facing: CameraFacing.back,
+                      formats: [
+                        BarcodeFormat.ean8,
+                        BarcodeFormat.ean13,
+                        BarcodeFormat.upcA,
+                        BarcodeFormat.upcE,
+                        BarcodeFormat.code39,
+                        BarcodeFormat.code93,
+                        BarcodeFormat.code128,
+                        BarcodeFormat.dataMatrix,
+                        BarcodeFormat.qrCode,
+                      ],
+                    ),
+                    onDetect: (capture) async {
+                      final barcodes = capture.barcodes;
+                      if (barcodes.isNotEmpty &&
+                          barcodes.first.rawValue != null &&
+                          !isProcessing) {
+                        isProcessing = true;
+                        final barcode = barcodes.first.rawValue!;
+
+                        // Primero verificamos que el escáner siga abierto antes de continuar
+                        if (!Get.isBottomSheetOpen!) return;
+
+                        // Reproducir sonido antes de cerrar el escáner
+                        _audioPlayer.stop().then((_) {
+                          _audioPlayer.play(AssetSource('sonido.wav'));
+                        });
+
+                        // Cerramos el escáner
+                        Get.back();
+
+                        // Mostramos un diálogo de carga
+                        showDialog(
+                          context: Get.context!,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) => const Center(
+                            child: Card(
+                              child: Padding(
+                                padding: EdgeInsets.all(20.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    CircularProgressIndicator(),
+                                    SizedBox(height: 16),
+                                    Text("Buscando producto..."),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+
+                        try {
+                          // Llamamos a searchByBarcode y esperamos el resultado
+                          final productFound =
+                              await controller.searchByBarcode(barcode);
+
+                          // Cerramos el diálogo de carga
+                          if (Navigator.of(Get.context!).canPop()) {
+                            Navigator.of(Get.context!).pop();
+                          }
+
+                          if (productFound) {
+                            // Si se encontró el producto, lo agregamos automáticamente al carrito
+                            final foundProduct = controller.searchResults.first;
+                            controller.addToCart(foundProduct);
+
+                            // Mostramos mensaje de éxito con animación
+                            Get.snackbar(
+                              '¡Producto agregado!',
+                              'Se agregó "${foundProduct.nombre}" al carrito',
+                              snackPosition: SnackPosition.TOP,
+                              backgroundColor: Colors.green.withAlpha(230),
+                              colorText: Colors.white,
+                              duration: const Duration(seconds: 2),
+                              margin: const EdgeInsets.all(10),
+                              borderRadius: 10,
+                              icon: const Icon(
+                                Icons.shopping_cart,
+                                color: Colors.white,
+                              ),
+                            );
+                          } else {
+                            // Si no se encontró, mostramos mensaje de error
+                            Get.snackbar(
+                              'Producto no encontrado',
+                              'El código de barras $barcode no existe en el inventario',
+                              snackPosition: SnackPosition.TOP,
+                              backgroundColor: Colors.red.withAlpha(230),
+                              colorText: Colors.white,
+                              duration: const Duration(seconds: 3),
+                              margin: const EdgeInsets.all(10),
+                              borderRadius: 10,
+                              icon: const Icon(
+                                Icons.error_outline,
+                                color: Colors.white,
+                              ),
+                            );
+                          }
+
+                          // Revertir el estado de procesamiento después de un tiempo
+                          Future.delayed(const Duration(seconds: 2), () {
+                            isProcessing = false;
+                          });
+                        } catch (e) {
+                          // Garantizamos el cierre del diálogo en caso de error
+                          if (Navigator.of(Get.context!).canPop()) {
+                            Navigator.of(Get.context!).pop();
+                          }
+
+                          // Mostramos el mensaje de error
+                          Get.snackbar(
+                            'Error',
+                            'Ocurrió un error al buscar el producto: $e',
+                            snackPosition: SnackPosition.TOP,
+                            backgroundColor: Colors.red.withAlpha(230),
+                            colorText: Colors.white,
+                            duration: const Duration(seconds: 3),
+                            margin: const EdgeInsets.all(10),
+                            borderRadius: 10,
+                            icon: const Icon(
+                              Icons.error_outline,
+                              color: Colors.white,
+                            ),
+                          );
+
+                          isProcessing = false;
+                        }
+                      }
+                    },
+                  ),
+
+                  // Guía visual para el escaneo con animación DelayedDisplay
+                  DelayedDisplay(
+                    delay: const Duration(milliseconds: 300),
+                    fadingDuration: const Duration(milliseconds: 500),
+                    child: Container(
+                      width: Get.width * 0.7,
+                      height: Get.width * 0.7,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blue, width: 2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                  ),
+
+                  // Texto instructivo en la parte inferior
+                  Positioned(
+                    bottom: 20,
+                    child: DelayedDisplay(
+                      delay: const Duration(milliseconds: 500),
+                      fadingDuration: const Duration(milliseconds: 500),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 16),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.6),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const Text(
+                          "Alinea el código de barras dentro del recuadro",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+    );
+  }
+}

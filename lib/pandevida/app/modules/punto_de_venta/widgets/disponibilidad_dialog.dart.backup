@@ -1,0 +1,465 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../data/models/disponibilidad_model.dart';
+import '../data/services/subinventario_service.dart';
+
+/// Diálogo para consultar disponibilidad de un libro en otros lugares
+Future<void> showDisponibilidadDialog({
+  required int libroId,
+  required String libroNombre,
+}) async {
+  await Get.dialog(
+    DisponibilidadDialog(
+      libroId: libroId,
+      libroNombre: libroNombre,
+    ),
+    barrierDismissible: true,
+  );
+}
+
+class DisponibilidadDialog extends StatefulWidget {
+  final int libroId;
+  final String libroNombre;
+
+  const DisponibilidadDialog({
+    super.key,
+    required this.libroId,
+    required this.libroNombre,
+  });
+
+  @override
+  State<DisponibilidadDialog> createState() => _DisponibilidadDialogState();
+}
+
+class _DisponibilidadDialogState extends State<DisponibilidadDialog> {
+  final subinventarioService = SubinventarioService();
+  bool isLoading = true;
+  String? errorMessage;
+  DisponibilidadLibro? disponibilidad;
+
+  @override
+  void initState() {
+    super.initState();
+    _cargarDisponibilidad();
+  }
+
+  Future<void> _cargarDisponibilidad() async {
+    setState(() {
+      isLoading = true;
+      errorMessage = null;
+    });
+
+    try {
+      final result =
+          await subinventarioService.getDisponibilidadLibro(widget.libroId);
+
+      if (result['error'] == false) {
+        setState(() {
+          disponibilidad = result['data'] as DisponibilidadLibro;
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          errorMessage = result['message'] ?? 'Error al consultar';
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        errorMessage = 'Error: ${e.toString()}';
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      insetPadding: const EdgeInsets.all(16),
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 600, maxHeight: 600),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Header
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(4),
+                  topRight: Radius.circular(4),
+                ),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.inventory_2, color: Colors.white, size: 28),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Disponibilidad',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          widget.libroNombre,
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 14,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close, color: Colors.white),
+                    onPressed: () => Get.back(),
+                  ),
+                ],
+              ),
+            ),
+
+            // Content
+            Expanded(
+              child: isLoading
+                  ? const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          SizedBox(height: 16),
+                          Text('Consultando disponibilidad...'),
+                        ],
+                      ),
+                    )
+                  : errorMessage != null
+                      ? Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.error_outline,
+                                    size: 64,
+                                    color: Theme.of(context).colorScheme.error),
+                                const SizedBox(height: 16),
+                                Text(
+                                  errorMessage!,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.error,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                ElevatedButton.icon(
+                                  onPressed: _cargarDisponibilidad,
+                                  icon: const Icon(Icons.refresh),
+                                  label: const Text('Reintentar'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : _buildDisponibilidadContent(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDisponibilidadContent() {
+    if (disponibilidad == null) {
+      return const Center(child: Text('No hay datos disponibles'));
+    }
+
+    final disp = disponibilidad!;
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Resumen general
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: disp.tieneStock 
+                  ? Colors.blue.shade50 
+                  : Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: disp.tieneStock 
+                    ? Colors.blue.shade300 
+                    : Colors.grey.shade400,
+                width: 1,
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  disp.tieneStock
+                      ? Icons.check_circle_outline
+                      : Icons.info_outline,
+                  color: disp.tieneStock 
+                      ? Colors.blue.shade700 
+                      : Colors.grey.shade600,
+                  size: 28,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        disp.tieneStock
+                            ? 'Disponible para venta'
+                            : 'Sin existencias',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: disp.tieneStock
+                              ? Colors.blue.shade900
+                              : Colors.grey.shade700,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Total: ${disp.totalDisponible} ${disp.totalDisponible == 1 ? 'unidad' : 'unidades'}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade700,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Precio: \$${disp.libro.precio.toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+
+          // Inventario General
+          _buildSeccionHeader('Inventario Central'),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                width: 1,
+                color: disp.inventarioGeneral.disponible
+                    ? Colors.blue.shade300
+                    : Colors.grey.shade300,
+              ),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: disp.inventarioGeneral.disponible
+                        ? Colors.blue.shade50
+                        : Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(
+                    Icons.warehouse_outlined,
+                    color: disp.inventarioGeneral.disponible
+                        ? Colors.blue.shade700
+                        : Colors.grey.shade500,
+                    size: 28,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        disp.inventarioGeneral.disponible
+                            ? 'Disponible'
+                            : 'No disponible',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: disp.inventarioGeneral.disponible
+                              ? Colors.blue.shade900
+                              : Colors.grey.shade600,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        '${disp.inventarioGeneral.cantidad} ${disp.inventarioGeneral.cantidad == 1 ? 'unidad' : 'unidades'}',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+
+          // Subinventarios
+          _buildSeccionHeader('Otros Puntos de Venta'),
+          const SizedBox(height: 8),
+          if (disp.subinventarios.isEmpty)
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade50,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: Center(
+                child: Text(
+                  'No hay existencias en otros puntos de venta',
+                  style: TextStyle(
+                    color: Colors.grey.shade600,
+                    fontSize: 13,
+                  ),
+                ),
+              ),
+            )
+          else
+            ...disp.subinventarios.map((sub) => _buildSubinventarioCard(sub)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSeccionHeader(String titulo) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 4),
+      child: Text(
+        titulo,
+        style: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+          color: Colors.grey.shade700,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSubinventarioCard(SubinventarioDisponibilidad sub) {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: Colors.grey.shade300,
+          width: 1,
+        ),
+      ),
+      child: Row(
+        children: [
+          // Icono del punto de venta
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(
+              Icons.store_outlined,
+              color: Colors.grey.shade700,
+              size: 26,
+            ),
+          ),
+          const SizedBox(width: 12),
+          // Información del subinventario
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'ID ${sub.subinventarioId}',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Container(
+                      width: 3,
+                      height: 3,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade400,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        sub.descripcion,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey.shade800,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                Row(
+                  children: [
+                    Text(
+                      '${sub.cantidadDisponible} ${sub.cantidadDisponible == 1 ? 'unidad' : 'unidades'}',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      '•',
+                      style: TextStyle(color: Colors.grey.shade400),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      sub.fechaSubinventario,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey.shade500,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
