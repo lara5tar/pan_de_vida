@@ -27,7 +27,7 @@ class UploadImageScreenState extends State<UploadImageScreen> {
     if (_image == null) return;
 
     var request = http.MultipartRequest('POST',
-        Uri.parse('https://sistemasdevida.com/app_pan/upload_image.php'));
+        Uri.parse('https://sistemasdevida.com/pan/eventos_img/upload_eventos_image.php'));
     request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
 
     var response = await request.send();

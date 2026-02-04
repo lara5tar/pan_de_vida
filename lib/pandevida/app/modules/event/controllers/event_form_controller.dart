@@ -341,7 +341,7 @@ class EventFormController extends GetxController {
     try {
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse('https://sistemasdevida.com/app_pan/upload_image.php'),
+        Uri.parse('https://sistemasdevida.com/pan/eventos_img/upload_eventos_image.php'),
       );
 
       String nameImage = '${DateTime.now().millisecondsSinceEpoch}.jpg';
@@ -358,7 +358,7 @@ class EventFormController extends GetxController {
         print(imageUrl);
 
         Get.snackbar('Éxito', 'Imagen subida correctamente');
-        return 'https://sistemasdevida.com/app_pan/uploads/${isEditMode.value ? urlImage.text : nameImage}';
+        return 'https://sistemasdevida.com/pan/eventos_img/${isEditMode.value ? urlImage.text : nameImage}';
       } else {
         Get.snackbar('Error', 'No se pudo subir la imagen');
         return '';
