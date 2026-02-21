@@ -35,8 +35,11 @@ class EventsView extends GetView<EventsController> {
               ),
       ),
       floatingActionButton: FloatingButtonWidget(
-        onPressed: () {
-          Get.toNamed(Routes.EVENT_FORM);
+        onPressed: () async {
+          final result = await Get.toNamed(Routes.EVENT_FORM);
+          if (result == true) {
+            controller.loadEvents();
+          }
         },
         icon: Icons.add,
       ),
@@ -63,8 +66,12 @@ class EventsView extends GetView<EventsController> {
                 trailingWidget: IconButton(
                   icon: const Icon(Icons.edit_outlined),
                   color: Colors.blue.shade800,
-                  onPressed: () {
-                    Get.toNamed(Routes.EVENT_FORM, arguments: event);
+                  onPressed: () async {
+                    final result =
+                        await Get.toNamed(Routes.EVENT_FORM, arguments: event);
+                    if (result == true) {
+                      controller.loadEvents();
+                    }
                   },
                 ),
                 // trailingWidget: Container(

@@ -1,0 +1,527 @@
+{
+  "id": "test_2",
+  "titulo": "Test de Interacción y Servicio",
+  "descripcion": "Selecciona la respuesta que mejor refleje tu forma de ser o actuar. No hay respuestas correctas o incorrectas.",
+  "preguntas": [
+    {
+      "id": "p1",
+      "pregunta": "Cuando conoces a alguien nuevo en la iglesia, ¿qué suele pasar?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me enfoco en conocer su historia y conectarme",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Le explico rápidamente sobre la iglesia y sus programas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Me aseguro de que se sienta cómodo y atendido",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Prefiero observar antes de acercarme",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p2",
+      "pregunta": "¿Cómo describes tu interacción con grupos de personas?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me gusta liderar y dirigir conversaciones",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Soy amigable y busco conectar con todos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Me mantengo tranquilo y escucho atentamente",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Prefiero conversaciones más profundas con pocos",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p3",
+      "pregunta": "En un ministerio de alabanza, ¿qué te inspira más?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Ver a la gente conectarse con Dios emocionalmente",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Involucrar a muchos en la adoración de manera divertida",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Asegurar que todo salga técnicamente bien",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Reflexionar sobre el significado de la alabanza",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p4",
+      "pregunta": "¿Cómo manejas situaciones donde debes animar a otros?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Soy directo y enfocado en el mensaje de ánimo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Uso humor y calidez para levantar el ánimo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Busco formas prácticas y concretas de ayudar",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Comparto reflexiones personales profundas",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p5",
+      "pregunta": "¿Qué caracteriza tu estilo al enseñar a niños/preadolescentes?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me enfoco en lecciones claras y directas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Uso juegos, historias y actividades para involucrar",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Me aseguro de que entiendan paso a paso",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Busco conectar lecciones con su crecimiento espiritual",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p6",
+      "pregunta": "Al trabajar con nuevos convertidos, ¿qué enfoque tienes?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Les explico claramente los pasos a seguir en su fe",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Me enfoco en hacerles sentir parte de la comunidad",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Les ayudo a entender actividades espirituales",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Les acompaño en reflexionar sobre su transformación espiritual",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p7",
+      "pregunta": "¿Cómo describes tu energía en eventos sociales de la iglesia?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me mantengo enfocado en objetivos del evento",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Soy entusiasta y me gusta interactuar con muchos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Me adapto al ambiente y contribuyo calmadamente",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Prefiero observar y participar selectivamente",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p8",
+      "pregunta": "¿Qué te gusta más al servir en un módulo de información?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Dar respuestas claras y directas a preguntas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Conocer personas y contarles sobre la iglesia",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Organizar bien la información para que sea útil",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Reflexionar sobre cómo comunicar mejor el mensaje",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p9",
+      "pregunta": "En situaciones grupales, ¿qué rol tiendes a asumir?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Líder que dirige hacia objetivos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Facilitador que conecta y anima a todos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Colaborador que apoya con orden",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Participante reflexivo que aporta ideas profundas",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p10",
+      "pregunta": "¿Cómo manejas el contacto con visitantes en la iglesia?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me acerco rápidamente para darles información clave",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Les doy la bienvenida cálida y les pregunto sobre ellos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Me aseguro de que tengan todo lo que necesitan",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Les dejo espacio para que se sientan cómodos solos",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p11",
+      "pregunta": "¿Qué caracteriza tu comunicación verbal?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Directa y enfocada en el punto",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Amigable y expresiva, con entusiasmo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Clara y calmada, con detalles precisos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Profunda y con calidez y espiritualidad",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p12",
+      "pregunta": "Al planificar un evento para jóvenes, ¿qué enfoque tienes?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Defino objetivos claros y estrategias efectivas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Busco ideas creativas para involucrar a todos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Me aseguro de que logística y detalles estén cubiertos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Reflexiono sobre impacto espiritual en los participantes",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p13",
+      "pregunta": "¿Cómo reaccionas cuando alguien comparte una necesidad personal?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Le doy consejos prácticos directos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Le escucho con empatía y le animo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Le ayudo a pensar en soluciones organizadas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Le acompaño en reflexión espiritual profunda",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p14",
+      "pregunta": "¿Qué te motiva en el ministerio de ujieres?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Asegurar que todo fluya eficientemente",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Hacer que visitantes y miembros se sientan bienvenidos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Mantener orden y procesos claros",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Sentir el impacto espiritual del servicio",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p15",
+      "pregunta": "En redes sociales para la iglesia, ¿qué enfoque prefieres?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Publicar mensajes claros y directos sobre la visión",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Crear contenido interactivo y divertido para conectar",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Compartir información organizada y útil",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Reflexionar y publicar sobre temas espirituales profundos",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p16",
+      "pregunta": "¿Cómo describes tu relación con la gente en general?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me enfoco en lo que necesitan saber o hacer",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Soy sociable y disfruto conectando con muchos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Me relaciono de manera calmada y respetuosa",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Busco entender sus sentimientos y pensamientos profundos",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p17",
+      "pregunta": "Al liderar danza/alabanza, ¿qué te inspira?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Ver el impacto claro en la congregación",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Expresar adoración de manera expresiva y alegre",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Coordinar movimientos con armonía y orden",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Sentir la comunión espiritual profunda en la danza",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p18",
+      "pregunta": "¿Cómo manejas la retroalimentación positiva sobre tu servicio?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me enfoco en cómo seguir mejorando",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Me alegra y me motiva a seguir sirviendo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Lo agradezco y lo tomo con calma",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Me hace reflexionar sobre el impacto espiritual",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p19",
+      "pregunta": "En un equipo ministerial diverso, ¿qué valoras más?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "La unidad en objetivos claros",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "La hermandad y el buen ambiente",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "La eficiencia y organización conjunta",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "La comunión espiritual compartida",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p20",
+      "pregunta": "¿Qué describe mejor tu pasión por servir?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Quiero ver resultados concretos en la iglesia",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Me encanta conectar y hacer felices a otros",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Me gusta contribuir de manera ordenada y útil",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Busco expresar y profundizar mi fe en servicio",
+          "iscorrecta": false
+        }
+      ]
+    }
+  ]
+}

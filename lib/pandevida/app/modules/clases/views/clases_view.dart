@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -119,7 +120,16 @@ class ClasesView extends GetView<ClasesController> {
                               ],
                             ),
                           ),
-                      ]
+                      ],
+                      if (kDebugMode) ...[
+                        const SizedBox(height: 20),
+                        ElevatedButtonWidget(
+                          onPressed: () {
+                            Get.toNamed(Routes.TEST_MINISTERIO);
+                          },
+                          text: 'Test de Ministerio',
+                        ),
+                      ],
                     ],
                   ),
                 ),

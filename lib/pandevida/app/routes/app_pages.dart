@@ -70,6 +70,9 @@ import '../modules/rpa/views/prospectos_videos_view.dart';
 import '../modules/rpa/views/prospectos_view.dart';
 import '../modules/rpa/views/rpa_index_view.dart';
 import '../modules/rpa/views/team_view.dart';
+import '../modules/test_ministerio/bindings/test_ministerio_binding.dart';
+import '../modules/test_ministerio/views/test_ministerio_list_view.dart';
+import '../modules/test_ministerio/views/test_ministerio_preguntas_view.dart';
 
 // ignore_for_file: constant_identifier_names
 
@@ -240,6 +243,16 @@ class AppPages {
       name: _Paths.CLASE_CUESTIONARIO_VIDEO,
       page: () => const ClaseCuestionarioVideoView(),
       binding: ClasesBinding(),
+    ),
+    GetPage(
+      name: _Paths.TEST_MINISTERIO,
+      page: () => const TestMinisterioListView(),
+      binding: TestMinisterioBinding(),
+    ),
+    GetPage(
+      name: _Paths.TEST_MINISTERIO_PREGUNTAS,
+      page: () => const TestMinisterioPreguntasView(),
+      binding: TestMinisterioBinding(),
     ),
     GetPage(
       name: _Paths.EVENTS,

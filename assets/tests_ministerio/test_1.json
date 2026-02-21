@@ -1,0 +1,527 @@
+{
+  "id": "test_1",
+  "titulo": "Test de Personalidad Ministerial",
+  "descripcion": "Selecciona la respuesta que mejor refleje tu forma de ser o actuar. No hay respuestas correctas o incorrectas.",
+  "preguntas": [
+    {
+      "id": "p1",
+      "pregunta": "Cuando enfrentas un desafío en un proyecto, ¿qué suele pasar?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me enfoco en encontrar soluciones rápidas y tomar acción",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Busco opiniones de otros antes de decidir",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Analizo cuidadosamente todos los detalles posibles",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Intento mantener la calma y esperar el momento adecuado",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p2",
+      "pregunta": "¿Cómo describes tu estilo de liderazgo?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Decido y dirijo con claridad hacia los objetivos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Colaboro y busco consenso con el equipo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Me enfoco en escuchar y entender necesidades de otros",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Prefiero seguir lineamientos establecidos",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p3",
+      "pregunta": "Al comunicar un mensaje importante en la iglesia, ¿qué buscas?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Ser directo y claro sobre el objetivo o llamado",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Involucrar a todos y generar entusiasmo compartido",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Asegurarme de que todos se sientan cómodos con el mensaje",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Reflexionar profundamente sobre el impacto que dio el mensaje",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p4",
+      "pregunta": "¿Cómo manejas la crítica o retroalimentación sobre tu trabajo?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "La veo como oportunidad para mejorar y ajustar estrategias",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Agradezco y busco entender perspectivas de otros",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "La considero cuidadosamente y reflexiono sobre ella",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Prefiero no recibir críticas directas si es posible",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p5",
+      "pregunta": "En un equipo, ¿qué rol tiendes a asumir?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Líder o coordinador que impulsa acción",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Facilitador que conecta personas e ideas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Mediador que busca equilibrio y armonía",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Colaborador reflexivo que aporta ideas detalladas",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p6",
+      "pregunta": "¿Qué te motiva más en un proyecto ministerial?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Ver resultados concretos y avance hacia metas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Sentir conexión y apoyo de la comunidad",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Mantener orden y procesos claros",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Profundizar en el significado espiritual y personal",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p7",
+      "pregunta": "Al enfrentar oposición o resistencia, ¿qué haces?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Abordo directamente y busco resolver el asunto",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Busco diálogo y entender al otro",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Me tomo tiempo para reflexionar sobre la situación",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Intento evitar conflictos si es posible",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p8",
+      "pregunta": "¿Cómo describes tu toma de decisiones?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Rápida y orientada a acción cuando es necesario",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Considero varias perspectivas antes de decidir",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Cuidadosa y basada en análisis detallado",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Intuitiva y basada en sensación interna",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p9",
+      "pregunta": "En cuanto a objetivos, ¿qué caracteriza tu enfoque?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me fijo metas claras y trabajo para alcanzarlas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Me adapto a circunstancias y oportunidades",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Busco equilibrio y sostenibilidad en procesos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Me enfoco en la dimensión espiritual y significado",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p10",
+      "pregunta": "¿Cómo describes tu actitud en situaciones desafiantes?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me mantengo enfocado y determinado",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Me esfuerzo por mantener ánimo y entusiasmo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Busco mantener equilibrio y calma",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Me vuelvo introspectivo y reflexivo",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p11",
+      "pregunta": "¿Cómo abordas la planificación de un evento ministerial?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Defino objetivos claros y pasos concretos para lograrlos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Involucro a muchos para generar ideas y colaboración",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Me aseguro de que todo esté organizado y detallado",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Reflexiono sobre el propósito espiritual profundo del evento",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p12",
+      "pregunta": "En situaciones de presión, ¿qué tiendes a hacer?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Actúo con decisión para resolver el asunto",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Busco apoyo y ánimo de otros",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Mantengo la calma y busco soluciones prácticas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Me tomo tiempo para pensar y sentir por lo que estoy pasando",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p13",
+      "pregunta": "¿Qué te impulsa a servir en un ministerio?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "El deseo de ver impacto y resultados claros",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "La conexión con personas y comunidad",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "La oportunidad de servir con orden y fidelidad",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "La búsqueda de crecimiento espiritual personal",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p14",
+      "pregunta": "¿Cómo reaccionas ante cambios inesperados?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me adapto rápidamente y busco nuevas estrategias",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Intento involucrar a otros para manejar el cambio",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Analizo cuidadosamente antes de ajustar planes",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Me tomo tiempo para procesar emocionalmente el cambio",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p15",
+      "pregunta": "¿Qué caracteriza tu comunicación?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Dirigida y enfocada en el mensaje clave",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Amigable y buscando conexión personal y empatía",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Clara y práctica, con detalles precisos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Profunda y explorando significados espirituales",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p16",
+      "pregunta": "¿Cómo manejas múltiples tareas ministeriales?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Priorizo y me enfoco en lo más importante estratégicamente",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Intento delegar y colaborar con otros",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Me organizo metódicamente para cubrir todo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Reflexiono sobre cómo integrarlas espiritualmente",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p17",
+      "pregunta": "¿Qué te hace sentir realizado en un ministerio?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Ver progreso y logros concretos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Sentir que conectas y sirves a personas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Saber que contribuyes con orden y eficiencia",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Experimentar crecimiento espiritual propio y en otros",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p18",
+      "pregunta": "¿Cómo describes tu enfoque en la enseñanza (si aplica)?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Claro y orientado a la práctica",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Interactivo y buscando participación de los que la están tomando",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Estructurado y con secuencia lógica",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Profundo y explorando la palabra de Dios",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p19",
+      "pregunta": "Al trabajar con un equipo diverso, ¿qué buscas?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Alinear a todos hacia objetivos comunes claros",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Fomentar camaradería y apoyo mutuo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Asegurar roles claros y procesos eficientes",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Profundizar en comprensión espiritual compartida",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p20",
+      "pregunta": "¿Cómo describes tu pasión por el ministerio?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Enfocada en cumplir la misión y visión",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Centrada en servir y amar a las personas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Dirigida a hacer las cosas bien y ordenadamente",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Impulsada por búsqueda espiritual profunda y oración",
+          "iscorrecta": false
+        }
+      ]
+    }
+  ]
+}

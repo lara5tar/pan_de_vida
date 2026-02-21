@@ -14,6 +14,13 @@ class EventsController extends GetxController {
 
   @override
   void onInit() {
+    loadEvents();
+    super.onInit();
+  }
+
+  // Método para cargar o recargar eventos
+  void loadEvents() {
+    isLoading(true);
     eventService.getAll().then((data) {
       if (!data['error']) {
         Map eventos = ordenarEventos(data['data']);
@@ -23,7 +30,6 @@ class EventsController extends GetxController {
       }
       isLoading(false);
     });
-    super.onInit();
   }
 
   DateTime _parseDateTime(String dateStr, String timeStr) {

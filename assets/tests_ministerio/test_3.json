@@ -1,0 +1,527 @@
+{
+  "id": "test_3",
+  "titulo": "Test de Organización y Soporte",
+  "descripcion": "Selecciona la respuesta que mejor refleje tu forma de ser o actuar. No hay respuestas correctas o incorrectas.",
+  "preguntas": [
+    {
+      "id": "p1",
+      "pregunta": "Cuando se te asigna una tarea en la iglesia, ¿qué haces primero?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me enfoco en completarla lo antes posible",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Pregunto cómo puedo involucrar a otros",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Reviso detalles y planifico pasos claros",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Pienso sobre qué me puede ayudar espiritualmente",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p2",
+      "pregunta": "¿Cómo describes tu enfoque en la organización de eventos?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me aseguro de que objetivos se cumplan rápidamente",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Busco que todos se sientan incluidos y contentos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Me enfoco en detalles logísticos y orden",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Pienso en cómo el evento impacta espiritualmente",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p3",
+      "pregunta": "En un equipo de trabajo, ¿qué rol tiendes a asumir?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Líder que impulsa acción decisiva",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Facilitador que conecta personas e ideas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Colaborador que asegura procesos fluidos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Analista que aporta ideas profundas",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p4",
+      "pregunta": "¿Cómo manejas cambios en planes establecidos?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me adapto rápidamente y ajusto estrategias",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Busco consenso con otros para manejar cambios",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Lo analizo cuidadosamente antes de ajustar planes",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Me tomo tiempo para analizar en qué beneficiará",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p5",
+      "pregunta": "Al trabajar con equipo técnico (audio, luces), ¿qué enfoque tienes?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me enfoco en resolver problemas técnicos rápido",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Me aseguro de que todos se sientan parte del equipo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Reviso detalles para asegurar funcionamiento óptimo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "En lo beneficioso que puede ser tener este servicio",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p6",
+      "pregunta": "¿Cómo describes tu estilo al manejar protocolos?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Directo y enfocado en cumplimiento eficaz",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Flexible buscando adaptación y acuerdo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Cuidadoso y metódico en seguir procedimientos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Pienso el propósito y significado detrás",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p7",
+      "pregunta": "En situaciones que requieren calma y estabilidad, ¿qué haces?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Actúo con decisión para resolver asuntos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Busco animar y apoyar a otros",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Mantengo equilibrio y busco soluciones prácticas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Me vuelvo introspectivo buscando paz interior",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p8",
+      "pregunta": "¿Qué caracteriza tu trabajo en administración?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Eficiencia y enfoque en resultados clave",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Colaboración y buen ambiente",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Organización metódica y atención cuidadosa",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Búsqueda de armonía espiritual en cada situación que se presente",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p9",
+      "pregunta": "Al enfrentar problemas técnicos, ¿cómo reaccionas?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Busco solución rápida y efectiva",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Pido ayuda y trabajo con otros",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Analizo sistemáticamente para encontrar causa/raíz",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Analizo los efectos que este puede producir",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p10",
+      "pregunta": "¿Cómo describes tu comunicación en temas de decisiones rápidas?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Clara y directa sobre lo que se necesita",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Amigable buscando entendimiento mutuo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Precisa y con detalles organizados",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Pienso sobre el impacto y propósito",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p11",
+      "pregunta": "En mantenimiento de instalaciones iglesia, ¿qué enfoque tienes?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me enfoco en resolver problemas lo antes posible",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Involucro a otros para trabajo en equipo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Reviso regularmente para prevenir problemas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Pienso en cómo puedo ayudar",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p12",
+      "pregunta": "¿Cómo manejas tareas repetitivas o rutinarias?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Las hago eficientemente para avanzar rápido",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Busco formas de hacerlas más divertidas/colaborativas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Las hago con cuidado siguiendo procesos establecidos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Pienso sobre su propósito",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p13",
+      "pregunta": "Al trabajar con varios departamentos iglesia, ¿qué buscas?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Coordinación efectiva hacia objetivos comunes",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Buen ambiente y relacionarme con toda la iglesia",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Procesos claros y comunicación fluida entre áreas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Unidad espiritual y armonía en colaboración",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p14",
+      "pregunta": "¿Qué te motiva en soporte técnico para la iglesia?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Ver que todo funcione bien para el ministerio",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Ayudar a personas y hacerlas sentir apoyadas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Mantener sistemas funcionando ordenada/eficientemente",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Apoyar al propósito espiritual iglesia",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p15",
+      "pregunta": "¿Cómo describes cómo te sientes con tareas de planeación logística?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me enfoco en hacerlas de forma efectiva y rápida",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Me gusta involucrar a otros en la planeación",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Me siento cómodo organizando detalles y pasos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Me tomo tiempo para pensar en propósito",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p16",
+      "pregunta": "Al enfrentar desafíos en audio/video iglesia, ¿qué haces?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Busco solución técnica directa",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Pido colaboración de equipo técnico",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Reviso cuidadosamente configuración y equipos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Pienso sobre cómo afectará en el momento a todos",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p17",
+      "pregunta": "¿Qué caracteriza tu enfoque en cumplir tareas asignadas?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Rapidez y enfoque en resultados",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Colaboración y apoyo mutuo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Cuidado y cumplimiento como lo indican",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Tener la mejor armonía con los demás",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p18",
+      "pregunta": "En situaciones que requieren paciencia, ¿cómo reaccionas?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me enfoco en resolver asunto lo antes posible",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Busco animar a otros mientras esperamos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Mantengo calma y busco soluciones prácticas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Me vuelvo introspectivo buscando paz",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p19",
+      "pregunta": "¿Cómo describes tu relación con detalles técnicos?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me enfoco en lo esencial para avanzar",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Me gusta explicarlos de forma amigable a otros",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Me gusta entenderlos y manejarlos cuidadosamente",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Los veo en contexto espiritual para ser objetivo",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p20",
+      "pregunta": "¿Qué describe mejor tu pasión por servir en logística/soporte?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Quiero ver resultados concretos y eficiencia",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Me gusta apoyar y servir a personas/equipos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Me gusta mantener todo funcionando bien/ordenado",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Busco contribuir a ambiente espiritual armonioso",
+          "iscorrecta": false
+        }
+      ]
+    }
+  ]
+}

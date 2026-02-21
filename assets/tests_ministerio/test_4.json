@@ -1,0 +1,527 @@
+{
+  "id": "test_4",
+  "titulo": "Test de Consejería y Espiritualidad",
+  "descripcion": "Selecciona la respuesta que mejor refleje tu forma de ser o actuar. No hay respuestas correctas o incorrectas.",
+  "preguntas": [
+    {
+      "id": "p1",
+      "pregunta": "Cuando alguien comparte un problema personal contigo, ¿qué suele pasar?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Le doy consejos prácticos directos para resolverlo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Le escucho con calidez y busco animarle",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Analizo cuidadosamente posibles soluciones",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Me conecto empáticamente y reflexiono con él/ella",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p2",
+      "pregunta": "¿Cómo describes tu proceso de comunión espiritual personal?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me enfoco en aplicar diariamente la fe",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Busco la comunión con Dios de forma diaria",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Leo constantemente la palabra y la llevo a cabo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Me lleno de su presencia profundamente y oración",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p3",
+      "pregunta": "En un ministerio de consejería, ¿qué enfoque tienes?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Ayudo a personas a encontrar soluciones concretas rápido",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Les apoyo con empatía y ánimo constante",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Les guío con pasos claros y ordenados",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Les acompaño en exploración profunda de sentimientos/espiritualidad",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p4",
+      "pregunta": "¿Cómo te sientes al crear música para la iglesia?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me enfoco en que sea funcional para el culto",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Busco expresar emociones y conectar con otros",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Me aseguro de que armonía y técnica sean buenas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Me sumerjo en expresar profundidad espiritual/adoración",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p5",
+      "pregunta": "Al enfrentar desafíos emocionales en otros, ¿qué haces?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Les animo a actuar y resolver problemas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Les doy apoyo emocional cálido y presencia",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Les ayudo a pensar en soluciones prácticas/ordenadas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Les acompaño en reflexión profunda sobre sus emociones, fe",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p6",
+      "pregunta": "¿Qué caracteriza tu estilo de intercesión/oración?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me enfoco en peticiones específicas y resultados",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Expreso emociones y gratitud con entusiasmo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Sigo patrones y sistemáticos en oración",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Me sumerjo profundamente y sensibilidad espiritual",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p7",
+      "pregunta": "Si te encontraras en el servicio de danza, ¿qué buscarías?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Representar el mensaje de alabanza",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Expresar emociones y conectar con la congregación",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Lograr equilibrio técnico y espiritual",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Tener profundidad con el espíritu santo y expresarlo",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p8",
+      "pregunta": "¿Cómo describes tu relación con personas en sufrimiento?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Les apoyo para encontrar soluciones prácticas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Les doy presencia cálida y ánimo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Les ayudo a organizar pensamientos/sentimientos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Tengo mucha empatía",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p9",
+      "pregunta": "Al reflexionar sobre pasajes bíblicos, ¿qué haces?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Busco aplicarla siempre en mi vida",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Me enfoco en cómo aplicarlo en mis emociones",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Analizo estructura y su entorno",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Analizo y medito el contexto de lo sucedido",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p10",
+      "pregunta": "¿Qué te motiva en un ministerio de consejería?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Ver cambios concretos en vidas de personas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Conectar con gente y animarles",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Proveer guía clara y ordenada",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Acompañar personas en profundidad espiritual/emocional",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p11",
+      "pregunta": "¿Cómo manejas situaciones que requieren sensibilidad emocional?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me enfoco en resolver asuntos de forma práctica",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Uso calidez y empatía para conectar",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Busco equilibrio y soluciones organizadas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Me conecto profundamente con sentimientos involucrados",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p12",
+      "pregunta": "En un equipo ministerial, ¿qué aportas?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Ideas claras y dirección decisiva",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Ánimo y conexión interpersonal",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Organización y procesos claros",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Reflexión y sensibilidad espiritual",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p13",
+      "pregunta": "¿Cómo describes tu proceso creativo si lo necesita el servicio?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me enfoco en resultado práctico/útil",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Expreso emociones y busco conexión",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Busco equilibrio y técnica depurada",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Me inspiro siempre buscando lo espiritual",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p14",
+      "pregunta": "Al ministrar a personas con heridas emocionales, ¿qué haces?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Les ayudo a encontrar soluciones concretas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Les doy apoyo cálido y compasivo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Les guío con pasos claros y orden",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Les acompaño en exploración profunda espiritual",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p15",
+      "pregunta": "¿Qué caracteriza tu comunicación en temas espirituales?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Directa y enfocada en aplicar la palabra",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Cálida y expresiva emocionalmente",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Clara y organizada técnicamente",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Profunda y con matices espirituales/emocionales",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p16",
+      "pregunta": "En momentos de adoración, ¿qué sientes?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me enfoco en participación congregacional activa",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Me conecto emocionalmente con la alabanza",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Busco armonía y orden en la adoración",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Me sumerjo en profundidad espiritual",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p17",
+      "pregunta": "¿Cómo manejas la complejidad de situaciones humanas?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Busco soluciones prácticas directas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Me enfoco en apoyo emocional cálido",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Analizo cuidadosamente para ordenarlos",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Reflexiono profundamente sobre dimensiones espirituales",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p18",
+      "pregunta": "¿Qué buscas en relaciones ministeriales profundas?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Resultados concretos y efectividad",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Conexión cálida y apoyo mutuo",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Estabilidad y procesos claros",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Profundidad espiritual y entendimiento empático",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p19",
+      "pregunta": "Al escribir reflexiones espirituales, ¿qué enfoque tienes?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Me enfoco en aplicación práctica clara",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Expreso emociones y experiencias personales",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Busco estructura lógica y coherente",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Exploro significados profundos",
+          "iscorrecta": false
+        }
+      ]
+    },
+    {
+      "id": "p20",
+      "pregunta": "¿Qué describe mejor tu pasión por servir en consejería/intercesión?",
+      "opciones": [
+        {
+          "id": "o1",
+          "texto": "Quiero ver cambios concretos en vidas",
+          "iscorrecta": false
+        },
+        {
+          "id": "o2",
+          "texto": "Me gusta conectar y apoyar emocionalmente",
+          "iscorrecta": false
+        },
+        {
+          "id": "o3",
+          "texto": "Me enfoco en procesos claros y ordenados",
+          "iscorrecta": false
+        },
+        {
+          "id": "o4",
+          "texto": "Busco acompañar personas en profundidad espiritual/emocional",
+          "iscorrecta": false
+        }
+      ]
+    }
+  ]
+}

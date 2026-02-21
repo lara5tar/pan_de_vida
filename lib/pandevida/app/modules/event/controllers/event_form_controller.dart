@@ -39,6 +39,7 @@ class EventFormController extends GetxController {
   // Variables reactivas para la gestión de imágenes
   final picker = ImagePicker();
   Rx<File?> selectedImage = Rx<File?>(null);
+  final isPickingImage = false.obs;
 
   @override
   void onInit() {
@@ -191,7 +192,7 @@ class EventFormController extends GetxController {
             TextButton(
               onPressed: () {
                 Get.back();
-                Get.back(); // Return to previous screen after successful save
+                Get.back(result: true); // Return with result to trigger refresh
               },
               child: const Text('Aceptar'),
             ),
@@ -232,13 +233,25 @@ class EventFormController extends GetxController {
           ),
           TextButton(
             onPressed: () async {
+              Get.back(); // Cerrar el diálogo de confirmación primero
+
               if (event == null) {
-                Get.back();
                 return;
               }
+
+              // Mostrar diálogo de carga
+              Get.dialog(
+                const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                barrierDismissible: false,
+              );
+
               var result = await eventService.update(
                 event!.copyWith(isDesactivated: true),
               );
+
+              Get.back(); // Cerrar diálogo de carga
 
               if (result['error']) {
                 Get.dialog(
@@ -264,8 +277,10 @@ class EventFormController extends GetxController {
                     actions: [
                       TextButton(
                         onPressed: () {
-                          Get.back();
-                          Get.back();
+                          Get.back(); // Cerrar diálogo de éxito
+                          Get.back(
+                              result:
+                                  true); // Regresar a la vista de eventos con resultado
                         },
                         child: const Text('Aceptar'),
                       ),
@@ -322,13 +337,20 @@ class EventFormController extends GetxController {
   }
 
   Future<void> pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      selectedImage.value = File(pickedFile.path);
-      urlImage.text = pickedFile.path.split('/').last;
-    } else {
-      Get.snackbar('Error', 'No se seleccionó ninguna imagen');
+    if (isPickingImage.value) return;
+
+    try {
+      isPickingImage.value = true;
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        selectedImage.value = File(pickedFile.path);
+        urlImage.text = pickedFile.path.split('/').last;
+      } else {
+        Get.snackbar('Error', 'No se seleccionó ninguna imagen');
+      }
+    } finally {
+      isPickingImage.value = false;
     }
   }
 
@@ -341,7 +363,8 @@ class EventFormController extends GetxController {
     try {
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse('https://sistemasdevida.com/pan/eventos_img/upload_eventos_image.php'),
+        Uri.parse(
+            'https://sistemasdevida.com/pan/eventos_img/upload_eventos_image.php'),
       );
 
       String nameImage = '${DateTime.now().millisecondsSinceEpoch}.jpg';

@@ -46,4 +46,5 @@ flutter:
 
   assets:
     - assets/
+    - assets/tests_ministerio/
     - .env

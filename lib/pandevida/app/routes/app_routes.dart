@@ -38,6 +38,8 @@ abstract class Routes {
   static const CLASE_VIDEOS = _Paths.CLASE_VIDEOS;
   static const CLASE_CUESTIONARIO = _Paths.CLASE_CUESTIONARIO;
   static const CLASE_CUESTIONARIO_VIDEO = _Paths.CLASE_CUESTIONARIO_VIDEO;
+  static const TEST_MINISTERIO = _Paths.TEST_MINISTERIO;
+  static const TEST_MINISTERIO_PREGUNTAS = _Paths.TEST_MINISTERIO_PREGUNTAS;
   static const EVENTS = _Paths.EVENTS;
   static const EVENT_FORM = _Paths.EVENT_FORM;
   static const EVENT = _Paths.EVENT;
@@ -106,6 +108,8 @@ abstract class _Paths {
   static const CLASE_VIDEOS = '$CLASES/CLASE_VIDEOS';
   static const CLASE_CUESTIONARIO = '$CLASES/CLASE_CUESTIONARIO';
   static const CLASE_CUESTIONARIO_VIDEO = '$CLASES/CLASE_CUESTIONARIO_VIDEO';
+  static const TEST_MINISTERIO = '/test-ministerio';
+  static const TEST_MINISTERIO_PREGUNTAS = '$TEST_MINISTERIO/preguntas';
   static const EVENTS = '/events';
   static const EVENT_FORM = '$EVENTS/form';
   static const EVENT = '$EVENTS/event';

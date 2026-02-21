@@ -64,6 +64,20 @@ class MapGroupsController extends GetxController {
     }
   }
 
+  Future<void> openInMaps(double lat, double lng) async {
+    final Uri mapsUri = Uri.parse('https://www.google.com/maps/search/?api=1&query=$lat,$lng');
+
+    try {
+      await launchUrl(mapsUri, mode: LaunchMode.externalApplication);
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'No se pudo abrir Google Maps',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
   Future<void> loadMarkers() async {
     List<Group> groups = await apiService.getPoints();
     Set<Marker> newMarkers = {};

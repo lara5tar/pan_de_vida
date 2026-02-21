@@ -32,8 +32,8 @@ class MapGroupsView extends GetView<MapGroupsController> {
                 zoom: 12,
               ),
               markers: controller.markers,
-              //mover las posiciones de los controles
-              // mapToolbarEnabled: false,
+              //quita los botones por defecto de Google Maps
+              mapToolbarEnabled: false,
               padding: const EdgeInsets.only(bottom: 100),
             ),
             // Tarjeta flotante con información del grupo seleccionado
@@ -90,22 +90,42 @@ class MapGroupsView extends GetView<MapGroupsController> {
                           ],
                         ),
                         const SizedBox(height: 12),
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton.icon(
-                            onPressed: () {
-                              controller.navigateToLocation(
-                                controller.selectedGroupLat.value,
-                                controller.selectedGroupLng.value,
-                              );
-                            },
-                            icon: const Icon(Icons.navigation, size: 18),
-                            label: const Text('Cómo llegar'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              foregroundColor: Colors.white,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton.icon(
+                                onPressed: () {
+                                  controller.openInMaps(
+                                    controller.selectedGroupLat.value,
+                                    controller.selectedGroupLng.value,
+                                  );
+                                },
+                                icon: const Icon(Icons.map, size: 18),
+                                label: const Text('Ver en Maps'),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  foregroundColor: Colors.white,
+                                ),
+                              ),
                             ),
-                          ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: ElevatedButton.icon(
+                                onPressed: () {
+                                  controller.navigateToLocation(
+                                    controller.selectedGroupLat.value,
+                                    controller.selectedGroupLng.value,
+                                  );
+                                },
+                                icon: const Icon(Icons.navigation, size: 18),
+                                label: const Text('Cómo llegar'),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                  foregroundColor: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
