@@ -5,7 +5,8 @@ import '../models/disponibilidad_model.dart';
 
 class SubinventarioService {
   static const String baseUrl = 'https://inventario.sistemasdevida.com/api/v1';
-  static const String baseUrlMovil = 'https://inventario.sistemasdevida.com/api/v1/movil';
+  static const String baseUrlMovil =
+      'https://inventario.sistemasdevida.com/api/v1/movil';
 
   /// Obtiene todos los puntos de venta (para ADMIN LIBRERIA)
   Future<Map<String, dynamic>> getTodosPuntosVenta(
@@ -29,19 +30,21 @@ class SubinventarioService {
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         print('📦 Response data type: ${responseData.runtimeType}');
-        
+
         List<Subinventario> subinventarios = [];
 
-        if (responseData is Map<String, dynamic> && responseData['success'] == true) {
+        if (responseData is Map<String, dynamic> &&
+            responseData['success'] == true) {
           final data = responseData['data'];
           print('📦 Data type: ${data.runtimeType}');
-          
+
           // La respuesta tiene formato: {success: true, data: {inventario_general: {...}, subinventarios: [...]}}
           if (data is Map<String, dynamic>) {
             // Agregar inventario general si existe
             if (data['inventario_general'] != null) {
               try {
-                final invGeneral = data['inventario_general'] as Map<String, dynamic>;
+                final invGeneral =
+                    data['inventario_general'] as Map<String, dynamic>;
                 subinventarios.add(Subinventario(
                   id: 0,
                   descripcion: invGeneral['nombre'] ?? 'Inventario General',
@@ -57,10 +60,11 @@ class SubinventarioService {
             }
 
             // Agregar subinventarios
-            if (data['subinventarios'] != null && data['subinventarios'] is List) {
+            if (data['subinventarios'] != null &&
+                data['subinventarios'] is List) {
               final subinvList = data['subinventarios'] as List<dynamic>;
               print('📋 Subinventarios encontrados: ${subinvList.length}');
-              
+
               for (var item in subinvList) {
                 try {
                   if (item is Map<String, dynamic>) {
@@ -157,6 +161,7 @@ class SubinventarioService {
   Future<Map<String, dynamic>> getLibrosSubinventario(
     int subinventarioId, {
     String? codCongregante,
+    List<Map<String, dynamic>>? roles,
   }) async {
     try {
       var url = '$baseUrl/subinventarios/$subinventarioId/libros';
@@ -166,10 +171,14 @@ class SubinventarioService {
 
       final uri = Uri.parse(url);
       print('SubinventarioService.getLibrosSubinventario: $uri');
+      print('Roles enviados: ${json.encode(roles ?? [])}');
 
       final response = await http.get(
         uri,
-        headers: {'Accept': 'application/json'},
+        headers: {
+          'Accept': 'application/json',
+          'X-Roles': json.encode(roles ?? []),
+        },
       );
 
       print('Response status: ${response.statusCode}');
@@ -573,6 +582,7 @@ class SubinventarioService {
   Future<Map<String, dynamic>> getTodosLosLibrosConVendibilidad({
     required int subinventarioId,
     String? codCongregante,
+    List<Map<String, dynamic>>? roles,
     String? buscar,
     bool? conStock,
     double? precioMin,
@@ -621,10 +631,14 @@ class SubinventarioService {
       );
 
       print('SubinventarioService.getTodosLosLibrosConVendibilidad: $url');
+      print('Roles enviados: ${json.encode(roles ?? [])}');
 
       final response = await http.get(
         url,
-        headers: {'Accept': 'application/json'},
+        headers: {
+          'Accept': 'application/json',
+          'X-Roles': json.encode(roles ?? []),
+        },
       );
 
       print('Response status: ${response.statusCode}');

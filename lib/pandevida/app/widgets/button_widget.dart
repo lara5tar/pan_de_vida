@@ -8,9 +8,12 @@ class ButtonWidget extends StatelessWidget {
   final Widget? trailingWidget;
   final List<OptionWidget>? options;
   final IconData icon;
+  final Widget? iconWidget;
   final Function? onTap;
   final Color colorText;
   final Color colorIcon;
+  final Color? titleColor;
+  final bool showTitleAsPill;
   final bool isLast;
 
   const ButtonWidget({
@@ -22,9 +25,12 @@ class ButtonWidget extends StatelessWidget {
     this.trailingWidget,
     this.options,
     required this.icon,
+    this.iconWidget,
     this.onTap,
     this.colorText = Colors.black,
     this.colorIcon = const Color(0xFF616161),
+    this.titleColor,
+    this.showTitleAsPill = false,
     this.isLast = false,
   });
 
@@ -46,11 +52,12 @@ class ButtonWidget extends StatelessWidget {
               children: [
                 SizedBox(
                   width: 60,
-                  child: Icon(
-                    icon,
-                    size: 20,
-                    color: colorIcon,
-                  ),
+                  child: iconWidget ??
+                      Icon(
+                        icon,
+                        size: 20,
+                        color: colorIcon,
+                      ),
                 ),
                 Expanded(
                   child: Column(
@@ -62,13 +69,32 @@ class ButtonWidget extends StatelessWidget {
                       if (title != null)
                         Padding(
                           padding: const EdgeInsets.only(right: 10),
-                          child: Text(
-                            title!,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey[800],
-                            ),
-                          ),
+                          child: showTitleAsPill
+                              ? Container(
+                                  decoration: BoxDecoration(
+                                    color: titleColor ?? Colors.grey[300],
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 4,
+                                  ),
+                                  child: Text(
+                                    title!,
+                                    style: const TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )
+                              : Text(
+                                  title!,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey[800],
+                                  ),
+                                ),
                         ),
                       Padding(
                         padding: const EdgeInsets.only(right: 10),

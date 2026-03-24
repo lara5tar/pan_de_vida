@@ -64,6 +64,24 @@ class LandingView extends GetView<LandingController> {
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
+                      const SizedBox(height: 20),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          Get.toNamed(Routes.DESARROLLO);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.indigo,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 12,
+                          ),
+                        ),
+                        icon: const Icon(Icons.people, color: Colors.white),
+                        label: const Text(
+                          'Desarrollo - Discípulos',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
                     ] else
                       Container(),
                     const EventWidget(),

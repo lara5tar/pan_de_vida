@@ -56,6 +56,16 @@ import '../modules/punto_de_venta/modules/abonos/views/buscar_apartado_view.dart
 import '../modules/punto_de_venta/modules/abonos/views/registrar_abono_view.dart';
 import '../modules/punto_de_venta/modules/abonos/views/historial_abonos_view.dart';
 import '../modules/punto_de_venta/modules/cart/views/crear_cliente_view.dart';
+import '../modules/desarrollo/bindings/desarrollo_asistencias_binding.dart';
+import '../modules/desarrollo/bindings/desarrollo_binding.dart';
+import '../modules/desarrollo/bindings/desarrollo_escuela_historial_binding.dart';
+import '../modules/desarrollo/bindings/desarrollo_perfil_binding.dart';
+import '../modules/desarrollo/bindings/desarrollo_rpa_binding.dart';
+import '../modules/desarrollo/views/desarrollo_asistencias_view.dart';
+import '../modules/desarrollo/views/desarrollo_escuela_historial_view.dart';
+import '../modules/desarrollo/views/desarrollo_perfil_view.dart';
+import '../modules/desarrollo/views/desarrollo_rpa_view.dart';
+import '../modules/desarrollo/views/desarrollo_view.dart';
 import '../modules/restauracion/bindings/restauracion_binding.dart';
 import '../modules/restauracion/views/restauracion_congregante_view.dart';
 import '../modules/restauracion/views/restauracion_view.dart';
@@ -338,6 +348,37 @@ class AppPages {
     GetPage(
       name: _Paths.CREAR_CLIENTE,
       page: () => const CrearClienteView(),
+    ),
+    // Rutas para el módulo de desarrollo
+    GetPage(
+      name: _Paths.DESARROLLO,
+      page: () => const DesarrolloView(),
+      binding: DesarrolloBinding(),
+    ),
+    GetPage(
+      name: '/list-desarrollo',
+      page: () => const DesarrolloView(),
+      binding: DesarrolloBinding(),
+    ),
+    GetPage(
+      name: _Paths.DESARROLLO_PERFIL,
+      page: () => const DesarrolloPerfilView(),
+      binding: DesarrolloPerfilBinding(),
+    ),
+    GetPage(
+      name: _Paths.DESARROLLO_RPA,
+      page: () => const DesarrolloRpaView(),
+      binding: DesarrolloRpaBinding(),
+    ),
+    GetPage(
+      name: _Paths.DESARROLLO_ASISTENCIAS,
+      page: () => const DesarrolloAsistenciasView(),
+      binding: DesarrolloAsistenciasBinding(),
+    ),
+    GetPage(
+      name: _Paths.DESARROLLO_ESCUELA_HISTORIAL,
+      page: () => const DesarrolloEscuelaHistorialView(),
+      binding: DesarrolloEscuelaHistorialBinding(),
     ),
   ];
 }

@@ -1,4 +1,5 @@
 import 'package:pan_de_vida/pandevida/app/data/models/accion_model.dart';
+import 'package:pan_de_vida/pandevida/app/data/models/cumbre_ciclo_model.dart';
 import 'package:pan_de_vida/pandevida/app/data/models/marcador_model.dart';
 
 import '../../../core/utils/print_debug.dart';
@@ -239,5 +240,29 @@ class CumbresServices {
         'prospectoSig': prospectoSig,
       },
     );
+  }
+
+  /// Retorna las RPAs del ciclo actual para un congregante dado.
+  /// Endpoint: POST /cumbres/obtener_rpa_congregante
+  static Future<Map<String, dynamic>> getCumbresRpaCongregante(
+      String codCongregante) async {
+    printD('CumbresServices.getCumbresRpaCongregante');
+
+    var result = await ApiService.request(
+      '/cumbres/obtener_rpa_congregante',
+      {Keys.COD_CONGREGANTE_KEY: codCongregante},
+    );
+
+    if (result['error']) return result;
+
+    return {
+      'error': false,
+      'cumbres_por_anio': List<CumbreAnio>.from(
+        (result['cumbres_por_anio'] ?? []).map((e) => CumbreAnio.fromJson(e)),
+      ),
+      'cumbres': List<CumbreCiclo>.from(
+        (result['cumbres'] ?? []).map((e) => CumbreCiclo.fromJson(e)),
+      ),
+    };
   }
 }

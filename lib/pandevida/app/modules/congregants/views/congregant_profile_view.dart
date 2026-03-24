@@ -5,6 +5,7 @@ import 'package:pan_de_vida/pandevida/app/widgets/text_title_widget.dart';
 import '../../../widgets/custom_scaffold.dart';
 import '../../../widgets/button_widget.dart';
 import '../../../widgets/loading_widget.dart';
+import '../../../routes/app_pages.dart';
 import '../controllers/congregant_profile_controller.dart';
 
 class CongregantProfileView extends GetView<CongregantProfileController> {
@@ -88,7 +89,17 @@ class CongregantProfileView extends GetView<CongregantProfileController> {
                           text: 'Asistencia',
                           icon: Icons.school,
                           onTap: controller.toCongrengatAttendance,
+                        ),
+                        ButtonWidget(
+                          text: 'Historial Escuelas',
+                          icon: Icons.school_outlined,
                           isLast: true,
+                          onTap: () => Get.toNamed(
+                            Routes.DESARROLLO_ESCUELA_HISTORIAL,
+                            parameters: {
+                              'id': controller.congregant.codCongregant,
+                            },
+                          ),
                         ),
                       ],
                     ),

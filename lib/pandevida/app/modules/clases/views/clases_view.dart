@@ -121,15 +121,37 @@ class ClasesView extends GetView<ClasesController> {
                             ),
                           ),
                       ],
-                      if (kDebugMode) ...[
-                        const SizedBox(height: 20),
-                        ElevatedButtonWidget(
-                          onPressed: () {
-                            Get.toNamed(Routes.TEST_MINISTERIO);
-                          },
-                          text: 'Test de Ministerio',
-                        ),
-                      ],
+                      // Botón de Test de Ministerio - solo se muestra si hay asignación
+                      Obx(() {
+                        // Si aún está cargando la verificación, mostrar loading
+                        if (controller.isLoadingTests.value) {
+                          return const SizedBox.shrink();
+                        }
+
+                        if (!controller.tieneTestsAsignados.value) {
+                          return const SizedBox.shrink();
+                        }
+
+                        final bool completado =
+                            controller.estadoTest.value == 'COMPLETADO';
+
+                        return Column(
+                          children: [
+                            const SizedBox(height: 20),
+                            ElevatedButtonWidget(
+                              onPressed: completado
+                                  ? () {}
+                                  : () => Get.toNamed(Routes.TEST_MINISTERIO),
+                              text: completado
+                                  ? '✓ Test de Ministerio completado'
+                                  : 'Test de Ministerio',
+                              color: completado
+                                  ? Colors.grey
+                                  : Colors.blue,
+                            ),
+                          ],
+                        );
+                      }),
                     ],
                   ),
                 ),

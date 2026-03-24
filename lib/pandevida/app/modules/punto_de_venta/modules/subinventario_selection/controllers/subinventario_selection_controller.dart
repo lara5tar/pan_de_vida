@@ -26,12 +26,13 @@ class SubinventarioSelectionController extends GetxController {
     try {
       final roles = _getUserRoles();
       const fullAccessRoles = {'ADMIN LIBRERIA', 'SUPERVISOR'};
-      
+
       isAdminLibreria.value = roles.any(
         (role) => fullAccessRoles.contains(role['ROL']),
       );
-      
-      print('Usuario con acceso total (ADMIN/SUPERVISOR): ${isAdminLibreria.value}');
+
+      print(
+          'Usuario con acceso total (ADMIN/SUPERVISOR): ${isAdminLibreria.value}');
     } catch (e) {
       print('Error verificando rol admin/supervisor: $e');
       isAdminLibreria.value = false;
@@ -122,10 +123,12 @@ class SubinventarioSelectionController extends GetxController {
     isLoading.value = true;
     try {
       final codCongregante = AuthService.getCodCongregante();
+      final roles = _getUserRoles();
 
       final result = await _service.getLibrosSubinventario(
         subinventario.id,
         codCongregante: codCongregante,
+        roles: roles,
       );
 
       if (result['error'] == false) {

@@ -46,6 +46,12 @@ class Congregant {
   final String viaF;
   final String nomCasaVida;
   final String curso;
+  // Nuevos campos del endpoint discípulos
+  final String rolNivel;
+  final String rolColor;
+  final String esElegido;
+  final String nombreCompleto;
+  final String grupoVida;
 
   Congregant({
     required this.apellido,
@@ -95,6 +101,11 @@ class Congregant {
     required this.viaF,
     required this.nomCasaVida,
     required this.curso,
+    this.rolNivel = '',
+    this.rolColor = '',
+    this.esElegido = '',
+    this.nombreCompleto = '',
+    this.grupoVida = '',
   });
 
   factory Congregant.fromJson(Map<String, dynamic> json) {
@@ -131,7 +142,7 @@ class Congregant {
       mail: json['MAIL'] ?? '',
       mentor: json['MENTOR'] ?? '',
       necesidad: json['NECESIDAD'] ?? '',
-      nombre: json['NOMBRE'] ?? '',
+      nombre: json['NOMBRE'] ?? json['NOMBRE_COMPLETO'] ?? '',
       nombreF: json['NOMBREF'] ?? '',
       observaciones: json['OBSERVACIONES'] ?? '',
       // otraIgl: json['OTRAIGL'] ?? '',
@@ -144,8 +155,13 @@ class Congregant {
       verificador: json['VERIFICADOR'] ?? '',
       // via: json['VIA'] ?? '',
       viaF: json['VIAF'] ?? '',
-      nomCasaVida: json['NOMCASAVIDA'] ?? '',
+      nomCasaVida: json['NOMCASAVIDA'] ?? json['GRUPO_VIDA'] ?? '',
       curso: json['CURSO'] ?? '',
+      rolNivel: json['ROL_NIVEL'] ?? '',
+      rolColor: json['ROL_COLOR'] ?? '',
+      esElegido: json['ES_ELEGIDO']?.toString() ?? '',
+      nombreCompleto: json['NOMBRE_COMPLETO'] ?? '',
+      grupoVida: json['GRUPO_VIDA'] ?? '',
     );
   }
 
@@ -198,6 +214,11 @@ class Congregant {
       'VIAF': viaF,
       'NOMCASAVIDA': nomCasaVida,
       'CURSO': curso,
+      'ROL_NIVEL': rolNivel,
+      'ROL_COLOR': rolColor,
+      'ES_ELEGIDO': esElegido,
+      'NOMBRE_COMPLETO': nombreCompleto,
+      'GRUPO_VIDA': grupoVida,
     };
   }
 
@@ -250,6 +271,11 @@ class Congregant {
       viaF: '',
       nomCasaVida: '',
       curso: '',
+      rolNivel: '',
+      rolColor: '',
+      esElegido: '',
+      nombreCompleto: '',
+      grupoVida: '',
     );
   }
 

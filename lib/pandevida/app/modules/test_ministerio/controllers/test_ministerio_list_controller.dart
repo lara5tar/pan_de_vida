@@ -1,13 +1,13 @@
-import 'dart:convert';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../data/models/test_ministerio_model.dart';
+import '../../../data/services/test_ministerio_service.dart';
 import '../../../routes/app_pages.dart';
 
 class TestMinisterioListController extends GetxController {
   var tests = <TestMinisterio>[].obs;
   var isLoading = true.obs;
+  var errorMessage = ''.obs;
 
   @override
   void onInit() {
@@ -17,24 +17,24 @@ class TestMinisterioListController extends GetxController {
 
   Future<void> loadTests() async {
     try {
-      // Cargar los 4 tests desde los archivos JSON
-      final testIds = ['test_1', 'test_2', 'test_3', 'test_4'];
-      final loadedTests = <TestMinisterio>[];
+      isLoading.value = true;
+      errorMessage.value = '';
 
-      for (var testId in testIds) {
-        try {
-          final jsonString = await rootBundle
-              .loadString('assets/tests_ministerio/$testId.json');
-          final jsonData = json.decode(jsonString);
-          final test = TestMinisterio.fromJson(jsonData);
-          loadedTests.add(test);
-        } catch (e) {
-          print('Error cargando test $testId: $e');
-        }
+      final response = await TestMinisterioService.obtenerTests();
+
+      if (!response['error']) {
+        final List<dynamic> testsData = response['tests'] ?? [];
+        tests.value = testsData
+            .map((t) => TestMinisterio.fromJson(t as Map<String, dynamic>))
+            .toList();
+        print('Tests cargados: ${tests.length}');
+      } else {
+        errorMessage.value = response['message'] ?? 'Error al cargar los tests';
+        Get.snackbar('Error', errorMessage.value);
+        print('Error al cargar tests: ${response['message']}');
       }
-
-      tests.value = loadedTests;
     } catch (e) {
+      errorMessage.value = 'Error inesperado: $e';
       Get.snackbar('Error', 'No se pudieron cargar los tests');
       print('Error en loadTests: $e');
     } finally {
@@ -45,7 +45,7 @@ class TestMinisterioListController extends GetxController {
   void toTestPreguntas(TestMinisterio test) {
     Get.toNamed(
       Routes.TEST_MINISTERIO_PREGUNTAS,
-      arguments: {'test': test},
+      arguments: {'idTest': test.id},
     );
   }
 }

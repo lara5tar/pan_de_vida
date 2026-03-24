@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import '../../../data/models/book_model.dart';
 import '../../../data/models/subinventario_model.dart';
 import '../../../data/services/books_service.dart';
@@ -10,6 +11,7 @@ import '../../../widgets/confirm_dialog.dart';
 class SearchViewController extends GetxController {
   final BooksService booksService = BooksService();
   final SubinventarioService subinventarioService = SubinventarioService();
+  final GetStorage _storage = GetStorage('login');
 
   // TextEditingController para el campo de búsqueda
   final TextEditingController searchController = TextEditingController();
@@ -118,6 +120,7 @@ class SearchViewController extends GetxController {
           await subinventarioService.getTodosLosLibrosConVendibilidad(
         subinventarioId: subinventarioActivo!.id,
         codCongregante: codCongregante,
+        roles: _getUserRoles(),
         buscar: searchQuery.value.isEmpty ? null : searchQuery.value,
         conStock: null, // Mostrar TODOS los libros, incluso sin stock
         perPage: perPage.value,
@@ -354,6 +357,19 @@ class SearchViewController extends GetxController {
     } else {
       await getBooks();
     }
+  }
+
+  List<Map<String, dynamic>> _getUserRoles() {
+    try {
+      final rolesData = _storage.read('roles');
+      if (rolesData != null && rolesData is List) {
+        return List<Map<String, dynamic>>.from(
+            rolesData.map((role) => Map<String, dynamic>.from(role)));
+      }
+    } catch (e) {
+      print('Error obteniendo roles: $e');
+    }
+    return [];
   }
 
   @override

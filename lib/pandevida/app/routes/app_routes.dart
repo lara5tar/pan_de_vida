@@ -64,6 +64,13 @@ abstract class Routes {
   
   // Ruta para crear cliente
   static const CREAR_CLIENTE = _Paths.CREAR_CLIENTE; // Crear cliente
+
+  // Rutas para el módulo de desarrollo
+  static const DESARROLLO = _Paths.DESARROLLO;
+  static const DESARROLLO_PERFIL = _Paths.DESARROLLO_PERFIL;
+  static const DESARROLLO_RPA = _Paths.DESARROLLO_RPA;
+  static const DESARROLLO_ASISTENCIAS = _Paths.DESARROLLO_ASISTENCIAS;
+  static const DESARROLLO_ESCUELA_HISTORIAL = _Paths.DESARROLLO_ESCUELA_HISTORIAL;
 }
 
 abstract class _Paths {
@@ -143,6 +150,13 @@ abstract class _Paths {
   
   // Ruta para crear cliente
   static const CREAR_CLIENTE = '/punto-venta/crear-cliente';
+
+  // Rutas para el módulo de desarrollo
+  static const DESARROLLO = '/desarrollo';
+  static const DESARROLLO_PERFIL = '$DESARROLLO/perfil';
+  static const DESARROLLO_RPA = '$DESARROLLO/rpa';
+  static const DESARROLLO_ASISTENCIAS = '$DESARROLLO/asistencias';
+  static const DESARROLLO_ESCUELA_HISTORIAL = '$DESARROLLO/escuela-historial';
 }
 
 // List<String> opciones = [

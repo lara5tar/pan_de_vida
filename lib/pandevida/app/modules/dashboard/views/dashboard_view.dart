@@ -46,20 +46,11 @@ class DashboardView extends GetView<DashboardController> {
                   ),
                   for (var subItem in item['OPCIONES'])
                     InkWell(
-                      onTap: () async {
-                        try {
-                          print(subItem['URL']);
-                          Get.toNamed(
-                            '/${subItem['URL'].toString().replaceAll('/', '')}',
-                          );
-                        } catch (e) {
-                          Get.snackbar(
-                            'Error',
-                            'No se ha implementado la ruta',
-                            colorText: Colors.white,
-                            duration: const Duration(milliseconds: 600),
-                          );
-                        }
+                      onTap: () {
+                        final rawUrl = subItem['URL'].toString();
+                        final route =
+                            '/${rawUrl.replaceAll(RegExp(r'^/+'), '')}';
+                        Get.toNamed(route);
                       },
                       child: Container(
                         color: Colors.blueGrey.withOpacity(0.7),

@@ -7,6 +7,7 @@ import '../models/affirmation_model.dart';
 import '../models/group_attendance_model.dart';
 import '../models/congregant_model.dart';
 import '../models/school_attendace_model.dart';
+import '../models/escuela_historial_model.dart';
 
 class CongregantService {
   Future<dynamic> getMenu() async {
@@ -176,6 +177,37 @@ class CongregantService {
   Future<Map<String, dynamic>> getGroupAttendance(String codCongregante) async {
     final String url = '${Keys.URL_SERVICE}/grupoVida/obtener_asistencia';
 
+    print('=== getGroupAttendance SERVICE ===');
+    print('URL: $url');
+    print('Body: ${jsonEncode({Keys.COD_CONGREGANTE_KEY: codCongregante})}');
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({Keys.COD_CONGREGANTE_KEY: codCongregante}),
+      );
+
+      print('Status: ${response.statusCode}');
+      print('Response body RAW: ${response.body}');
+
+      if (response.statusCode == 200) {
+        return {
+          'error': false,
+          'attendance': GroupAttendace.fromJson(jsonDecode(response.body)),
+        };
+      } else {
+        return {'error': true, 'message': 'Error en la respuesta del servidor'};
+      }
+    } catch (e) {
+      return {'error': true, 'message': 'Error de conexión: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> getEscuelaHistorial(
+      String codCongregante) async {
+    final String url = '${Keys.URL_SERVICE}/escuela/historial';
+
     try {
       final response = await http.post(
         Uri.parse(url),
@@ -184,10 +216,95 @@ class CongregantService {
       );
 
       if (response.statusCode == 200) {
-        return {
-          'error': false,
-          'attendance': GroupAttendace.fromJson(jsonDecode(response.body)),
-        };
+        final result = jsonDecode(response.body);
+
+        if (result['error'] == false) {
+          final List<EscuelaHistorial> escuelas = (result['escuelas'] as List)
+              .map((e) => EscuelaHistorial.fromJson(e))
+              .toList();
+
+          return {
+            'error': false,
+            'escuelas': escuelas,
+          };
+        } else {
+          return {
+            'error': true,
+            'message': result['message'] ?? 'Error del servidor'
+          };
+        }
+      } else {
+        return {'error': true, 'message': 'Error en la respuesta del servidor'};
+      }
+    } catch (e) {
+      return {'error': true, 'message': 'Error de conexión: $e'};
+    }
+  }
+
+  /// Obtener la lista de elegidos de un mentor
+  Future<Map<String, dynamic>> getElegidos(String codMentor) async {
+    final String url = '${Keys.URL_SERVICE}/congregante/elegidos';
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({Keys.COD_CONGREGANTE_KEY: codMentor}),
+      );
+
+      if (response.statusCode == 200) {
+        final result = jsonDecode(response.body);
+        return result;
+      } else {
+        return {'error': true, 'message': 'Error en la respuesta del servidor'};
+      }
+    } catch (e) {
+      return {'error': true, 'message': 'Error de conexión: $e'};
+    }
+  }
+
+  /// Agregar un discípulo como elegido (máx 3)
+  Future<Map<String, dynamic>> elegirDiscipulo(
+      String codMentor, String codDiscipulo) async {
+    final String url = '${Keys.URL_SERVICE}/congregante/elegir';
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          Keys.COD_CONGREGANTE_KEY: codMentor,
+          'codDiscipulo': codDiscipulo,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        return {'error': true, 'message': 'Error en la respuesta del servidor'};
+      }
+    } catch (e) {
+      return {'error': true, 'message': 'Error de conexión: $e'};
+    }
+  }
+
+  /// Quitar un discípulo de elegidos
+  Future<Map<String, dynamic>> quitarElegido(
+      String codMentor, String codDiscipulo) async {
+    final String url = '${Keys.URL_SERVICE}/congregante/quitar_elegido';
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          Keys.COD_CONGREGANTE_KEY: codMentor,
+          'codDiscipulo': codDiscipulo,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
       } else {
         return {'error': true, 'message': 'Error en la respuesta del servidor'};
       }

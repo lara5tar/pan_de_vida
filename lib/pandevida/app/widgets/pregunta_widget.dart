@@ -8,18 +8,24 @@ class PreguntaWidget extends StatelessWidget {
   final String pregunta;
   final List<OpcionItem> respuestas;
   final Function(dynamic) onChanged;
+  final dynamic groupValue;
 
   PreguntaWidget({
     super.key,
     required this.pregunta,
     required this.respuestas,
     required this.onChanged,
+    this.groupValue,
   });
 
   var selectedValue = ''.obs;
 
   @override
   Widget build(BuildContext context) {
+    // Sincronizar estado interno con el valor externo al construir
+    if (groupValue != null && selectedValue.value.isEmpty) {
+      selectedValue.value = groupValue.texto ?? '';
+    }
     return Column(
       children: [
         TextTitleWidget(pregunta),

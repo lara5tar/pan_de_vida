@@ -16,32 +16,45 @@ class TestMinisterioPreguntasView
   Widget build(BuildContext context) {
     return CustomScaffold(
       body: Obx(
-        () => controller.isLoading.value
+        () => controller.isLoading.value || controller.test == null
             ? const LoadingWidget()
             : Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    TextTitleWidget(controller.test.titulo),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: TextTitleWidget(controller.test!.titulo),
+                        ),
+                        IconButton(
+                          tooltip: 'Respuestas aleatorias',
+                          icon: const Icon(Icons.casino_outlined),
+                          onPressed: controller.seleccionarAleatoriamente,
+                        ),
+                      ],
+                    ),
                     Expanded(
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
                             const SizedBox(height: 20),
                             for (var i = 0;
-                                i < controller.test.preguntas.length;
+                                i < controller.test!.preguntas.length;
                                 i++)
                               PreguntaWidget(
                                 pregunta:
-                                    '${i + 1}. ${controller.test.preguntas[i].pregunta}',
+                                    '${i + 1}. ${controller.test!.preguntas[i].pregunta}',
                                 respuestas: [
                                   for (var opcion in controller
-                                      .test.preguntas[i].opciones)
+                                      .test!.preguntas[i].opciones)
                                     OpcionItem(
                                       text: opcion.texto,
                                       value: opcion,
                                     ),
                                 ],
+                                groupValue: controller.opcionesElegidas[i],
                                 onChanged: (value) =>
                                     controller.onSelectRespuesta(i, value),
                               ),
