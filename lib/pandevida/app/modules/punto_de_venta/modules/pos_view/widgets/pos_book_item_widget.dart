@@ -15,6 +15,8 @@ class PosBookItemWidget extends GetView<PosViewController> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController textEditingController = TextEditingController();
+    final FocusNode focusNode = FocusNode();
+    
     textEditingController.text = cartItem.quantity.value.toString();
     textEditingController.selection = TextSelection.fromPosition(
         TextPosition(offset: textEditingController.text.length));
@@ -35,6 +37,10 @@ class PosBookItemWidget extends GetView<PosViewController> {
             textEditingController.text = cartItem.quantity.value.toString();
             textEditingController.selection = TextSelection.fromPosition(
                 TextPosition(offset: textEditingController.text.length));
+            // Solicitar foco cuando el usuario toca el item
+            if (focusNode.canRequestFocus) {
+              focusNode.requestFocus();
+            }
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
@@ -46,7 +52,8 @@ class PosBookItemWidget extends GetView<PosViewController> {
                   child: controller.selectedCartItem.value == cartItem
                       ? TextField(
                           controller: textEditingController,
-                          autofocus: true,
+                          focusNode: focusNode,
+                          autofocus: false,
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[
                             FilteringTextInputFormatter.digitsOnly
@@ -64,6 +71,8 @@ class PosBookItemWidget extends GetView<PosViewController> {
                             final newQuantity = int.tryParse(value);
                             if (newQuantity != null) {
                               controller.updateQuantityByInput(newQuantity);
+                              // Desenfoque automático después de actualizar
+                              focusNode.unfocus();
                             }
                           },
                           onTapOutside: (_) {
@@ -72,6 +81,8 @@ class PosBookItemWidget extends GetView<PosViewController> {
                             if (newQuantity != null) {
                               controller.updateQuantityByInput(newQuantity);
                             }
+                            // Desenfoque automático al tocar fuera
+                            focusNode.unfocus();
                           },
                         )
                       : Center(
