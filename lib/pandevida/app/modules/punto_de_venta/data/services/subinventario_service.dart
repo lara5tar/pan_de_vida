@@ -45,15 +45,23 @@ class SubinventarioService {
               try {
                 final invGeneral =
                     data['inventario_general'] as Map<String, dynamic>;
+                
+                // Convertir valores a int de forma segura
+                int toInt(dynamic value) {
+                  if (value is int) return value;
+                  if (value is String) return int.tryParse(value) ?? 0;
+                  return 0;
+                }
+                
                 subinventarios.add(Subinventario(
                   id: 0,
                   descripcion: invGeneral['nombre'] ?? 'Inventario General',
                   fechaSubinventario: DateTime.now().toString(),
                   estado: 'activo',
-                  totalLibros: 0,
-                  totalUnidades: 0,
+                  totalLibros: toInt(invGeneral['total_libros']),
+                  totalUnidades: toInt(invGeneral['total_unidades']),
                 ));
-                print('✅ Inventario general agregado');
+                print('✅ Inventario general agregado: ${toInt(invGeneral['total_libros'])} libros, ${toInt(invGeneral['total_unidades'])} unidades');
               } catch (e) {
                 print('⚠️ Error procesando inventario general: $e');
               }

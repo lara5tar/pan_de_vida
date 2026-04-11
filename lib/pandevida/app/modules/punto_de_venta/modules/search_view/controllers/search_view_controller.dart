@@ -297,6 +297,32 @@ class SearchViewController extends GetxController {
 
   // Seleccionar un libro
   void selectBook(Book book) {
+    // Este método ya no se usa en la vista de búsqueda
+    // La vista llama directamente a showDisponibilidadDialog
+    
+    if (!book.esVendible) {
+      Get.snackbar(
+        'No disponible',
+        'No puedes agregar "${book.nombre}" porque no está en tu subinventario actual.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.orange.shade700,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 3),
+      );
+      return;
+    }
+
+    // Si hay callback (desde POS), no hacer nada aquí
+    if (onBookSelected != null) {
+      return;
+    }
+
+    // Si no hay callback, mostrar detalles
+    goToBookDetail(book);
+  }
+
+  // Agregar libro directamente sin confirmación
+  void addBookDirectly(Book book) {
     // Validar si puede vender este libro
     if (!book.esVendible) {
       Get.snackbar(
@@ -311,25 +337,9 @@ class SearchViewController extends GetxController {
     }
 
     if (onBookSelected != null) {
-      // Si hay un callback (desde POS), usarlo
-      confirmDialog(
-        title: '¿Agregar libro?',
-        content:
-            '¿Deseas agregar "${book.nombre}" al carrito?\n\nDisponibles: ${book.cantidadDisponible}',
-        confirmAction: () {
-          onBookSelected!(book);
-          Get.back(); // Cerrar el diálogo de confirmación
-
-          // Mostrar snackbar después de cerrar todo
-          Future.microtask(() => Get.snackbar(
-                'Libro agregado',
-                '${book.nombre} agregado al carrito',
-                backgroundColor: Colors.green.shade700,
-                colorText: Colors.white,
-                duration: const Duration(seconds: 2),
-              ));
-        },
-      );
+      // Agregar directamente sin diálogo de confirmación
+      // El snackbar lo muestra el callback (addBook en POS)
+      onBookSelected!(book);
     } else {
       // Si no hay callback, mostrar detalles
       goToBookDetail(book);

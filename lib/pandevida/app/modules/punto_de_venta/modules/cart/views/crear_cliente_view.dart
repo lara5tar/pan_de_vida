@@ -4,7 +4,7 @@ import '../../../../../widgets/custom_scaffold.dart';
 import '../../../../../widgets/custom_text_field_underline.dart';
 import '../../../../../widgets/text_title_widget.dart';
 import '../../../../../widgets/text_subtitle_widget.dart';
-import '../../../../../widgets/button_widget.dart';
+import '../../../../../widgets/elevated_button_widget.dart';
 import '../../../../../widgets/loading_widget.dart';
 import '../../../data/services/cliente_service.dart';
 import '../../../data/models/cliente_model.dart';
@@ -148,7 +148,7 @@ class _CrearClienteViewState extends State<CrearClienteView> {
       body: _isLoading
           ? const LoadingWidget()
           : Padding(
-              padding: const EdgeInsets.fromLTRB(20, 100, 20, 20),
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
               child: Form(
                 key: _formKey,
                 child: SingleChildScrollView(
@@ -158,17 +158,7 @@ class _CrearClienteViewState extends State<CrearClienteView> {
                       const TextTitleWidget('Crear Cliente'),
                       const TextSubtitleWidget(
                           'Registra un nuevo cliente para apartados'),
-                      const SizedBox(height: 32),
-
-                      // Icono central
-                      Center(
-                        child: Icon(
-                          Icons.person_add,
-                          size: 80,
-                          color: Colors.blue[700],
-                        ),
-                      ),
-                      const SizedBox(height: 32),
+                 
 
                       // Campo nombre
                       CustomTextFieldUnderline(
@@ -177,8 +167,7 @@ class _CrearClienteViewState extends State<CrearClienteView> {
                         typefield: TypeField.TEXT,
                         info: _nombreController,
                       ),
-                      const SizedBox(height: 20),
-
+                   
                       // Campo teléfono
                       CustomTextFieldUnderline(
                         label: 'Teléfono (opcional)',
@@ -186,8 +175,7 @@ class _CrearClienteViewState extends State<CrearClienteView> {
                         typefield: TypeField.TEXT,
                         info: _telefonoController,
                       ),
-                      const SizedBox(height: 16),
-
+                     const SizedBox(height: 20),
                       // Nota informativa
                       Container(
                         padding: const EdgeInsets.all(12),
@@ -212,16 +200,13 @@ class _CrearClienteViewState extends State<CrearClienteView> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 20),
 
                       // Botón crear
-                      ButtonWidget(
+                      ElevatedButtonWidget(
                         text: 'Crear Cliente',
-                        icon: Icons.save,
-                        colorIcon: Colors.green,
-                        colorText: Colors.green.shade700,
-                        onTap: _crearCliente,
-                        isLast: true,
+                        onPressed: _crearCliente,
+                        color: Colors.green,
                       ),
                     ],
                   ),

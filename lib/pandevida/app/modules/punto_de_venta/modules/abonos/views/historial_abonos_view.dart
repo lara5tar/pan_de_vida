@@ -28,47 +28,31 @@ class HistorialAbonosView extends GetView<AbonosController> {
           );
         }
 
-        return Padding(
-          padding: const EdgeInsets.fromLTRB(16, 100, 16, 16),
-          child: Column(
-            children: [
-              const TextTitleWidget('Historial de Abonos'),
-              const SizedBox(height: 10),
-              const TextSubtitleWidget('Información del apartado'),
-              const SizedBox(height: 20),
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
+            child: Column(
+              children: [
+                const TextTitleWidget('Historial de Abonos'),
+                const TextSubtitleWidget('Información del apartado'),
 
-              // Header con información del apartado
-              ApartadoInfoWidget(apartado: apartado),
+                // Header con información del apartado
+                ApartadoInfoWidget(apartado: apartado),
 
-              const SizedBox(height: 24),
-              TextSubtitleWidget('Abonos realizados: ${abonos.length}'),
-              const SizedBox(height: 16),
+                TextSubtitleWidget('Abonos realizados: ${abonos.length}'),
 
-              // Lista de abonos
-              Expanded(
-                child: abonos.isEmpty
-                    ? _buildEmptyState()
-                    : ListView.builder(
-                        itemCount: abonos.length,
-                        itemBuilder: (context, index) {
-                          final abono = abonos[index];
-                          final saldoInfo =
-                              '\$${abono.saldoAnterior.toStringAsFixed(2)} → \$${abono.saldoNuevo.toStringAsFixed(2)}';
-                          return ButtonWidget(
-                            text: '\$${abono.monto.toStringAsFixed(2)}',
-                            icon: Icons.payment,
-                            title:
-                                '${abono.fechaAbono} - ${abono.metodoPagoLabel}',
-                            subtitle: abono.observaciones != null
-                                ? '${abono.observaciones}\nSaldo: $saldoInfo'
-                                : 'Saldo: $saldoInfo',
-                            colorIcon: Colors.green,
-                            isLast: index == abonos.length - 1,
-                          );
-                        },
-                      ),
-              ),
-            ],
+                // Lista de abonos
+                if (abonos.isEmpty)
+                  _buildEmptyState()
+                else
+                  Column(
+                    children: [
+                      for (int index = 0; index < abonos.length; index++)
+                        _buildAbonoItem(abonos[index], index, abonos.length),
+                    ],
+                  ),
+              ],
+            ),
           ),
         );
       }),
@@ -87,6 +71,21 @@ class HistorialAbonosView extends GetView<AbonosController> {
           const TextSubtitleWidget('Aún no hay abonos para este apartado'),
         ],
       ),
+    );
+  }
+
+  Widget _buildAbonoItem(final abono, int index, int total) {
+    final saldoInfo =
+        '\$${abono.saldoAnterior.toStringAsFixed(2)} → \$${abono.saldoNuevo.toStringAsFixed(2)}';
+    return ButtonWidget(
+      text: '\$${abono.monto.toStringAsFixed(2)}',
+      icon: Icons.payment,
+      title: '${abono.fechaAbono} - ${abono.metodoPagoLabel}',
+      subtitle: abono.observaciones != null
+          ? '${abono.observaciones}\nSaldo: $saldoInfo'
+          : 'Saldo: $saldoInfo',
+      colorIcon: Colors.green,
+      isLast: index == total - 1,
     );
   }
 }

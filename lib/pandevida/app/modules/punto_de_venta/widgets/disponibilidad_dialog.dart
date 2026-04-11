@@ -76,9 +76,11 @@ class _DisponibilidadDialogState extends State<DisponibilidadDialog> {
   Widget build(BuildContext context) {
     return Dialog(
       insetPadding: const EdgeInsets.all(16),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      clipBehavior: Clip.antiAlias,
       backgroundColor: Colors.white.withOpacity(0.95),
       child: Container(
-        constraints: const BoxConstraints(maxWidth: 600, maxHeight: 650),
+        constraints: const BoxConstraints(maxWidth: 600),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -124,60 +126,61 @@ class _DisponibilidadDialogState extends State<DisponibilidadDialog> {
             ),
 
             // Content
-            Expanded(
-              child: isLoading
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircularProgressIndicator(
-                            color: Colors.blue[900],
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            'Consultando disponibilidad...',
-                            style: TextStyle(color: Colors.grey[600]),
-                          ),
-                        ],
+            if (isLoading)
+              Padding(
+                padding: const EdgeInsets.all(40),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircularProgressIndicator(
+                      color: Colors.blue[900],
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Consultando disponibilidad...',
+                      style: TextStyle(color: Colors.grey[600]),
+                    ),
+                  ],
+                ),
+              )
+            else if (errorMessage != null)
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.error_outline,
+                      size: 64,
+                      color: Colors.grey[600],
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      errorMessage!,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.grey[800],
+                        fontSize: 16,
                       ),
-                    )
-                  : errorMessage != null
-                      ? Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.error_outline,
-                                  size: 64,
-                                  color: Colors.grey[600],
-                                ),
-                                const SizedBox(height: 16),
-                                Text(
-                                  errorMessage!,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.grey[800],
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                const SizedBox(height: 20),
-                                ElevatedButton.icon(
-                                  onPressed: _cargarDisponibilidad,
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.blue[900],
-                                    foregroundColor: Colors.white,
-                                  ),
-                                  icon: const Icon(Icons.refresh),
-                                  label: const Text('Reintentar'),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      : _buildDisponibilidadContent(),
-            ),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton.icon(
+                      onPressed: _cargarDisponibilidad,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue[900],
+                        foregroundColor: Colors.white,
+                      ),
+                      icon: const Icon(Icons.refresh),
+                      label: const Text('Reintentar'),
+                    ),
+                  ],
+                ),
+              )
+            else
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxHeight: 500),
+                child: _buildDisponibilidadContent(),
+              ),
           ],
         ),
       ),

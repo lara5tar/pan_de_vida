@@ -68,11 +68,8 @@ class SearchView extends GetView<SearchViewController> {
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
-                const TextTitleWidget('Buscar Libros'),
-
-                // Mostrar info del subinventario si existe
+                // Mostrar info del subinventario si existe - PRIMERO
                 if (controller.subinventarioActivo != null) ...[
-                  const SizedBox(height: 10),
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 12,
@@ -107,9 +104,12 @@ class SearchView extends GetView<SearchViewController> {
                       ],
                     ),
                   ),
+                  const SizedBox(height: 10),
                 ],
 
-                const SizedBox(height: 10),
+                // Título "Buscar Libros" - SEGUNDO
+                const TextTitleWidget('Buscar Libros'),
+
 
                 // Campo de búsqueda
                 SearchFieldWidget(
@@ -119,9 +119,6 @@ class SearchView extends GetView<SearchViewController> {
                     controller.searchQuery.value = value;
                   },
                 ),
-
-                const SizedBox(height: 10),
-
                 // Resultados de búsqueda
                 Expanded(
                   child: Obx(
@@ -165,14 +162,6 @@ class SearchView extends GetView<SearchViewController> {
 
                       return Column(
                         children: [
-                          // Título con contador
-                          TextSubtitleWidget(
-                            results.length == 1
-                                ? '1 libro encontrado'
-                                : '${results.length} libros encontrados',
-                          ),
-                          const SizedBox(height: 10),
-
                           // Lista de libros
                           Expanded(
                             child: ListView.builder(
@@ -181,7 +170,6 @@ class SearchView extends GetView<SearchViewController> {
                               itemBuilder: (context, index) {
                                 final book = results[index];
                                 return Container(
-                                  margin: const EdgeInsets.only(bottom: 8),
                                   child: Row(
                                     children: [
                                       Expanded(
@@ -202,23 +190,8 @@ class SearchView extends GetView<SearchViewController> {
                                           colorText: book.esVendible
                                               ? Colors.black
                                               : Colors.grey,
-                                          onTap: () =>
-                                              controller.selectBook(book),
-                                          isLast: false,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFF4CAF50),
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                        child: IconButton(
-                                          icon: const Icon(Icons.info_outline),
-                                          color: Colors.white,
-                                          tooltip: 'Ver disponibilidad',
-                                          onPressed: () {
+                                          onTap: () {
+                                            // Mostrar disponibilidad al presionar el tile (disponible o no)
                                             final libroId =
                                                 int.tryParse(book.id);
                                             if (libroId != null) {
@@ -226,20 +199,28 @@ class SearchView extends GetView<SearchViewController> {
                                                 libroId: libroId,
                                                 libroNombre: book.nombre,
                                               );
-                                            } else {
-                                              Get.snackbar(
-                                                'Error',
-                                                'ID de libro inválido',
-                                                snackPosition:
-                                                    SnackPosition.BOTTOM,
-                                                backgroundColor:
-                                                    Colors.red.shade700,
-                                                colorText: Colors.white,
-                                              );
                                             }
                                           },
+                                          isLast: false,
                                         ),
                                       ),
+                                      // Botón de agregar directo (+)
+                                      if (book.esVendible)
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFF2196F3),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: IconButton(
+                                            icon: const Icon(Icons.add),
+                                            color: Colors.white,
+                                            tooltip: 'Agregar al carrito',
+                                            onPressed: () {
+                                              controller.addBookDirectly(book);
+                                            },
+                                          ),
+                                        ),
                                     ],
                                   ),
                                 );
