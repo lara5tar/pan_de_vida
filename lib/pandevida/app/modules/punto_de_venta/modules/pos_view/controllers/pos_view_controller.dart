@@ -5,6 +5,7 @@ import '../../../data/services/books_service.dart';
 import '../../../data/services/camera_service.dart';
 import '../../../data/services/subinventario_service.dart';
 import '../../../../../data/services/auth_service.dart';
+import '../../../../../data/services/congregante_service.dart';
 import '../../../widgets/confirm_dialog.dart';
 import '../../mycart/widgets/search_book_dialog.dart';
 import '../widgets/transaccion_options_dialog.dart';
@@ -389,17 +390,44 @@ class PosViewController extends GetxController {
       isLoading.value = true;
 
       // Obtener datos del usuario
-      final codCongregante = AuthService.getCodCongregante();
+      final String? codCongregante = AuthService.getCodCongregante();
+      print('codCongregante desde AuthService: "$codCongregante"');
 
-      // Intentar obtener el servicio de auth, si no existe usar valor por defecto
-      AuthService? authService;
-      try {
-        authService = Get.find<AuthService>();
-      } catch (e) {
-        print('AuthService no encontrado: $e');
+      // Obtener nombre del congregante desde la API
+      String usuario = 'Usuario';
+      if (codCongregante != null) {
+        print('Llamando getNombreCongregante con: $codCongregante');
+        final nombreResult = await CongregantService().getNombreCongregante(codCongregante);
+        print('nombreResult: $nombreResult');
+        print('nombreResult[error]: ${nombreResult['error']}');
+        print('nombreResult[nombre]: "${nombreResult['nombre']}"');
+
+        if (!nombreResult['error'] && nombreResult['nombre'] != null && nombreResult['nombre'].toString().isNotEmpty) {
+          usuario = nombreResult['nombre'].toString();
+          print('Nombre del congregante obtenido: $usuario');
+        } else {
+          // Si falla, intentar con getUser del AuthService
+          print('No se pudo obtener nombre, usando getUser');
+          try {
+            AuthService? authService = Get.find<AuthService>();
+            usuario = authService?.getUser ?? 'Usuario';
+            print('getUser: $usuario');
+          } catch (e) {
+            print('AuthService no encontrado: $e');
+          }
+        }
+      } else {
+        print('codCongregante es null, usando getUser');
+        try {
+          AuthService? authService = Get.find<AuthService>();
+          usuario = authService?.getUser ?? 'Usuario';
+          print('getUser: $usuario');
+        } catch (e) {
+          print('AuthService no encontrado: $e');
+        }
       }
 
-      final username = authService?.getUser ?? 'Usuario';
+      print('Usuario final para la venta: "$usuario"');
 
       // Preparar lista de libros para la venta
       final List<Map<String, dynamic>> librosVenta = [];
@@ -432,10 +460,10 @@ class PosViewController extends GetxController {
       // Crear la venta con todos los parámetros
       final result = await subinventarioService.crearVenta(
         subinventarioId: subinventarioActivo.value!.id,
-        codCongregante: codCongregante,
-        fechaVenta: DateTime.now().toIso8601String().split('T')[0],
+        codCongregante: codCongregante ?? '',
+        fechaVenta: DateTime.now().toIso8601String().substring(0, 16),
         tipoPago: tipoPagoStr,
-        usuario: username,
+        usuario: usuario,
         libros: librosVenta,
         clienteId: options.cliente?.id,
         descuentoGlobal: options.descuentoGlobal,
@@ -498,17 +526,16 @@ class PosViewController extends GetxController {
       isLoading.value = true;
 
       // Obtener datos del usuario
-      final codCongregante = AuthService.getCodCongregante();
+      final String? codCongregante = AuthService.getCodCongregante();
 
-      // Intentar obtener el servicio de auth, si no existe usar valor por defecto
-      AuthService? authService;
-      try {
-        authService = Get.find<AuthService>();
-      } catch (e) {
-        print('AuthService no encontrado: $e');
+      // Obtener nombre del congregante desde la API
+      String usuario = 'Usuario';
+      if (codCongregante != null) {
+        final nombreResult = await CongregantService().getNombreCongregante(codCongregante);
+        if (!nombreResult['error'] && nombreResult['nombre'] != null) {
+          usuario = nombreResult['nombre'];
+        }
       }
-
-      final username = authService?.getUser ?? 'Usuario';
 
       // Preparar lista de libros para el apartado
       // Para apartados se requiere precio_unitario en cada libro
@@ -535,11 +562,11 @@ class PosViewController extends GetxController {
       // Crear el apartado
       final result = await subinventarioService.crearApartado(
         subinventarioId: subinventarioActivo.value!.id,
-        codCongregante: codCongregante,
+        codCongregante: codCongregante ?? '',
         clienteId: options.cliente!.id, // Siempre requerido en apartados
         fechaApartado: DateTime.now().toIso8601String().split('T')[0],
         enganche: options.enganche ?? 0,
-        usuario: username,
+        usuario: usuario,
         libros: librosApartado,
         fechaLimite: fechaLimiteStr,
         observaciones: options.observaciones,

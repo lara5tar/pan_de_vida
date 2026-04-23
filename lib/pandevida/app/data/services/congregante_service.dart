@@ -288,6 +288,55 @@ class CongregantService {
     }
   }
 
+  Future<Map<String, dynamic>> getNombreCongregante(String idCongregante) async {
+    final String url = '${Keys.URL_SERVICE}/congregante/nombre/$idCongregante';
+
+    print('=== CongregantService.getNombreCongregante ===');
+    print('URL: $url');
+    print('idCongregante: $idCongregante');
+
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+      );
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final result = jsonDecode(response.body);
+        print('Decoded result keys: ${result.keys.toList()}');
+        print('Full result: $result');
+        String? nombre;
+        if (result['nombre'] != null) {
+          nombre = result['nombre'].toString();
+        } else if (result['NOMBRE'] != null) {
+          nombre = result['NOMBRE'].toString();
+        } else if (result['name'] != null) {
+          nombre = result['name'].toString();
+        } else if (result['data'] != null && result['data']['nombre'] != null) {
+          nombre = result['data']['nombre'].toString();
+        } else if (result['data'] != null && result['data']['NOMBRE'] != null) {
+          nombre = result['data']['NOMBRE'].toString();
+        }
+        print('Nombre extraído: $nombre');
+        return {
+          'error': false,
+          'nombre': nombre ?? '',
+        };
+      } else {
+        print('Respuesta no 200, body: ${response.body}');
+        return {
+          'error': true,
+          'message': 'Error al obtener nombre (${response.statusCode})',
+        };
+      }
+    } catch (e) {
+      print('Exception: $e');
+      return {'error': true, 'message': 'Error de conexión: $e'};
+    }
+  }
+
   /// Quitar un discípulo de elegidos
   Future<Map<String, dynamic>> quitarElegido(
       String codMentor, String codDiscipulo) async {

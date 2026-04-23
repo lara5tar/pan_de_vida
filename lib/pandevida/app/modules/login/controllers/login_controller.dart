@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:get_storage/get_storage.dart';
+
+import '../../../../core/values/keys.dart';
 import '../../../data/services/auth_service.dart';
 import '../../../data/services/congregante_service.dart';
+import '../../../data/services/test_ministerio_service.dart';
 import '../../../routes/app_pages.dart';
 
 class LoginController extends GetxController {
@@ -95,6 +99,28 @@ class LoginController extends GetxController {
       response = await congreganteService.getMenu();
 
       Get.back();
+
+      if (response['error'] == false) {
+        final testResponse =
+            await TestMinisterioService.verificarAsignacion();
+        if (!testResponse['error'] &&
+            testResponse['mostrar_boton'] == true) {
+          final box = GetStorage(Keys.LOGIN_KEY);
+          List menu = box.read('menu') ?? [];
+          menu.add({
+            'MENU': 'TEST DE MINISTERIOS',
+            'OPCIONES': [
+              {
+                'OPCION': 'CONTESTAR TEST',
+                'URL': Routes.TEST_MINISTERIO,
+              }
+            ]
+          });
+          await box.write('menu', menu);
+          await box.write(
+              'test_ministerio_estado', testResponse['estado']);
+        }
+      }
 
       if (response['error'] == true) {
         Get.back();

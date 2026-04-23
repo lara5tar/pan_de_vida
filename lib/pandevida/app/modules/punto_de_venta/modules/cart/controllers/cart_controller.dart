@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import '../../../../../data/services/congregante_service.dart';
 import '../../../data/models/book_model.dart';
 import '../../../data/services/books_service.dart';
 import '../../../data/services/camera_service.dart';
@@ -520,10 +521,20 @@ class CartController extends GetxController {
 
     try {
       // Preparar datos de la venta
-      final fechaVenta = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      final fechaVenta = DateTime.now().toIso8601String().substring(0, 16);
       final tipoPago = isInstallmentPayment.value ? 'plazos' : 'contado';
-      final usuario = _storage.read('nombre') ?? 'usuario_app';
-      
+
+      // Obtener nombre del congregante desde la API
+      String usuario = 'usuario_app';
+      final codCongregante = _storage.read('codCongregante');
+      if (codCongregante != null) {
+        final nombreResult = await CongregantService().getNombreCongregante(codCongregante.toString());
+        if (!nombreResult['error'] && nombreResult['nombre'] != null) {
+          usuario = nombreResult['nombre'];
+          print('Nombre del congregante obtenido para venta: $usuario');
+        }
+      }
+
       // Preparar lista de libros
       final libros = items.map((book) {
         final cantidad = quantities[book.id.toString()] ?? 1;
